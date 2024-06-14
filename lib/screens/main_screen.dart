@@ -1,0 +1,33 @@
+import 'package:fife_image/widgets/fife_image_app_bar.dart';
+import 'package:fife_image/widgets/image_list.dart';
+import 'package:fife_image/widgets/selected_image.dart';
+import 'package:flutter/material.dart';
+
+class MainScreen extends StatelessWidget {
+  static const route = '/';
+
+  const MainScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      appBar: FifeImageAppBar(),
+      body: Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ImageList(),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: SelectedImage(),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
