@@ -32,6 +32,37 @@ def upload_files():
         return jsonify({"error": "Invalid file type, only .tif files are allowed"}), 400
 
 
+@app.route('/delete', methods=['POST'])
+def delete_image():
+    data = request.get_json()
+    if 'filename' not in data:
+        return jsonify({"error": "No filename provided"}), 400
+
+    filename = data['filename']
+    tif_filename = os.path.splitext(filename)[0] + '.tif'
+    tiff_path = os.path.join(app.config['UPLOAD_FOLDER'], tif_filename)
+    png_filename = os.path.splitext(filename)[0] + '.png'
+    png_path = os.path.join(app.config['OUTPUT_FOLDER'], png_filename)
+
+    tiff_deleted = False
+    png_deleted = False
+
+    if os.path.exists(tiff_path):
+        os.remove(tiff_path)
+        tiff_deleted = True
+
+    if os.path.exists(png_path):
+        os.remove(png_path)
+        png_deleted = True
+
+    if tiff_deleted or png_deleted:
+        return jsonify({"message": "Files deleted successfully",
+                        "tiff_deleted": tiff_deleted,
+                        "png_deleted": png_deleted}), 200
+    else:
+        return jsonify({"error": "File not found"}), 404
+
+
 def convert_to_png(filepath):
     img = Image.open(filepath)
     png_filename = os.path.splitext(os.path.basename(filepath))[0] + '.png'

@@ -51,14 +51,18 @@ class AppData extends _$AppData {
       server,
       data: formData,
       options: Options(
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: {'Content-Type': 'multipart/form-data'},
       ),
     );
   }
 
-  void removeImage({required AbstractImage image}) {}
+  Future<void> deleteImage({required AbstractImage image}) async {
+    await _dio.post(
+      '$server/delete',
+      data: {'filename': image.name},
+    );
+    ref.invalidateSelf();
+  }
 
   void selectImage({required AbstractImage? image}) async {
     final previousState = await future;

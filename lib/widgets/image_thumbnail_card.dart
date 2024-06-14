@@ -24,6 +24,9 @@ class ImageCard extends ConsumerWidget {
           onTap: () {
             ref.read(appDataProvider.notifier).selectImage(image: image);
           },
+          onLongPress: () {
+            ref.read(appDataProvider.notifier).deleteImage(image: image);
+          },
           child: Stack(
             children: [
               _NetworkImage(url: image.url),
