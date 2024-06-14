@@ -1,5 +1,6 @@
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
+import 'package:fife_image/providers/images_provider.dart';
 import 'package:fife_image/widgets/image_thumbnail_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,10 +10,10 @@ class ImageList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appData = ref.watch(appDataProvider);
+    final appData = ref.watch(imagesProvider);
     return appData.when(
       data: (data) {
-        final images = data.images ?? [];
+        final images = data;
 
         return GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

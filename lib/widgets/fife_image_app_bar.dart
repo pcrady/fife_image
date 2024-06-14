@@ -2,6 +2,7 @@ import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
+import 'package:fife_image/providers/images_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,7 +50,7 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
             FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
             if (result != null) {
               List<AbstractImage> images = result.files.map((file) => AbstractImage(file: file)).toList();
-              ref.read(appDataProvider.notifier).setImages(images: images);
+              ref.read(imagesProvider.notifier).setImages(images: images);
             }
           } catch (err, stack) {
             logger.e(err, stackTrace: stack);
@@ -91,6 +92,57 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
           }).toList(),
         ),
       ],
+      bottom: widget.bottom,
+    );
+  }
+}
+
+class AppBarBottom extends ConsumerStatefulWidget implements PreferredSizeWidget {
+  const AppBarBottom({super.key});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  ConsumerState<AppBarBottom> createState() => _AppBarBottomState();
+}
+
+class _AppBarBottomState extends ConsumerState<AppBarBottom> {
+  static final _baseButtons = [const Text('Images')];
+  static final _baseSelectedButtons = [true];
+
+   List<Widget> _buttons = _baseButtons;
+   List<bool> _selectedButtons = _baseSelectedButtons;
+
+  @override
+  Widget build(BuildContext context) {
+    final appData = ref.read(appDataProvider);
+
+    _buttons = List.from(_baseButtons);
+    _selectedButtons = List.from(_baseSelectedButtons);
+
+    _buttons.add(Text(appData.function.toName()));
+    _selectedButtons.add(false);
+
+    return ToggleButtons(
+      onPressed: (int index) {
+        setState(() {
+          for (int i = 0; i < _selectedButtons.length; i++) {
+            _selectedButtons[i] = i == index;
+          }
+        });
+      },
+      borderRadius: const BorderRadius.all(Radius.circular(8)),
+      selectedBorderColor: Colors.red[700],
+      selectedColor: Colors.white,
+      fillColor: Colors.red[200],
+      color: Colors.red[400],
+      constraints: const BoxConstraints(
+        minHeight: 40.0,
+        minWidth: 80.0,
+      ),
+      isSelected: _selectedButtons,
+      children: _buttons,
     );
   }
 }

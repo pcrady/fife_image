@@ -11,7 +11,9 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: FifeImageAppBar(),
+      appBar: FifeImageAppBar(
+        bottom: AppBarBottom(),
+      ),
       body: Row(
         children: [
           Expanded(

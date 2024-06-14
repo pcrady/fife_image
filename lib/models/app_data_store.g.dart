@@ -8,13 +8,12 @@ part of 'app_data_store.dart';
 
 _$AppDataStoreImpl _$$AppDataStoreImplFromJson(Map<String, dynamic> json) =>
     _$AppDataStoreImpl(
-      images: (json['images'] as List<dynamic>?)
-          ?.map((e) => AbstractImage.fromJson(e as Map<String, dynamic>))
-          .toList(),
       selectedImage: json['selected_image'] == null
           ? null
           : AbstractImage.fromJson(
               json['selected_image'] as Map<String, dynamic>),
+      function: $enumDecodeNullable(_$FunctionsEnumEnumMap, json['function']) ??
+          FunctionsEnum.functions,
     );
 
 Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) {
@@ -26,7 +25,12 @@ Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) {
     }
   }
 
-  writeNotNull('images', instance.images?.map((e) => e.toJson()).toList());
   writeNotNull('selected_image', instance.selectedImage?.toJson());
+  val['function'] = _$FunctionsEnumEnumMap[instance.function]!;
   return val;
 }
+
+const _$FunctionsEnumEnumMap = {
+  FunctionsEnum.functions: 'functions',
+  FunctionsEnum.convexHull: 'convexHull',
+};

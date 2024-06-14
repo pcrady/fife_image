@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
+import 'package:fife_image/providers/images_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,8 +25,8 @@ class ImageCard extends ConsumerWidget {
           onTap: () {
             ref.read(appDataProvider.notifier).selectImage(image: image);
           },
-          onLongPress: () {
-            ref.read(appDataProvider.notifier).deleteImage(image: image);
+          onLongPress: () async {
+            await ref.read(imagesProvider.notifier).deleteImage(image: image);
           },
           child: Stack(
             children: [
