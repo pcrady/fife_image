@@ -1,29 +1,36 @@
+
+import 'package:fife_image/constants.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:path/path.dart';
+
 
 class AbstractImage {
-  final String? url;
+  final String? path;
   final PlatformFile? file;
 
   AbstractImage({
-    this.url,
+    this.path,
     this.file,
   });
 
+  String get url => server + (path ?? '');
+  String get name => basename(path ?? '').split('.').first;
+
   factory AbstractImage.fromJson(Map<String, dynamic> json) => AbstractImage(
-        url: json['url'] as String?,
+        path: json['path'] as String?,
       );
 
-  Future<Map<String, dynamic>> toJson() async {
+  Map<String, dynamic> toJson() {
     Map<String, dynamic> values = {};
-    if (url != null) values['url'] = url;
-    if (file != null) values['file'] = await file!.xFile.readAsBytes();
+    if (path != null) values['path'] = path;
+    if (file != null) values['file'] = file?.bytes;
     return values;
   }
 
   @override
   bool operator ==(Object other) {
     if (other is! AbstractImage) return false;
-    if ((other.url == url) && (other.file == file)) {
+    if ((other.path == path) && (other.file == file)) {
       return true;
     } else {
       return false;
@@ -31,7 +38,6 @@ class AbstractImage {
   }
 
   @override
-  int get hashCode => Object.hash(url, file);
-
+  int get hashCode => Object.hash(path, file);
 }
 

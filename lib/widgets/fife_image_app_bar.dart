@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:fife_image/lib/app_logger.dart';
+import 'package:fife_image/models/abstract_image.dart';
+import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FifeImageAppBar extends StatelessWidget implements PreferredSizeWidget {
+class FifeImageAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
 
   @override
@@ -16,7 +19,7 @@ class FifeImageAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
       title: const Text('Fife Image'),
       actions: [
@@ -25,9 +28,8 @@ class FifeImageAppBar extends StatelessWidget implements PreferredSizeWidget {
             try {
               FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
               if (result != null) {
-                for (final file in result.files) {
-                  logger.i(file.size);
-                }
+                List<AbstractImage> images = result.files.map((file) => AbstractImage(file: file)).toList();
+                ref.read(appDataProvider.notifier).setImages(images: images);
               }
             } catch (err, stack) {
               logger.e(err, stackTrace: stack);

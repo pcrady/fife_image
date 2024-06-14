@@ -21,7 +21,7 @@ AppDataStore _$AppDataStoreFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AppDataStore {
   List<AbstractImage>? get images => throw _privateConstructorUsedError;
-  int? get selectedImageIndex => throw _privateConstructorUsedError;
+  AbstractImage? get selectedImage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $AppDataStoreCopyWith<$Res> {
           AppDataStore value, $Res Function(AppDataStore) then) =
       _$AppDataStoreCopyWithImpl<$Res, AppDataStore>;
   @useResult
-  $Res call({List<AbstractImage>? images, int? selectedImageIndex});
+  $Res call({List<AbstractImage>? images, AbstractImage? selectedImage});
 }
 
 /// @nodoc
@@ -52,17 +52,17 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
   @override
   $Res call({
     Object? images = freezed,
-    Object? selectedImageIndex = freezed,
+    Object? selectedImage = freezed,
   }) {
     return _then(_value.copyWith(
       images: freezed == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
               as List<AbstractImage>?,
-      selectedImageIndex: freezed == selectedImageIndex
-          ? _value.selectedImageIndex
-          : selectedImageIndex // ignore: cast_nullable_to_non_nullable
-              as int?,
+      selectedImage: freezed == selectedImage
+          ? _value.selectedImage
+          : selectedImage // ignore: cast_nullable_to_non_nullable
+              as AbstractImage?,
     ) as $Val);
   }
 }
@@ -75,7 +75,7 @@ abstract class _$$AppDataStoreImplCopyWith<$Res>
       __$$AppDataStoreImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<AbstractImage>? images, int? selectedImageIndex});
+  $Res call({List<AbstractImage>? images, AbstractImage? selectedImage});
 }
 
 /// @nodoc
@@ -90,26 +90,28 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? images = freezed,
-    Object? selectedImageIndex = freezed,
+    Object? selectedImage = freezed,
   }) {
     return _then(_$AppDataStoreImpl(
       images: freezed == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
               as List<AbstractImage>?,
-      selectedImageIndex: freezed == selectedImageIndex
-          ? _value.selectedImageIndex
-          : selectedImageIndex // ignore: cast_nullable_to_non_nullable
-              as int?,
+      selectedImage: freezed == selectedImage
+          ? _value.selectedImage
+          : selectedImage // ignore: cast_nullable_to_non_nullable
+              as AbstractImage?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(
+    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class _$AppDataStoreImpl implements _AppDataStore {
   const _$AppDataStoreImpl(
-      {final List<AbstractImage>? images, this.selectedImageIndex})
+      {final List<AbstractImage>? images, this.selectedImage})
       : _images = images;
 
   factory _$AppDataStoreImpl.fromJson(Map<String, dynamic> json) =>
@@ -126,11 +128,11 @@ class _$AppDataStoreImpl implements _AppDataStore {
   }
 
   @override
-  final int? selectedImageIndex;
+  final AbstractImage? selectedImage;
 
   @override
   String toString() {
-    return 'AppDataStore(images: $images, selectedImageIndex: $selectedImageIndex)';
+    return 'AppDataStore(images: $images, selectedImage: $selectedImage)';
   }
 
   @override
@@ -139,14 +141,14 @@ class _$AppDataStoreImpl implements _AppDataStore {
         (other.runtimeType == runtimeType &&
             other is _$AppDataStoreImpl &&
             const DeepCollectionEquality().equals(other._images, _images) &&
-            (identical(other.selectedImageIndex, selectedImageIndex) ||
-                other.selectedImageIndex == selectedImageIndex));
+            (identical(other.selectedImage, selectedImage) ||
+                other.selectedImage == selectedImage));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_images), selectedImageIndex);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_images), selectedImage);
 
   @JsonKey(ignore: true)
   @override
@@ -165,7 +167,7 @@ class _$AppDataStoreImpl implements _AppDataStore {
 abstract class _AppDataStore implements AppDataStore {
   const factory _AppDataStore(
       {final List<AbstractImage>? images,
-      final int? selectedImageIndex}) = _$AppDataStoreImpl;
+      final AbstractImage? selectedImage}) = _$AppDataStoreImpl;
 
   factory _AppDataStore.fromJson(Map<String, dynamic> json) =
       _$AppDataStoreImpl.fromJson;
@@ -173,7 +175,7 @@ abstract class _AppDataStore implements AppDataStore {
   @override
   List<AbstractImage>? get images;
   @override
-  int? get selectedImageIndex;
+  AbstractImage? get selectedImage;
   @override
   @JsonKey(ignore: true)
   _$$AppDataStoreImplCopyWith<_$AppDataStoreImpl> get copyWith =>

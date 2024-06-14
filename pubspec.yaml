@@ -19,6 +19,8 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.9.0
   cross_file: ^0.3.4+1
+  dio: ^5.4.3+1
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:

@@ -7,9 +7,11 @@ part 'app_data_store.g.dart';
 
 @freezed
 class AppDataStore with _$AppDataStore {
+
+  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   const factory AppDataStore({
     List<AbstractImage>? images,
-    int? selectedImageIndex,
+    AbstractImage? selectedImage,
   }) = _AppDataStore;
 
   factory AppDataStore.fromJson(Map<String, dynamic> json) => _$AppDataStoreFromJson(json);
