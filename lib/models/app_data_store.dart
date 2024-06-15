@@ -13,6 +13,7 @@ class AppDataStore with _$AppDataStore {
   const factory AppDataStore({
     AbstractImage? selectedImage,
     @Default(FunctionsEnum.functions) FunctionsEnum function,
+    @Default(LeftMenuEnum.images) LeftMenuEnum leftMenu,
   }) = _AppDataStore;
 
   factory AppDataStore.fromJson(Map<String, dynamic> json) => _$AppDataStoreFromJson(json);

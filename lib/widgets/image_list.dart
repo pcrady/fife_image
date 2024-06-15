@@ -1,5 +1,4 @@
 import 'package:fife_image/lib/app_logger.dart';
-import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
 import 'package:fife_image/widgets/image_thumbnail_card.dart';
 import 'package:flutter/material.dart';

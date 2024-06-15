@@ -23,13 +23,13 @@ class FifeImageAppBar extends ConsumerStatefulWidget implements PreferredSizeWid
 }
 
 class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
-  late List<String> dropdownValues;
-  late String dropdownValue;
+  late List<FunctionsEnum> dropdownValues;
+  late FunctionsEnum dropdownValue;
 
   @override
   void initState() {
-    dropdownValues = FunctionsEnum.values.map((element) => element.toName()).toList();
-    dropdownValue = dropdownValues.first;
+    dropdownValues = FunctionsEnum.values;
+    dropdownValue = FunctionsEnum.values.first;
     super.initState();
   }
 
@@ -62,7 +62,7 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
         ),
       ),
       actions: [
-        DropdownButton<String>(
+        DropdownButton<FunctionsEnum>(
           value: dropdownValue,
           icon: const Icon(
             Icons.keyboard_arrow_down,
@@ -70,14 +70,14 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
           ),
           style: const TextStyle(color: Colors.black),
           underline: Container(),
-          onChanged: (String? value) {
-            setState(() {
-              dropdownValue = value!;
-            });
+          onChanged: (FunctionsEnum? value) {
+            setState(() => dropdownValue = value!);
+            ref.read(appDataProvider.notifier).setFunction(function: value!);
           },
-          items: dropdownValues.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
+          items: dropdownValues.map<DropdownMenuItem<FunctionsEnum>>((FunctionsEnum function) {
+            final value = function.toName();
+            return DropdownMenuItem<FunctionsEnum>(
+              value: function,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -101,48 +101,78 @@ class AppBarBottom extends ConsumerStatefulWidget implements PreferredSizeWidget
   const AppBarBottom({super.key});
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(40);
 
   @override
   ConsumerState<AppBarBottom> createState() => _AppBarBottomState();
 }
 
 class _AppBarBottomState extends ConsumerState<AppBarBottom> {
-  static final _baseButtons = [const Text('Images')];
-  static final _baseSelectedButtons = [true];
-
-   List<Widget> _buttons = _baseButtons;
-   List<bool> _selectedButtons = _baseSelectedButtons;
+  Set<String> _segmentedButtonSelection = {'Images'};
 
   @override
   Widget build(BuildContext context) {
-    final appData = ref.read(appDataProvider);
+    final appData = ref.watch(appDataProvider);
 
-    _buttons = List.from(_baseButtons);
-    _selectedButtons = List.from(_baseSelectedButtons);
-
-    _buttons.add(Text(appData.function.toName()));
-    _selectedButtons.add(false);
-
-    return ToggleButtons(
-      onPressed: (int index) {
-        setState(() {
-          for (int i = 0; i < _selectedButtons.length; i++) {
-            _selectedButtons[i] = i == index;
-          }
-        });
-      },
-      borderRadius: const BorderRadius.all(Radius.circular(8)),
-      selectedBorderColor: Colors.red[700],
-      selectedColor: Colors.white,
-      fillColor: Colors.red[200],
-      color: Colors.red[400],
-      constraints: const BoxConstraints(
-        minHeight: 40.0,
-        minWidth: 80.0,
-      ),
-      isSelected: _selectedButtons,
-      children: _buttons,
-    );
+    if (appData.function == FunctionsEnum.functions) {
+      return Container();
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(
+          left: 8.0,
+          bottom: 8.0,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: SegmentedButton<String>(
+                  showSelectedIcon: true,
+                  selected: _segmentedButtonSelection,
+                  onSelectionChanged: (Set<String> newSelection) {
+                    setState(() {
+                      _segmentedButtonSelection = newSelection;
+                    });
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+                      (Set<WidgetState> states) {
+                        if (states.contains(WidgetState.selected)) {
+                          return Colors.lightBlueAccent; // Lighter blue for selected button
+                        }
+                        return Colors.blue; // Blue for unselected button
+                      },
+                    ),
+                    foregroundColor: WidgetStateProperty.all<Color>(Colors.black), // Text color
+                  ),
+                  segments: [
+                    const ButtonSegment<String>(
+                      value: 'Images',
+                      label: Text('Images'),
+                    ),
+                    ButtonSegment(
+                      value: 'Function Settings',
+                      label: Text(
+                        '${appData.function.toName()} Settings',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                height: 30,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

@@ -22,6 +22,7 @@ AppDataStore _$AppDataStoreFromJson(Map<String, dynamic> json) {
 mixin _$AppDataStore {
   AbstractImage? get selectedImage => throw _privateConstructorUsedError;
   FunctionsEnum get function => throw _privateConstructorUsedError;
+  LeftMenuEnum get leftMenu => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,10 @@ abstract class $AppDataStoreCopyWith<$Res> {
           AppDataStore value, $Res Function(AppDataStore) then) =
       _$AppDataStoreCopyWithImpl<$Res, AppDataStore>;
   @useResult
-  $Res call({AbstractImage? selectedImage, FunctionsEnum function});
+  $Res call(
+      {AbstractImage? selectedImage,
+      FunctionsEnum function,
+      LeftMenuEnum leftMenu});
 }
 
 /// @nodoc
@@ -53,6 +57,7 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
   $Res call({
     Object? selectedImage = freezed,
     Object? function = null,
+    Object? leftMenu = null,
   }) {
     return _then(_value.copyWith(
       selectedImage: freezed == selectedImage
@@ -63,6 +68,10 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
           ? _value.function
           : function // ignore: cast_nullable_to_non_nullable
               as FunctionsEnum,
+      leftMenu: null == leftMenu
+          ? _value.leftMenu
+          : leftMenu // ignore: cast_nullable_to_non_nullable
+              as LeftMenuEnum,
     ) as $Val);
   }
 }
@@ -75,7 +84,10 @@ abstract class _$$AppDataStoreImplCopyWith<$Res>
       __$$AppDataStoreImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({AbstractImage? selectedImage, FunctionsEnum function});
+  $Res call(
+      {AbstractImage? selectedImage,
+      FunctionsEnum function,
+      LeftMenuEnum leftMenu});
 }
 
 /// @nodoc
@@ -91,6 +103,7 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
   $Res call({
     Object? selectedImage = freezed,
     Object? function = null,
+    Object? leftMenu = null,
   }) {
     return _then(_$AppDataStoreImpl(
       selectedImage: freezed == selectedImage
@@ -101,6 +114,10 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
           ? _value.function
           : function // ignore: cast_nullable_to_non_nullable
               as FunctionsEnum,
+      leftMenu: null == leftMenu
+          ? _value.leftMenu
+          : leftMenu // ignore: cast_nullable_to_non_nullable
+              as LeftMenuEnum,
     ));
   }
 }
@@ -111,7 +128,9 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class _$AppDataStoreImpl implements _AppDataStore {
   const _$AppDataStoreImpl(
-      {this.selectedImage, this.function = FunctionsEnum.functions});
+      {this.selectedImage,
+      this.function = FunctionsEnum.functions,
+      this.leftMenu = LeftMenuEnum.images});
 
   factory _$AppDataStoreImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppDataStoreImplFromJson(json);
@@ -121,10 +140,13 @@ class _$AppDataStoreImpl implements _AppDataStore {
   @override
   @JsonKey()
   final FunctionsEnum function;
+  @override
+  @JsonKey()
+  final LeftMenuEnum leftMenu;
 
   @override
   String toString() {
-    return 'AppDataStore(selectedImage: $selectedImage, function: $function)';
+    return 'AppDataStore(selectedImage: $selectedImage, function: $function, leftMenu: $leftMenu)';
   }
 
   @override
@@ -135,12 +157,15 @@ class _$AppDataStoreImpl implements _AppDataStore {
             (identical(other.selectedImage, selectedImage) ||
                 other.selectedImage == selectedImage) &&
             (identical(other.function, function) ||
-                other.function == function));
+                other.function == function) &&
+            (identical(other.leftMenu, leftMenu) ||
+                other.leftMenu == leftMenu));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, selectedImage, function);
+  int get hashCode =>
+      Object.hash(runtimeType, selectedImage, function, leftMenu);
 
   @JsonKey(ignore: true)
   @override
@@ -159,7 +184,8 @@ class _$AppDataStoreImpl implements _AppDataStore {
 abstract class _AppDataStore implements AppDataStore {
   const factory _AppDataStore(
       {final AbstractImage? selectedImage,
-      final FunctionsEnum function}) = _$AppDataStoreImpl;
+      final FunctionsEnum function,
+      final LeftMenuEnum leftMenu}) = _$AppDataStoreImpl;
 
   factory _AppDataStore.fromJson(Map<String, dynamic> json) =
       _$AppDataStoreImpl.fromJson;
@@ -168,6 +194,8 @@ abstract class _AppDataStore implements AppDataStore {
   AbstractImage? get selectedImage;
   @override
   FunctionsEnum get function;
+  @override
+  LeftMenuEnum get leftMenu;
   @override
   @JsonKey(ignore: true)
   _$$AppDataStoreImplCopyWith<_$AppDataStoreImpl> get copyWith =>

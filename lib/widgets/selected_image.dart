@@ -14,12 +14,14 @@ class SelectedImage extends ConsumerWidget {
     if (image != null) {
       return Column(
         children: [
-          SelectedImagePaint(url: image.url),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: SelectedImagePaint(url: image.url),
+          ),
         ],
       );
     } else {
       return Container();
     }
-
   }
 }

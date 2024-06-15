@@ -12,3 +12,8 @@ extension FunctionsEnumExtension on FunctionsEnum {
     }
   }
 }
+
+enum LeftMenuEnum {
+  images,
+  functionSettings,
+}
