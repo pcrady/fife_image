@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
@@ -34,7 +35,7 @@ class ImageCard extends ConsumerWidget {
                 child: Text(
                   image.name,
                   style: const TextStyle(
-                      color: Colors.white,
+                    color: Colors.white,
                   ),
                 ),
               )
@@ -56,6 +57,9 @@ class _NetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(url);
+    return CachedNetworkImage(
+      imageUrl: url,
+      placeholder: (context, url) => const CircularProgressIndicator(),
+    );
   }
 }
