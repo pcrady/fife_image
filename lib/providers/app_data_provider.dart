@@ -24,7 +24,7 @@ class AppData extends _$AppData {
     state = state.copyWith(selectedImage: image);
   }
 
-  void leftMenuSetting({required LeftMenuEnum leftMenu}) async {
+  void setMenuSetting({required LeftMenuEnum leftMenu}) async {
     state = state.copyWith(leftMenu: leftMenu);
   }
 }

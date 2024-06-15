@@ -134,9 +134,13 @@ class _AppBarBottomState extends ConsumerState<AppBarBottom> {
                   showSelectedIcon: true,
                   selected: _segmentedButtonSelection,
                   onSelectionChanged: (Set<String> newSelection) {
-                    setState(() {
-                      _segmentedButtonSelection = newSelection;
-                    });
+                    setState(() => _segmentedButtonSelection = newSelection);
+                    final appData = ref.read(appDataProvider.notifier);
+                    if (newSelection.first == 'Images') {
+                      appData.setMenuSetting(leftMenu: LeftMenuEnum.images);
+                    } else if (newSelection.first == 'Function Settings') {
+                      appData.setMenuSetting(leftMenu: LeftMenuEnum.functionSettings);
+                    }
                   },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.resolveWith<Color?>(
