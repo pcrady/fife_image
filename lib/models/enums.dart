@@ -17,3 +17,8 @@ enum LeftMenuEnum {
   images,
   functionSettings,
 }
+
+enum ConvexHullStep {
+  first,
+  second,
+}

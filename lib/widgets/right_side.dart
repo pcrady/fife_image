@@ -1,3 +1,4 @@
+import 'package:fife_image/widgets/function_controls.dart';
 import 'package:fife_image/widgets/selected_image.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,11 @@ class RightSide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SelectedImage();
+    return const Column(
+      children: [
+        SelectedImage(),
+        FunctionControls(),
+      ],
+    );
   }
 }
