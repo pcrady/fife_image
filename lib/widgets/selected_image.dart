@@ -9,10 +9,11 @@ class SelectedImage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appData = ref.watch(appDataProvider);
-
     final image = appData.selectedImage;
+
     if (image != null) {
       return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Card(
             clipBehavior: Clip.antiAlias,

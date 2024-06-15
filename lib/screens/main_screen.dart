@@ -12,13 +12,13 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: FifeImageAppBar(
+    return Scaffold(
+      appBar: const FifeImageAppBar(
         bottom: AppBarBottom(),
       ),
       body: Row(
         children: [
-          Expanded(
+          const Expanded(
             child: Padding(
               padding: EdgeInsets.all(8.0),
               child: LeftSide(),
@@ -26,8 +26,12 @@ class MainScreen extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: RightSide(),
+              padding: const EdgeInsets.all(8.0),
+              child: ListView(
+                children: const [
+                  RightSide(),
+                ],
+              ),
             ),
           )
         ],
