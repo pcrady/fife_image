@@ -1,11 +1,12 @@
+import 'package:fife_image/models/abstract_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SelectedImagePaint extends StatefulWidget {
-  final String url;
+  final AbstractImage image;
 
   const SelectedImagePaint({
-    required this.url,
+    required this.image,
     super.key,
   });
 
@@ -64,7 +65,7 @@ class _SelectedImagePaintState extends State<SelectedImagePaint> {
               width: constraints.heightConstraints().maxHeight,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(widget.url),
+                  image: NetworkImage(widget.image.url),
                   fit: BoxFit.cover,
                 ),
               ),

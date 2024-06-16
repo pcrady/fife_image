@@ -17,7 +17,7 @@ class SelectedImage extends ConsumerWidget {
         children: [
           Card(
             clipBehavior: Clip.antiAlias,
-            child: SelectedImagePaint(url: image.url),
+            child: SelectedImagePaint(image: image),
           ),
         ],
       );

@@ -19,6 +19,10 @@ class AbstractImage {
   String get name => basename(path ?? '').split('.').first;
   String get baseName => name.split('_').first;
 
+  List<List<double>>? get selectionRegionPython {
+    return null;
+  }
+
   factory AbstractImage.fromJson(Map<String, dynamic> json) => AbstractImage(
         path: json['path'] as String?,
       );

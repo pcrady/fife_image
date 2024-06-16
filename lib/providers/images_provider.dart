@@ -64,15 +64,15 @@ class Images extends _$Images {
 
   Future<void> backgroundSelect() async {
     final appData = ref.read(appDataProvider);
-    final imagePath = appData.selectedImage?.path;
-    if (imagePath == null) return;
-    final convexHullState = appData.convexHullState;
+    final image = appData.selectedImage;
+    if (image?.path == null) return;
+    if (image?.selectionRegionPython == null) return;
 
     await _dio.post(
       '$server/background_select',
       data: {
-        'image_path': imagePath,
-
+        'image_path': image!.path!,
+        'selection_region': image.selectionRegionPython!,
       },
     );
     ref.invalidateSelf();
