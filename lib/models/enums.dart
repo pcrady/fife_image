@@ -20,6 +20,10 @@ enum LeftMenuEnum {
 }
 
 enum ConvexHullStep {
-  first,
-  second,
+  channel1BackgroundSelect,
+  channel2BackgroundSelect,
+  channel3BackgroundSelect,
+  channel4BackgroundSelect,
+  isletCropping,
+  complete,
 }

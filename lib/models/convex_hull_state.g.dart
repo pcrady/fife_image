@@ -54,6 +54,10 @@ Map<String, dynamic> _$$ConvexHullStateImplToJson(
 }
 
 const _$ConvexHullStepEnumMap = {
-  ConvexHullStep.first: 'first',
-  ConvexHullStep.second: 'second',
+  ConvexHullStep.channel1BackgroundSelect: 'channel1BackgroundSelect',
+  ConvexHullStep.channel2BackgroundSelect: 'channel2BackgroundSelect',
+  ConvexHullStep.channel3BackgroundSelect: 'channel3BackgroundSelect',
+  ConvexHullStep.channel4BackgroundSelect: 'channel4BackgroundSelect',
+  ConvexHullStep.isletCropping: 'isletCropping',
+  ConvexHullStep.complete: 'complete',
 };

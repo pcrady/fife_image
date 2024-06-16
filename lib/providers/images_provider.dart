@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/models/abstract_image.dart';
+import 'package:fife_image/models/convex_hull_state.dart';
+import 'package:fife_image/models/enums.dart';
+import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // flutter pub run build_runner build
@@ -55,6 +58,34 @@ class Images extends _$Images {
     await _dio.post(
       '$server/delete',
       data: {'filename': image.name},
+    );
+    ref.invalidateSelf();
+  }
+
+  Future<void> backgroundSelect() async {
+    final appData = ref.read(appDataProvider);
+    final imageName = appData.selectedImage?.path;
+    if (imageName == null) return;
+    final convexHullState = appData.convexHullState;
+    late ConvexHullState newConvexHullState;
+
+    if (convexHullState.step == ConvexHullStep.channel1BackgroundSelect) {
+       newConvexHullState = convexHullState.copyWith(step: ConvexHullStep.channel2BackgroundSelect);
+    } else if (convexHullState.step == ConvexHullStep.channel2BackgroundSelect) {
+       newConvexHullState = convexHullState.copyWith(step: ConvexHullStep.channel3BackgroundSelect);
+    } else if (convexHullState.step == ConvexHullStep.channel3BackgroundSelect) {
+      newConvexHullState = convexHullState.copyWith(step: ConvexHullStep.channel4BackgroundSelect);
+    } else if (convexHullState.step == ConvexHullStep.channel4BackgroundSelect) {
+      newConvexHullState = convexHullState.copyWith(step: ConvexHullStep.isletCropping);
+    } else if (convexHullState.step == ConvexHullStep.isletCropping) {
+      newConvexHullState = convexHullState.copyWith(step: ConvexHullStep.complete);
+    } else {
+      return;
+    }
+
+    await _dio.post(
+      '$server/background_select',
+      data: {},
     );
     ref.invalidateSelf();
   }
