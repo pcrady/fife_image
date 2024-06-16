@@ -2,6 +2,7 @@ import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/convex_hull_image_provider.dart';
+import 'package:fife_image/providers/images_provider.dart';
 import 'package:fife_image/widgets/image_thumbnail_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,59 +23,61 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullResults> {
     final width = MediaQuery.of(context).size.width;
     final cardSize = (width / 2.0 / 6.0) - 16.0;
 
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(width: cardSize),
-            SizedBox(
-              width: cardSize,
-              child: Text(
-                convexHullState.channel1ProteinName,
-                textAlign: TextAlign.center,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(width: cardSize),
+              SizedBox(
+                width: cardSize,
+                child: Text(
+                  convexHullState.channel1ProteinName,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            SizedBox(
-              width: cardSize,
-              child: Text(
-                convexHullState.channel2ProteinName,
-                textAlign: TextAlign.center,
+              SizedBox(
+                width: cardSize,
+                child: Text(
+                  convexHullState.channel2ProteinName,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            SizedBox(
-              width: cardSize,
-              child: Text(
-                convexHullState.channel3ProteinName,
-                textAlign: TextAlign.center,
+              SizedBox(
+                width: cardSize,
+                child: Text(
+                  convexHullState.channel3ProteinName,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            SizedBox(
-              width: cardSize,
-              child: Text(
-                convexHullState.channel4ProteinName,
-                textAlign: TextAlign.center,
+              SizedBox(
+                width: cardSize,
+                child: Text(
+                  convexHullState.channel4ProteinName,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            SizedBox(
-              width: cardSize,
-              child: const Text(
-                'Overlay',
-                textAlign: TextAlign.center,
+              SizedBox(
+                width: cardSize,
+                child: const Text(
+                  'Overlay',
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-          ],
-        ),
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: convexHullImages.length,
-          itemBuilder: (context, index) {
-            return _ImageSetWidget(
-              imageSet: convexHullImages[index],
-            );
-          },
-        ),
-      ],
+            ],
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: convexHullImages.length,
+            itemBuilder: (context, index) {
+              return _ImageSetWidget(
+                imageSet: convexHullImages[index],
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -106,6 +109,7 @@ class _ImageSetWidget extends ConsumerWidget {
               final convexHullState = appData.convexHullState;
               final newState = convexHullState.copyWith(activeImageSetBaseName: imageSet.baseName);
               ref.read(appDataProvider.notifier).setConvexHullState(convexHullState: newState);
+              ref.read(appDataProvider.notifier).selectImage(image: imageSet.channel1);
             },
             child: Text(
               imageSet.baseName ?? '',
