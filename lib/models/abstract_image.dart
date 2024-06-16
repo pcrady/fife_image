@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 class AbstractImage {
   final String? path;
   final PlatformFile? file;
-  final List<Offset>? selectionRegion;
+  List<Offset>? selectionRegion;
 
   AbstractImage({
     this.path,
@@ -20,6 +20,7 @@ class AbstractImage {
   String get baseName => name.split('_').first;
 
   List<List<double>>? get selectionRegionPython {
+    // TODO here
     return null;
   }
 

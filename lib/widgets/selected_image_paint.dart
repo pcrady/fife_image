@@ -1,8 +1,11 @@
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
+import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SelectedImagePaint extends StatefulWidget {
+class SelectedImagePaint extends ConsumerStatefulWidget {
   final AbstractImage image;
 
   const SelectedImagePaint({
@@ -11,10 +14,10 @@ class SelectedImagePaint extends StatefulWidget {
   });
 
   @override
-  State<SelectedImagePaint> createState() => _SelectedImagePaintState();
+  ConsumerState<SelectedImagePaint> createState() => _SelectedImagePaintState();
 }
 
-class _SelectedImagePaintState extends State<SelectedImagePaint> {
+class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
   double initialWidth = 1.0;
   CustomRegionSelectionPainter painter = CustomRegionSelectionPainter();
   void onEnter(PointerEnterEvent event) {}
@@ -30,12 +33,21 @@ class _SelectedImagePaintState extends State<SelectedImagePaint> {
 
   void onPanEnd(DragEndDetails details) {
     painter.setUnscaledPoints();
+    widget.image.selectionRegion = List.from(painter.points);
   }
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       initialWidth = MediaQuery.of(context).size.width;
+    });
+
+    ref.listenManual(appDataProvider, (previous, next) {
+      if (next.selectedImage?.selectionRegion != null) {
+        painter.setInitialPoints(next.selectedImage!.selectionRegion!);
+      } else {
+        painter.clearPoints();
+      }
     });
     super.initState();
   }
@@ -83,6 +95,10 @@ class _SelectedImagePaintState extends State<SelectedImagePaint> {
 class CustomRegionSelectionPainter extends CustomPainter {
   List<Offset> points = [];
   List<Offset> unscaledPoints = [];
+
+  void setInitialPoints(List<Offset> initialPoints) {
+    points = initialPoints;
+  }
 
   void addPoint(Offset point) {
     points.add(point);
