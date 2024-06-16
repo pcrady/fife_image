@@ -18,12 +18,3 @@ enum LeftMenuEnum {
   functionSettings,
   functionResults,
 }
-
-enum ConvexHullStep {
-  channel1BackgroundSelect,
-  channel2BackgroundSelect,
-  channel3BackgroundSelect,
-  channel4BackgroundSelect,
-  isletCropping,
-  complete,
-}

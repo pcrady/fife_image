@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:fife_image/constants.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
@@ -5,10 +7,12 @@ import 'package:path/path.dart';
 class AbstractImage {
   final String? path;
   final PlatformFile? file;
+  final List<Offset>? selectionRegion;
 
   AbstractImage({
     this.path,
     this.file,
+    this.selectionRegion,
   });
 
   String get url => server + (path ?? '');

@@ -20,7 +20,6 @@ ConvexHullState _$ConvexHullStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ConvexHullState {
-  ConvexHullStep? get step => throw _privateConstructorUsedError;
   String? get activeImageSetBaseName => throw _privateConstructorUsedError;
   String get channel1SearchPattern => throw _privateConstructorUsedError;
   String get channel2SearchPattern => throw _privateConstructorUsedError;
@@ -45,8 +44,7 @@ abstract class $ConvexHullStateCopyWith<$Res> {
       _$ConvexHullStateCopyWithImpl<$Res, ConvexHullState>;
   @useResult
   $Res call(
-      {ConvexHullStep? step,
-      String? activeImageSetBaseName,
+      {String? activeImageSetBaseName,
       String channel1SearchPattern,
       String channel2SearchPattern,
       String channel3SearchPattern,
@@ -71,7 +69,6 @@ class _$ConvexHullStateCopyWithImpl<$Res, $Val extends ConvexHullState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? step = freezed,
     Object? activeImageSetBaseName = freezed,
     Object? channel1SearchPattern = null,
     Object? channel2SearchPattern = null,
@@ -84,10 +81,6 @@ class _$ConvexHullStateCopyWithImpl<$Res, $Val extends ConvexHullState>
     Object? channel4ProteinName = null,
   }) {
     return _then(_value.copyWith(
-      step: freezed == step
-          ? _value.step
-          : step // ignore: cast_nullable_to_non_nullable
-              as ConvexHullStep?,
       activeImageSetBaseName: freezed == activeImageSetBaseName
           ? _value.activeImageSetBaseName
           : activeImageSetBaseName // ignore: cast_nullable_to_non_nullable
@@ -141,8 +134,7 @@ abstract class _$$ConvexHullStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {ConvexHullStep? step,
-      String? activeImageSetBaseName,
+      {String? activeImageSetBaseName,
       String channel1SearchPattern,
       String channel2SearchPattern,
       String channel3SearchPattern,
@@ -165,7 +157,6 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? step = freezed,
     Object? activeImageSetBaseName = freezed,
     Object? channel1SearchPattern = null,
     Object? channel2SearchPattern = null,
@@ -178,10 +169,6 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
     Object? channel4ProteinName = null,
   }) {
     return _then(_$ConvexHullStateImpl(
-      step: freezed == step
-          ? _value.step
-          : step // ignore: cast_nullable_to_non_nullable
-              as ConvexHullStep?,
       activeImageSetBaseName: freezed == activeImageSetBaseName
           ? _value.activeImageSetBaseName
           : activeImageSetBaseName // ignore: cast_nullable_to_non_nullable
@@ -232,8 +219,7 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class _$ConvexHullStateImpl implements _ConvexHullState {
   const _$ConvexHullStateImpl(
-      {this.step,
-      this.activeImageSetBaseName,
+      {this.activeImageSetBaseName,
       this.channel1SearchPattern = 'ch01',
       this.channel2SearchPattern = 'ch02',
       this.channel3SearchPattern = 'ch03',
@@ -247,8 +233,6 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
   factory _$ConvexHullStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullStateImplFromJson(json);
 
-  @override
-  final ConvexHullStep? step;
   @override
   final String? activeImageSetBaseName;
   @override
@@ -281,7 +265,7 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
 
   @override
   String toString() {
-    return 'ConvexHullState(step: $step, activeImageSetBaseName: $activeImageSetBaseName, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName)';
+    return 'ConvexHullState(activeImageSetBaseName: $activeImageSetBaseName, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName)';
   }
 
   @override
@@ -289,7 +273,6 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ConvexHullStateImpl &&
-            (identical(other.step, step) || other.step == step) &&
             (identical(other.activeImageSetBaseName, activeImageSetBaseName) ||
                 other.activeImageSetBaseName == activeImageSetBaseName) &&
             (identical(other.channel1SearchPattern, channel1SearchPattern) ||
@@ -316,7 +299,6 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      step,
       activeImageSetBaseName,
       channel1SearchPattern,
       channel2SearchPattern,
@@ -345,8 +327,7 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
 
 abstract class _ConvexHullState implements ConvexHullState {
   const factory _ConvexHullState(
-      {final ConvexHullStep? step,
-      final String? activeImageSetBaseName,
+      {final String? activeImageSetBaseName,
       final String channel1SearchPattern,
       final String channel2SearchPattern,
       final String channel3SearchPattern,
@@ -360,8 +341,6 @@ abstract class _ConvexHullState implements ConvexHullState {
   factory _ConvexHullState.fromJson(Map<String, dynamic> json) =
       _$ConvexHullStateImpl.fromJson;
 
-  @override
-  ConvexHullStep? get step;
   @override
   String? get activeImageSetBaseName;
   @override

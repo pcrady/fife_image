@@ -1,5 +1,4 @@
 import 'package:fife_image/models/convex_hull_state.dart';
-import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,17 +19,10 @@ class _ConvexHullControlsState extends ConsumerState<ConvexHullControls> {
     if (appData.selectedImage == null) {
       return Container();
     }
-    if (convexHullState.step != ConvexHullStep.isletCropping) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: _BackgroundSelect(convexHullState: convexHullState),
-      );
-    } else {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Container(),
-      );
-    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: _BackgroundSelect(convexHullState: convexHullState),
+    );
   }
 }
 
@@ -64,9 +56,7 @@ class _BackgroundSelect extends StatelessWidget {
             const SizedBox(width: 8.0),
             Expanded(
               child: ElevatedButton(
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 child: Text('Next'),
               ),
             )

@@ -10,7 +10,6 @@ class ConvexHullState with _$ConvexHullState {
 
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   const factory ConvexHullState({
-    ConvexHullStep? step,
     String? activeImageSetBaseName,
     @Default('ch01') String channel1SearchPattern,
     @Default('ch02') String channel2SearchPattern,

@@ -101,20 +101,9 @@ class _ImageSetWidget extends ConsumerWidget {
       children: [
         SizedBox(
           width: cardSize,
-          child: ElevatedButton(
-            style: imageSet.baseName == appData.convexHullState.activeImageSetBaseName ? ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-            ) : null,
-            onPressed: () {
-              final convexHullState = appData.convexHullState;
-              final newState = convexHullState.copyWith(activeImageSetBaseName: imageSet.baseName);
-              ref.read(appDataProvider.notifier).setConvexHullState(convexHullState: newState);
-              ref.read(appDataProvider.notifier).selectImage(image: imageSet.channel1);
-            },
-            child: Text(
-              imageSet.baseName ?? '',
-              style: const TextStyle(color: Colors.black),
-            ),
+          child: Text(
+            imageSet.baseName ?? '',
+            style: const TextStyle(color: Colors.black),
           ),
         ),
         imageSet.channel1 != null
