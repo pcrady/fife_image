@@ -16,6 +16,7 @@ extension FunctionsEnumExtension on FunctionsEnum {
 enum LeftMenuEnum {
   images,
   functionSettings,
+  functionResults,
 }
 
 enum ConvexHullStep {

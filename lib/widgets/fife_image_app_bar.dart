@@ -140,6 +140,8 @@ class _AppBarBottomState extends ConsumerState<AppBarBottom> {
                       appData.setMenuSetting(leftMenu: LeftMenuEnum.images);
                     } else if (newSelection.first == 'Function Settings') {
                       appData.setMenuSetting(leftMenu: LeftMenuEnum.functionSettings);
+                    } else if (newSelection.first == 'Function Results') {
+                      appData.setMenuSetting(leftMenu: LeftMenuEnum.functionResults);
                     }
                   },
                   style: ButtonStyle(
@@ -162,6 +164,12 @@ class _AppBarBottomState extends ConsumerState<AppBarBottom> {
                       value: 'Function Settings',
                       label: Text(
                         '${appData.function.toName()} Settings',
+                      ),
+                    ),
+                    ButtonSegment(
+                      value: 'Function Results',
+                      label: Text(
+                        '${appData.function.toName()} Results',
                       ),
                     ),
                   ],

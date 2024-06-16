@@ -17,7 +17,17 @@ class AppData extends _$AppData {
   }
 
   Future<void> setFunction({required FunctionsEnum function}) async {
-    state = state.copyWith(function: function);
+    if (function == FunctionsEnum.functions) {
+      state = state.copyWith(
+        function: function,
+        leftMenu: LeftMenuEnum.images,
+      );
+    } else {
+      state = state.copyWith(
+        function: function,
+        leftMenu: LeftMenuEnum.functionSettings,
+      );
+    }
   }
 
   void selectImage({required AbstractImage? image}) async {

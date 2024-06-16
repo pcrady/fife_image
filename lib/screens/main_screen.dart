@@ -17,6 +17,7 @@ class MainScreen extends StatelessWidget {
         bottom: AppBarBottom(),
       ),
       body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Expanded(
             child: Padding(
