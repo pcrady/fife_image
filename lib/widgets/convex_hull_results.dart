@@ -79,7 +79,7 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullResults> {
   }
 }
 
-class _ImageSetWidget extends StatelessWidget {
+class _ImageSetWidget extends ConsumerWidget {
   final ImageSet imageSet;
 
   const _ImageSetWidget({
@@ -88,18 +88,28 @@ class _ImageSetWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final width = MediaQuery.of(context).size.width;
     final cardSize = (width / 2.0 / 6.0) - 16.0;
+    final appData = ref.read(appDataProvider);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         SizedBox(
           width: cardSize,
           child: ElevatedButton(
-            onPressed: () {},
+            style: imageSet.baseName == appData.convexHullState.activeImageSetBaseName ? ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+            ) : null,
+            onPressed: () {
+              final convexHullState = appData.convexHullState;
+              final newState = convexHullState.copyWith(activeImageSetBaseName: imageSet.baseName);
+              ref.read(appDataProvider.notifier).setConvexHullState(convexHullState: newState);
+            },
             child: Text(
               imageSet.baseName ?? '',
+              style: const TextStyle(color: Colors.black),
             ),
           ),
         ),

@@ -10,6 +10,7 @@ _$ConvexHullStateImpl _$$ConvexHullStateImplFromJson(
         Map<String, dynamic> json) =>
     _$ConvexHullStateImpl(
       step: $enumDecodeNullable(_$ConvexHullStepEnumMap, json['step']),
+      activeImageSetBaseName: json['active_image_set_base_name'] as String?,
       channel1SearchPattern:
           json['channel1_search_pattern'] as String? ?? 'ch01',
       channel2SearchPattern:
@@ -39,6 +40,7 @@ Map<String, dynamic> _$$ConvexHullStateImplToJson(
   }
 
   writeNotNull('step', _$ConvexHullStepEnumMap[instance.step]);
+  writeNotNull('active_image_set_base_name', instance.activeImageSetBaseName);
   val['channel1_search_pattern'] = instance.channel1SearchPattern;
   val['channel2_search_pattern'] = instance.channel2SearchPattern;
   val['channel3_search_pattern'] = instance.channel3SearchPattern;
