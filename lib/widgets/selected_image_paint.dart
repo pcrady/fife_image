@@ -19,6 +19,9 @@ class SelectedImagePaint extends ConsumerStatefulWidget {
 
 class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
   double initialWidth = 1.0;
+  double currentWidth = 1.0;
+  double currentHeight = 1.0;
+
   CustomRegionSelectionPainter painter = CustomRegionSelectionPainter();
   void onEnter(PointerEnterEvent event) {}
   void onExit(PointerExitEvent event) {}
@@ -31,9 +34,41 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
     setState(() => painter.addPoint(details.localPosition));
   }
 
-  void onPanEnd(DragEndDetails details) {
+  List<Offset> computeRelativePoints({
+    required List<Offset> absolutePoints,
+  }) {
+    List<Offset> relativePoints = [];
+    for (Offset absolutePoint in absolutePoints) {
+      final relativePoint = Offset(
+        absolutePoint.dx / currentWidth,
+        absolutePoint.dy / currentHeight,
+      );
+      relativePoints.add(relativePoint);
+    }
+    return relativePoints;
+  }
+
+  List<Offset> computeAbsolutePoints({
+    required List<Offset> relativePoints,
+  }) {
+    List<Offset> absolutePoints = [];
+    for (Offset relativePoint in relativePoints) {
+      final absolutePoint = Offset(
+        relativePoint.dx * currentWidth,
+        relativePoint.dy * currentHeight,
+      );
+      absolutePoints.add(absolutePoint);
+    }
+    return absolutePoints;
+  }
+
+  void onPanEnd(
+    DragEndDetails details,
+  ) {
     painter.setUnscaledPoints();
-    widget.image.selectionRegion = List.from(painter.points);
+    widget.image.relativeSelectionCoordinates = computeRelativePoints(
+      absolutePoints: painter.points,
+    );
   }
 
   @override
@@ -43,8 +78,10 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
     });
 
     ref.listenManual(appDataProvider, (previous, next) {
-      if (next.selectedImage?.selectionRegion != null) {
-        painter.setInitialPoints(next.selectedImage!.selectionRegion!);
+      final relativePoints = next.selectedImage?.relativeSelectionCoordinates;
+      if (relativePoints != null) {
+        final absolutePoints = computeAbsolutePoints(relativePoints: relativePoints);
+        painter.setInitialPoints(absolutePoints);
       } else {
         painter.clearPoints();
       }
@@ -64,6 +101,9 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (_, constraints) {
+        currentWidth = constraints.widthConstraints().maxWidth;
+        currentHeight = constraints.widthConstraints().maxWidth;
+
         return MouseRegion(
           onEnter: onEnter,
           onExit: onExit,
@@ -73,17 +113,16 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
             onPanUpdate: onPanUpdate,
             onPanEnd: onPanEnd,
             child: Container(
-              height: constraints.widthConstraints().maxWidth,
-              width: constraints.heightConstraints().maxHeight,
+              // TODO this is not good fix this to make it work with non square iamges
+              height: currentWidth,
+              width: currentWidth,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(widget.image.url),
                   fit: BoxFit.cover,
                 ),
               ),
-              child: CustomPaint(
-                painter: painter,
-              ),
+              child: CustomPaint(painter: painter),
             ),
           ),
         );
@@ -112,7 +151,7 @@ class CustomRegionSelectionPainter extends CustomPainter {
     unscaledPoints = List.from(points);
   }
 
-  void scalePoints(double scale) {
+  List<Offset> scalePoints(double scale) {
     List<Offset> scaledPoints = [];
 
     for (Offset point in unscaledPoints) {
@@ -123,6 +162,7 @@ class CustomRegionSelectionPainter extends CustomPainter {
       scaledPoints.add(scaledPoint);
     }
     points = scaledPoints;
+    return points;
   }
 
   @override

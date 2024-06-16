@@ -7,12 +7,12 @@ import 'package:path/path.dart';
 class AbstractImage {
   final String? path;
   final PlatformFile? file;
-  List<Offset>? selectionRegion;
+  List<Offset>? relativeSelectionCoordinates;
 
   AbstractImage({
     this.path,
     this.file,
-    this.selectionRegion,
+    this.relativeSelectionCoordinates,
   });
 
   String get url => server + (path ?? '');

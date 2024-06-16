@@ -9,6 +9,7 @@ class RightSide extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         SelectedImage(),
         FunctionControls(),

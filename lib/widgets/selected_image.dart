@@ -14,6 +14,7 @@ class SelectedImage extends ConsumerWidget {
     if (image != null) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Card(
             clipBehavior: Clip.antiAlias,
