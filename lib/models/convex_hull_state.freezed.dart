@@ -20,7 +20,16 @@ ConvexHullState _$ConvexHullStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ConvexHullState {
-  ConvexHullStep get step => throw _privateConstructorUsedError;
+  ConvexHullStep? get step => throw _privateConstructorUsedError;
+  String get channel1SearchPattern => throw _privateConstructorUsedError;
+  String get channel2SearchPattern => throw _privateConstructorUsedError;
+  String get channel3SearchPattern => throw _privateConstructorUsedError;
+  String get channel4SearchPattern => throw _privateConstructorUsedError;
+  String get overlaySearchPattern => throw _privateConstructorUsedError;
+  String? get channel1ProteinName => throw _privateConstructorUsedError;
+  String? get channel2ProteinName => throw _privateConstructorUsedError;
+  String? get channel3ProteinName => throw _privateConstructorUsedError;
+  String? get channel4ProteinName => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +43,17 @@ abstract class $ConvexHullStateCopyWith<$Res> {
           ConvexHullState value, $Res Function(ConvexHullState) then) =
       _$ConvexHullStateCopyWithImpl<$Res, ConvexHullState>;
   @useResult
-  $Res call({ConvexHullStep step});
+  $Res call(
+      {ConvexHullStep? step,
+      String channel1SearchPattern,
+      String channel2SearchPattern,
+      String channel3SearchPattern,
+      String channel4SearchPattern,
+      String overlaySearchPattern,
+      String? channel1ProteinName,
+      String? channel2ProteinName,
+      String? channel3ProteinName,
+      String? channel4ProteinName});
 }
 
 /// @nodoc
@@ -50,13 +69,58 @@ class _$ConvexHullStateCopyWithImpl<$Res, $Val extends ConvexHullState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? step = null,
+    Object? step = freezed,
+    Object? channel1SearchPattern = null,
+    Object? channel2SearchPattern = null,
+    Object? channel3SearchPattern = null,
+    Object? channel4SearchPattern = null,
+    Object? overlaySearchPattern = null,
+    Object? channel1ProteinName = freezed,
+    Object? channel2ProteinName = freezed,
+    Object? channel3ProteinName = freezed,
+    Object? channel4ProteinName = freezed,
   }) {
     return _then(_value.copyWith(
-      step: null == step
+      step: freezed == step
           ? _value.step
           : step // ignore: cast_nullable_to_non_nullable
-              as ConvexHullStep,
+              as ConvexHullStep?,
+      channel1SearchPattern: null == channel1SearchPattern
+          ? _value.channel1SearchPattern
+          : channel1SearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      channel2SearchPattern: null == channel2SearchPattern
+          ? _value.channel2SearchPattern
+          : channel2SearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      channel3SearchPattern: null == channel3SearchPattern
+          ? _value.channel3SearchPattern
+          : channel3SearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      channel4SearchPattern: null == channel4SearchPattern
+          ? _value.channel4SearchPattern
+          : channel4SearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      overlaySearchPattern: null == overlaySearchPattern
+          ? _value.overlaySearchPattern
+          : overlaySearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      channel1ProteinName: freezed == channel1ProteinName
+          ? _value.channel1ProteinName
+          : channel1ProteinName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      channel2ProteinName: freezed == channel2ProteinName
+          ? _value.channel2ProteinName
+          : channel2ProteinName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      channel3ProteinName: freezed == channel3ProteinName
+          ? _value.channel3ProteinName
+          : channel3ProteinName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      channel4ProteinName: freezed == channel4ProteinName
+          ? _value.channel4ProteinName
+          : channel4ProteinName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -69,7 +133,17 @@ abstract class _$$ConvexHullStateImplCopyWith<$Res>
       __$$ConvexHullStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ConvexHullStep step});
+  $Res call(
+      {ConvexHullStep? step,
+      String channel1SearchPattern,
+      String channel2SearchPattern,
+      String channel3SearchPattern,
+      String channel4SearchPattern,
+      String overlaySearchPattern,
+      String? channel1ProteinName,
+      String? channel2ProteinName,
+      String? channel3ProteinName,
+      String? channel4ProteinName});
 }
 
 /// @nodoc
@@ -83,13 +157,58 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? step = null,
+    Object? step = freezed,
+    Object? channel1SearchPattern = null,
+    Object? channel2SearchPattern = null,
+    Object? channel3SearchPattern = null,
+    Object? channel4SearchPattern = null,
+    Object? overlaySearchPattern = null,
+    Object? channel1ProteinName = freezed,
+    Object? channel2ProteinName = freezed,
+    Object? channel3ProteinName = freezed,
+    Object? channel4ProteinName = freezed,
   }) {
     return _then(_$ConvexHullStateImpl(
-      step: null == step
+      step: freezed == step
           ? _value.step
           : step // ignore: cast_nullable_to_non_nullable
-              as ConvexHullStep,
+              as ConvexHullStep?,
+      channel1SearchPattern: null == channel1SearchPattern
+          ? _value.channel1SearchPattern
+          : channel1SearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      channel2SearchPattern: null == channel2SearchPattern
+          ? _value.channel2SearchPattern
+          : channel2SearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      channel3SearchPattern: null == channel3SearchPattern
+          ? _value.channel3SearchPattern
+          : channel3SearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      channel4SearchPattern: null == channel4SearchPattern
+          ? _value.channel4SearchPattern
+          : channel4SearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      overlaySearchPattern: null == overlaySearchPattern
+          ? _value.overlaySearchPattern
+          : overlaySearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      channel1ProteinName: freezed == channel1ProteinName
+          ? _value.channel1ProteinName
+          : channel1ProteinName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      channel2ProteinName: freezed == channel2ProteinName
+          ? _value.channel2ProteinName
+          : channel2ProteinName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      channel3ProteinName: freezed == channel3ProteinName
+          ? _value.channel3ProteinName
+          : channel3ProteinName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      channel4ProteinName: freezed == channel4ProteinName
+          ? _value.channel4ProteinName
+          : channel4ProteinName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -99,18 +218,54 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class _$ConvexHullStateImpl implements _ConvexHullState {
-  const _$ConvexHullStateImpl({this.step = ConvexHullStep.first});
+  const _$ConvexHullStateImpl(
+      {this.step,
+      this.channel1SearchPattern = 'ch01',
+      this.channel2SearchPattern = 'ch02',
+      this.channel3SearchPattern = 'ch03',
+      this.channel4SearchPattern = 'ch04',
+      this.overlaySearchPattern = 'overlay',
+      this.channel1ProteinName = 'Insulin',
+      this.channel2ProteinName = 'Glucagon',
+      this.channel3ProteinName = 'CD4',
+      this.channel4ProteinName = 'CD8'});
 
   factory _$ConvexHullStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullStateImplFromJson(json);
 
   @override
+  final ConvexHullStep? step;
+  @override
   @JsonKey()
-  final ConvexHullStep step;
+  final String channel1SearchPattern;
+  @override
+  @JsonKey()
+  final String channel2SearchPattern;
+  @override
+  @JsonKey()
+  final String channel3SearchPattern;
+  @override
+  @JsonKey()
+  final String channel4SearchPattern;
+  @override
+  @JsonKey()
+  final String overlaySearchPattern;
+  @override
+  @JsonKey()
+  final String? channel1ProteinName;
+  @override
+  @JsonKey()
+  final String? channel2ProteinName;
+  @override
+  @JsonKey()
+  final String? channel3ProteinName;
+  @override
+  @JsonKey()
+  final String? channel4ProteinName;
 
   @override
   String toString() {
-    return 'ConvexHullState(step: $step)';
+    return 'ConvexHullState(step: $step, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName)';
   }
 
   @override
@@ -118,12 +273,41 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ConvexHullStateImpl &&
-            (identical(other.step, step) || other.step == step));
+            (identical(other.step, step) || other.step == step) &&
+            (identical(other.channel1SearchPattern, channel1SearchPattern) ||
+                other.channel1SearchPattern == channel1SearchPattern) &&
+            (identical(other.channel2SearchPattern, channel2SearchPattern) ||
+                other.channel2SearchPattern == channel2SearchPattern) &&
+            (identical(other.channel3SearchPattern, channel3SearchPattern) ||
+                other.channel3SearchPattern == channel3SearchPattern) &&
+            (identical(other.channel4SearchPattern, channel4SearchPattern) ||
+                other.channel4SearchPattern == channel4SearchPattern) &&
+            (identical(other.overlaySearchPattern, overlaySearchPattern) ||
+                other.overlaySearchPattern == overlaySearchPattern) &&
+            (identical(other.channel1ProteinName, channel1ProteinName) ||
+                other.channel1ProteinName == channel1ProteinName) &&
+            (identical(other.channel2ProteinName, channel2ProteinName) ||
+                other.channel2ProteinName == channel2ProteinName) &&
+            (identical(other.channel3ProteinName, channel3ProteinName) ||
+                other.channel3ProteinName == channel3ProteinName) &&
+            (identical(other.channel4ProteinName, channel4ProteinName) ||
+                other.channel4ProteinName == channel4ProteinName));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, step);
+  int get hashCode => Object.hash(
+      runtimeType,
+      step,
+      channel1SearchPattern,
+      channel2SearchPattern,
+      channel3SearchPattern,
+      channel4SearchPattern,
+      overlaySearchPattern,
+      channel1ProteinName,
+      channel2ProteinName,
+      channel3ProteinName,
+      channel4ProteinName);
 
   @JsonKey(ignore: true)
   @override
@@ -141,14 +325,41 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
 }
 
 abstract class _ConvexHullState implements ConvexHullState {
-  const factory _ConvexHullState({final ConvexHullStep step}) =
-      _$ConvexHullStateImpl;
+  const factory _ConvexHullState(
+      {final ConvexHullStep? step,
+      final String channel1SearchPattern,
+      final String channel2SearchPattern,
+      final String channel3SearchPattern,
+      final String channel4SearchPattern,
+      final String overlaySearchPattern,
+      final String? channel1ProteinName,
+      final String? channel2ProteinName,
+      final String? channel3ProteinName,
+      final String? channel4ProteinName}) = _$ConvexHullStateImpl;
 
   factory _ConvexHullState.fromJson(Map<String, dynamic> json) =
       _$ConvexHullStateImpl.fromJson;
 
   @override
-  ConvexHullStep get step;
+  ConvexHullStep? get step;
+  @override
+  String get channel1SearchPattern;
+  @override
+  String get channel2SearchPattern;
+  @override
+  String get channel3SearchPattern;
+  @override
+  String get channel4SearchPattern;
+  @override
+  String get overlaySearchPattern;
+  @override
+  String? get channel1ProteinName;
+  @override
+  String? get channel2ProteinName;
+  @override
+  String? get channel3ProteinName;
+  @override
+  String? get channel4ProteinName;
   @override
   @JsonKey(ignore: true)
   _$$ConvexHullStateImplCopyWith<_$ConvexHullStateImpl> get copyWith =>

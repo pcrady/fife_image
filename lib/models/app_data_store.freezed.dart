@@ -23,6 +23,7 @@ mixin _$AppDataStore {
   AbstractImage? get selectedImage => throw _privateConstructorUsedError;
   FunctionsEnum get function => throw _privateConstructorUsedError;
   LeftMenuEnum get leftMenu => throw _privateConstructorUsedError;
+  ConvexHullState get convexHullState => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,7 +40,10 @@ abstract class $AppDataStoreCopyWith<$Res> {
   $Res call(
       {AbstractImage? selectedImage,
       FunctionsEnum function,
-      LeftMenuEnum leftMenu});
+      LeftMenuEnum leftMenu,
+      ConvexHullState convexHullState});
+
+  $ConvexHullStateCopyWith<$Res> get convexHullState;
 }
 
 /// @nodoc
@@ -58,6 +62,7 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
     Object? selectedImage = freezed,
     Object? function = null,
     Object? leftMenu = null,
+    Object? convexHullState = null,
   }) {
     return _then(_value.copyWith(
       selectedImage: freezed == selectedImage
@@ -72,7 +77,19 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
           ? _value.leftMenu
           : leftMenu // ignore: cast_nullable_to_non_nullable
               as LeftMenuEnum,
+      convexHullState: null == convexHullState
+          ? _value.convexHullState
+          : convexHullState // ignore: cast_nullable_to_non_nullable
+              as ConvexHullState,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ConvexHullStateCopyWith<$Res> get convexHullState {
+    return $ConvexHullStateCopyWith<$Res>(_value.convexHullState, (value) {
+      return _then(_value.copyWith(convexHullState: value) as $Val);
+    });
   }
 }
 
@@ -87,7 +104,11 @@ abstract class _$$AppDataStoreImplCopyWith<$Res>
   $Res call(
       {AbstractImage? selectedImage,
       FunctionsEnum function,
-      LeftMenuEnum leftMenu});
+      LeftMenuEnum leftMenu,
+      ConvexHullState convexHullState});
+
+  @override
+  $ConvexHullStateCopyWith<$Res> get convexHullState;
 }
 
 /// @nodoc
@@ -104,6 +125,7 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
     Object? selectedImage = freezed,
     Object? function = null,
     Object? leftMenu = null,
+    Object? convexHullState = null,
   }) {
     return _then(_$AppDataStoreImpl(
       selectedImage: freezed == selectedImage
@@ -118,6 +140,10 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
           ? _value.leftMenu
           : leftMenu // ignore: cast_nullable_to_non_nullable
               as LeftMenuEnum,
+      convexHullState: null == convexHullState
+          ? _value.convexHullState
+          : convexHullState // ignore: cast_nullable_to_non_nullable
+              as ConvexHullState,
     ));
   }
 }
@@ -130,7 +156,8 @@ class _$AppDataStoreImpl implements _AppDataStore {
   const _$AppDataStoreImpl(
       {this.selectedImage,
       this.function = FunctionsEnum.functions,
-      this.leftMenu = LeftMenuEnum.images});
+      this.leftMenu = LeftMenuEnum.images,
+      this.convexHullState = const ConvexHullState()});
 
   factory _$AppDataStoreImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppDataStoreImplFromJson(json);
@@ -143,10 +170,13 @@ class _$AppDataStoreImpl implements _AppDataStore {
   @override
   @JsonKey()
   final LeftMenuEnum leftMenu;
+  @override
+  @JsonKey()
+  final ConvexHullState convexHullState;
 
   @override
   String toString() {
-    return 'AppDataStore(selectedImage: $selectedImage, function: $function, leftMenu: $leftMenu)';
+    return 'AppDataStore(selectedImage: $selectedImage, function: $function, leftMenu: $leftMenu, convexHullState: $convexHullState)';
   }
 
   @override
@@ -159,13 +189,15 @@ class _$AppDataStoreImpl implements _AppDataStore {
             (identical(other.function, function) ||
                 other.function == function) &&
             (identical(other.leftMenu, leftMenu) ||
-                other.leftMenu == leftMenu));
+                other.leftMenu == leftMenu) &&
+            (identical(other.convexHullState, convexHullState) ||
+                other.convexHullState == convexHullState));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, selectedImage, function, leftMenu);
+  int get hashCode => Object.hash(
+      runtimeType, selectedImage, function, leftMenu, convexHullState);
 
   @JsonKey(ignore: true)
   @override
@@ -185,7 +217,8 @@ abstract class _AppDataStore implements AppDataStore {
   const factory _AppDataStore(
       {final AbstractImage? selectedImage,
       final FunctionsEnum function,
-      final LeftMenuEnum leftMenu}) = _$AppDataStoreImpl;
+      final LeftMenuEnum leftMenu,
+      final ConvexHullState convexHullState}) = _$AppDataStoreImpl;
 
   factory _AppDataStore.fromJson(Map<String, dynamic> json) =
       _$AppDataStoreImpl.fromJson;
@@ -196,6 +229,8 @@ abstract class _AppDataStore implements AppDataStore {
   FunctionsEnum get function;
   @override
   LeftMenuEnum get leftMenu;
+  @override
+  ConvexHullState get convexHullState;
   @override
   @JsonKey(ignore: true)
   _$$AppDataStoreImplCopyWith<_$AppDataStoreImpl> get copyWith =>

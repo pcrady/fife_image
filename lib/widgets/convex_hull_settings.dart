@@ -1,4 +1,6 @@
 import 'package:fife_image/lib/app_logger.dart';
+import 'package:fife_image/models/convex_hull_state.dart';
+import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +12,7 @@ class ConvexHullSettings extends ConsumerStatefulWidget {
 }
 
 class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
+  final _formKey = GlobalKey<FormState>();
   late TextEditingController channel1Controller;
   late TextEditingController channel2Controller;
   late TextEditingController channel3Controller;
@@ -20,17 +23,26 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   late TextEditingController channel3NameController;
   late TextEditingController channel4NameController;
 
+  String? validator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter some text';
+    }
+    return null;
+  }
+
   @override
   void initState() {
-    channel1Controller = TextEditingController(text: 'ch01');
-    channel2Controller = TextEditingController(text: 'ch02');
-    channel3Controller = TextEditingController(text: 'ch03');
-    channel4Controller = TextEditingController(text: 'ch04');
-    overlayController = TextEditingController(text: 'overlay');
-    channel1NameController = TextEditingController();
-    channel2NameController = TextEditingController();
-    channel3NameController = TextEditingController();
-    channel4NameController = TextEditingController();
+    final settings = ref.read(appDataProvider);
+    final convexHullState = settings.convexHullState;
+    channel1Controller = TextEditingController(text: convexHullState.channel1SearchPattern);
+    channel2Controller = TextEditingController(text: convexHullState.channel2SearchPattern);
+    channel3Controller = TextEditingController(text: convexHullState.channel3SearchPattern);
+    channel4Controller = TextEditingController(text: convexHullState.channel4SearchPattern);
+    overlayController = TextEditingController(text: convexHullState.overlaySearchPattern);
+    channel1NameController = TextEditingController(text: convexHullState.channel1ProteinName);
+    channel2NameController = TextEditingController(text: convexHullState.channel2ProteinName);
+    channel3NameController = TextEditingController(text: convexHullState.channel3ProteinName);
+    channel4NameController = TextEditingController(text: convexHullState.channel4ProteinName);
     super.initState();
   }
 
@@ -54,152 +66,176 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
       builder: (context, constraints) {
         final halfWidth = constraints.maxWidth / 2.0 - 4.0;
 
-        return Column(
-          children: [
-            const SizedBox(height: 8.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: halfWidth,
-                  child: TextField(
-                    controller: channel1Controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Set Channel 1 Search Pattern',
-                      border: OutlineInputBorder(),
-                      labelText: 'Channel 1 Search Pattern',
+        return Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              const SizedBox(height: 8.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: halfWidth,
+                    child: TextFormField(
+                      validator: validator,
+                      controller: channel1Controller,
+                      decoration: const InputDecoration(
+                        hintText: 'Set Channel 1 Search Pattern',
+                        border: OutlineInputBorder(),
+                        labelText: 'Channel 1 Search Pattern',
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: halfWidth,
-                  child: TextField(
-                    controller: channel1NameController,
-                    decoration: const InputDecoration(
-                      hintText: 'Set Channel 1 Protein Name',
-                      border: OutlineInputBorder(),
-                      labelText: 'Channel 1 Protein Name',
+                  SizedBox(
+                    width: halfWidth,
+                    child: TextFormField(
+                      validator: validator,
+                      controller: channel1NameController,
+                      decoration: const InputDecoration(
+                        hintText: 'Set Channel 1 Protein Name',
+                        border: OutlineInputBorder(),
+                        labelText: 'Channel 1 Protein Name',
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: halfWidth,
-                  child: TextField(
-                    controller: channel2Controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Set Channel 2 Search Pattern',
-                      border: OutlineInputBorder(),
-                      labelText: 'Channel 2 Search Pattern',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: halfWidth,
-                  child: TextField(
-                    controller: channel2NameController,
-                    decoration: const InputDecoration(
-                      hintText: 'Set Channel 2 Protein Name',
-                      border: OutlineInputBorder(),
-                      labelText: 'Channel 2 Protein Name',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: halfWidth,
-                  child: TextField(
-                    controller: channel3Controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Set Channel 3 Search Pattern',
-                      border: OutlineInputBorder(),
-                      labelText: 'Channel 3 Search Pattern',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: halfWidth,
-                  child: TextField(
-                    controller: channel3NameController,
-                    decoration: const InputDecoration(
-                      hintText: 'Set Channel 3 Protein Name',
-                      border: OutlineInputBorder(),
-                      labelText: 'Channel 3 Protein Name',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: halfWidth,
-                  child: TextField(
-                    controller: channel4Controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Set Channel 4 Search Pattern',
-                      border: OutlineInputBorder(),
-                      labelText: 'Channel 4 Search Pattern',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: halfWidth,
-                  child: TextField(
-                    controller: channel1NameController,
-                    decoration: const InputDecoration(
-                      hintText: 'Set Channel 4 Protein Name',
-                      border: OutlineInputBorder(),
-                      labelText: 'Channel 4 Protein Name',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8.0),
-            TextField(
-              controller: overlayController,
-              decoration: const InputDecoration(
-                hintText: 'Overlay Search Pattern',
-                border: OutlineInputBorder(),
-                labelText: 'Overlay Search Pattern',
+                ],
               ),
-            ),
-            const SizedBox(height: 8.0),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-
-                    },
-                    child: const Text('Clear'),
+              const SizedBox(height: 8.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: halfWidth,
+                    child: TextFormField(
+                      validator: validator,
+                      controller: channel2Controller,
+                      decoration: const InputDecoration(
+                        hintText: 'Set Channel 2 Search Pattern',
+                        border: OutlineInputBorder(),
+                        labelText: 'Channel 2 Search Pattern',
+                      ),
+                    ),
                   ),
+                  SizedBox(
+                    width: halfWidth,
+                    child: TextFormField(
+                      validator: validator,
+                      controller: channel2NameController,
+                      decoration: const InputDecoration(
+                        hintText: 'Set Channel 2 Protein Name',
+                        border: OutlineInputBorder(),
+                        labelText: 'Channel 2 Protein Name',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: halfWidth,
+                    child: TextFormField(
+                      validator: validator,
+                      controller: channel3Controller,
+                      decoration: const InputDecoration(
+                        hintText: 'Set Channel 3 Search Pattern',
+                        border: OutlineInputBorder(),
+                        labelText: 'Channel 3 Search Pattern',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: halfWidth,
+                    child: TextFormField(
+                      validator: validator,
+                      controller: channel3NameController,
+                      decoration: const InputDecoration(
+                        hintText: 'Set Channel 3 Protein Name',
+                        border: OutlineInputBorder(),
+                        labelText: 'Channel 3 Protein Name',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: halfWidth,
+                    child: TextFormField(
+                      validator: validator,
+                      controller: channel4Controller,
+                      decoration: const InputDecoration(
+                        hintText: 'Set Channel 4 Search Pattern',
+                        border: OutlineInputBorder(),
+                        labelText: 'Channel 4 Search Pattern',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: halfWidth,
+                    child: TextFormField(
+                      validator: validator,
+                      controller: channel1NameController,
+                      decoration: const InputDecoration(
+                        hintText: 'Set Channel 4 Protein Name',
+                        border: OutlineInputBorder(),
+                        labelText: 'Channel 4 Protein Name',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              TextFormField(
+                validator: validator,
+                controller: overlayController,
+                decoration: const InputDecoration(
+                  hintText: 'Overlay Search Pattern',
+                  border: OutlineInputBorder(),
+                  labelText: 'Overlay Search Pattern',
                 ),
-                const SizedBox(width: 8.0),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-
-                    },
-                    child: const Text('Start'),
+              ),
+              const SizedBox(height: 8.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Text('Clear'),
+                    ),
                   ),
-                )
-              ],
-            ),
-          ],
+                  const SizedBox(width: 8.0),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          final appData = ref.read(appDataProvider.notifier);
+                          final convexHullState = ConvexHullState(
+                            channel1SearchPattern: channel1Controller.text,
+                            channel2SearchPattern: channel2Controller.text,
+                            channel3SearchPattern: channel3Controller.text,
+                            channel4SearchPattern: channel4Controller.text,
+                            overlaySearchPattern: overlayController.text,
+                            channel1ProteinName: channel1NameController.text,
+                            channel2ProteinName: channel2NameController.text,
+                            channel3ProteinName: channel3NameController.text,
+                            channel4ProteinName: channel4NameController.text,
+                          );
+                          appData.setConvexHullState(convexHullState: convexHullState);
+                        }
+                      },
+                      child: const Text('Start'),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         );
       },
     );

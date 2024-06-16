@@ -5,9 +5,18 @@ class ConvexHullResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        const Text('results'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text('Channel 1'),
+            Text('Channel 2'),
+            Text('Channel 3'),
+            Text('Channel 4'),
+            Text('Overlay'),
+          ],
+        )
       ],
     );
   }

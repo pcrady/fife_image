@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/models/app_data_store.dart';
+import 'package:fife_image/models/convex_hull_state.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,7 +17,7 @@ class AppData extends _$AppData {
     return const AppDataStore();
   }
 
-  Future<void> setFunction({required FunctionsEnum function}) async {
+  void setFunction({required FunctionsEnum function}) {
     if (function == FunctionsEnum.functions) {
       state = state.copyWith(
         function: function,
@@ -30,11 +31,15 @@ class AppData extends _$AppData {
     }
   }
 
-  void selectImage({required AbstractImage? image}) async {
+  void selectImage({required AbstractImage? image}) {
     state = state.copyWith(selectedImage: image);
   }
 
-  void setMenuSetting({required LeftMenuEnum leftMenu}) async {
+  void setMenuSetting({required LeftMenuEnum leftMenu}){
     state = state.copyWith(leftMenu: leftMenu);
+  }
+
+  void setConvexHullState({required ConvexHullState convexHullState}) {
+    state = state.copyWith(convexHullState: convexHullState);
   }
 }

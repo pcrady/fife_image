@@ -1,5 +1,7 @@
 import 'package:fife_image/models/abstract_image.dart';
+import 'package:fife_image/models/convex_hull_state.dart';
 import 'package:fife_image/models/enums.dart';
+import 'package:fife_image/widgets/convex_hull_settings.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // flutter pub run build_runner build
@@ -14,6 +16,7 @@ class AppDataStore with _$AppDataStore {
     AbstractImage? selectedImage,
     @Default(FunctionsEnum.functions) FunctionsEnum function,
     @Default(LeftMenuEnum.images) LeftMenuEnum leftMenu,
+    @Default(ConvexHullState()) ConvexHullState convexHullState,
   }) = _AppDataStore;
 
   factory AppDataStore.fromJson(Map<String, dynamic> json) => _$AppDataStoreFromJson(json);
