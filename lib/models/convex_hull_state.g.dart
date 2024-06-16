@@ -44,10 +44,10 @@ Map<String, dynamic> _$$ConvexHullStateImplToJson(
   val['channel3_search_pattern'] = instance.channel3SearchPattern;
   val['channel4_search_pattern'] = instance.channel4SearchPattern;
   val['overlay_search_pattern'] = instance.overlaySearchPattern;
-  writeNotNull('channel1_protein_name', instance.channel1ProteinName);
-  writeNotNull('channel2_protein_name', instance.channel2ProteinName);
-  writeNotNull('channel3_protein_name', instance.channel3ProteinName);
-  writeNotNull('channel4_protein_name', instance.channel4ProteinName);
+  val['channel1_protein_name'] = instance.channel1ProteinName;
+  val['channel2_protein_name'] = instance.channel2ProteinName;
+  val['channel3_protein_name'] = instance.channel3ProteinName;
+  val['channel4_protein_name'] = instance.channel4ProteinName;
   return val;
 }
 

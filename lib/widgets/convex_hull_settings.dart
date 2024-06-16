@@ -1,5 +1,6 @@
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/convex_hull_state.dart';
+import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -180,7 +181,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     width: halfWidth,
                     child: TextFormField(
                       validator: validator,
-                      controller: channel1NameController,
+                      controller: channel4NameController,
                       decoration: const InputDecoration(
                         hintText: 'Set Channel 4 Protein Name',
                         border: OutlineInputBorder(),
@@ -227,6 +228,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                             channel4ProteinName: channel4NameController.text,
                           );
                           appData.setConvexHullState(convexHullState: convexHullState);
+                          appData.setMenuSetting(leftMenu: LeftMenuEnum.functionResults);
                         }
                       },
                       child: const Text('Start'),

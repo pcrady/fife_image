@@ -1,22 +1,143 @@
+import 'package:fife_image/lib/app_logger.dart';
+import 'package:fife_image/models/abstract_image.dart';
+import 'package:fife_image/providers/app_data_provider.dart';
+import 'package:fife_image/providers/convex_hull_image_provider.dart';
+import 'package:fife_image/widgets/image_thumbnail_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ConvexHullResults extends StatelessWidget {
+class ConvexHullResults extends ConsumerStatefulWidget {
   const ConvexHullResults({super.key});
 
   @override
+  ConsumerState<ConvexHullResults> createState() => _ConvexHullResultsState();
+}
+
+class _ConvexHullResultsState extends ConsumerState<ConvexHullResults> {
+  @override
   Widget build(BuildContext context) {
-    return const Column(
+    final convexHullImages = ref.watch(convexHullImageProviderProvider);
+    final settings = ref.watch(appDataProvider);
+    final convexHullState = settings.convexHullState;
+    final width = MediaQuery.of(context).size.width;
+    final cardSize = (width / 2.0 / 6.0) - 16.0;
+
+    return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Channel 1'),
-            Text('Channel 2'),
-            Text('Channel 3'),
-            Text('Channel 4'),
-            Text('Overlay'),
+            SizedBox(width: cardSize),
+            SizedBox(
+              width: cardSize,
+              child: Text(
+                convexHullState.channel1ProteinName,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(
+              width: cardSize,
+              child: Text(
+                convexHullState.channel2ProteinName,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(
+              width: cardSize,
+              child: Text(
+                convexHullState.channel3ProteinName,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(
+              width: cardSize,
+              child: Text(
+                convexHullState.channel4ProteinName,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(
+              width: cardSize,
+              child: const Text(
+                'Overlay',
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
-        )
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: convexHullImages.length,
+          itemBuilder: (context, index) {
+            return _ImageSetWidget(
+              imageSet: convexHullImages[index],
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _ImageSetWidget extends StatelessWidget {
+  final ImageSet imageSet;
+
+  const _ImageSetWidget({
+    required this.imageSet,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final cardSize = (width / 2.0 / 6.0) - 16.0;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        SizedBox(
+          width: cardSize,
+          child: ElevatedButton(
+            onPressed: () {},
+            child: Text(
+              imageSet.baseName ?? '',
+            ),
+          ),
+        ),
+        imageSet.channel1 != null
+            ? SizedBox(
+                width: cardSize,
+                height: cardSize,
+                child: ImageCard(image: imageSet.channel1!),
+              )
+            : SizedBox(width: cardSize, height: cardSize),
+        imageSet.channel2 != null
+            ? SizedBox(
+                width: cardSize,
+                height: cardSize,
+                child: ImageCard(image: imageSet.channel2!),
+              )
+            : SizedBox(width: cardSize, height: cardSize),
+        imageSet.channel3 != null
+            ? SizedBox(
+                width: cardSize,
+                height: cardSize,
+                child: ImageCard(image: imageSet.channel3!),
+              )
+            : SizedBox(width: cardSize, height: cardSize),
+        imageSet.channel4 != null
+            ? SizedBox(
+                width: cardSize,
+                height: cardSize,
+                child: ImageCard(image: imageSet.channel4!),
+              )
+            : SizedBox(width: cardSize, height: cardSize),
+        imageSet.overlay != null
+            ? SizedBox(
+                width: cardSize,
+                height: cardSize,
+                child: ImageCard(image: imageSet.overlay!),
+              )
+            : SizedBox(width: cardSize, height: cardSize),
       ],
     );
   }
