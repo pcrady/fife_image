@@ -108,7 +108,12 @@ class AppBarBottom extends ConsumerStatefulWidget implements PreferredSizeWidget
 }
 
 class _AppBarBottomState extends ConsumerState<AppBarBottom> {
-  Set<String> _segmentedButtonSelection = {'Images'};
+  static const _imagesValue = 'Images';
+  static const _settingsValue = 'Function Settings';
+  static const _resultsValue = 'Function Results';
+
+  Set<String> _segmentedButtonSelection = {_imagesValue};
+
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +122,15 @@ class _AppBarBottomState extends ConsumerState<AppBarBottom> {
     if (appData.function == FunctionsEnum.functions) {
       return Container();
     } else {
+      final menuSetting = ref.read(appDataProvider).leftMenu;
+      if (menuSetting == LeftMenuEnum.images) {
+        _segmentedButtonSelection = {_imagesValue};
+      } else if (menuSetting == LeftMenuEnum.functionSettings) {
+        _segmentedButtonSelection = {_settingsValue};
+      } else if (menuSetting == LeftMenuEnum.functionResults) {
+        _segmentedButtonSelection = {_resultsValue};
+      }
+
       return Padding(
         padding: const EdgeInsets.only(
           left: 8.0,
@@ -157,17 +171,17 @@ class _AppBarBottomState extends ConsumerState<AppBarBottom> {
                   ),
                   segments: [
                     const ButtonSegment<String>(
-                      value: 'Images',
+                      value: _imagesValue,
                       label: Text('Images'),
                     ),
                     ButtonSegment(
-                      value: 'Function Settings',
+                      value: _settingsValue,
                       label: Text(
                         '${appData.function.toName()} Settings',
                       ),
                     ),
                     ButtonSegment(
-                      value: 'Function Results',
+                      value: _resultsValue,
                       label: Text(
                         '${appData.function.toName()} Results',
                       ),
