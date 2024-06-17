@@ -68,7 +68,7 @@ class Images extends _$Images {
     if (image.selectionRegionPython.isEmpty) return;
 
     await _dio.post(
-      '$server/background_select',
+      '$server/background_correction',
       data: {
         'image_path': image.filePath!,
         'selection_region': image.selectionRegionPython,

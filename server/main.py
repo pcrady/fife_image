@@ -83,6 +83,28 @@ def converted_paths():
     return jsonify(converted_paths)
 
 
+@app.route('/background_correction', methods=['POST'])
+def background_correction():
+    file_path_parameter = 'image_path'
+    selected_region_parameter = 'selected_region'
+
+    data = request.get_json()
+
+    if file_path_parameter not in data:
+        return jsonify({"error": "No filepath provided"}), 400
+
+    if selected_region_parameter not in data:
+        return jsonify({"error": "No selection region provided"}), 400
+
+    file_path = data[file_path_parameter]
+    selected_region = data[selected_region_parameter]
+
+    print(file_path)
+    print(selected_region)
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 

@@ -55,7 +55,8 @@ class _BackgroundSelect extends StatelessWidget {
             const SizedBox(width: 8.0),
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                },
                 child: const Text('Next'),
               ),
             )
