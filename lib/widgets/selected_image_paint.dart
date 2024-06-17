@@ -65,10 +65,10 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
   void onPanEnd(
     DragEndDetails details,
   ) {
-    painter.setUnscaledPoints();
     widget.image.relativeSelectionCoordinates = computeRelativePoints(
       absolutePoints: painter.points,
     );
+    painter.setUnscaledPoints();
   }
 
   @override
@@ -97,6 +97,7 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
     painter.scalePoints(scale);
   }
 
+  // TODO BUG - draw path, switch image, resize screen
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -113,7 +114,7 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
             onPanUpdate: onPanUpdate,
             onPanEnd: onPanEnd,
             child: Container(
-              // TODO this is not good fix this to make it work with non square iamges
+              // TODO this is not good fix this to make it work with non square images
               height: currentWidth,
               width: currentWidth,
               decoration: BoxDecoration(
@@ -137,6 +138,8 @@ class CustomRegionSelectionPainter extends CustomPainter {
 
   void setInitialPoints(List<Offset> initialPoints) {
     points = initialPoints;
+    unscaledPoints = List.from(initialPoints);
+    logger.i(unscaledPoints.length);
   }
 
   void addPoint(Offset point) {
@@ -145,10 +148,12 @@ class CustomRegionSelectionPainter extends CustomPainter {
 
   void clearPoints() {
     points = [];
+    unscaledPoints = [];
   }
 
   void setUnscaledPoints() {
     unscaledPoints = List.from(points);
+    logger.w(unscaledPoints.length);
   }
 
   List<Offset> scalePoints(double scale) {

@@ -5,32 +5,36 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 
 class AbstractImage {
-  final String? path;
+  final String? filePath;
   final PlatformFile? file;
   List<Offset>? relativeSelectionCoordinates;
 
   AbstractImage({
-    this.path,
+    this.filePath,
     this.file,
     this.relativeSelectionCoordinates,
   });
 
-  String get url => server + (path ?? '');
-  String get name => basename(path ?? '').split('.').first;
+  String get url => server + (filePath ?? '');
+  String get name => basename(filePath ?? '').split('.').first;
   String get baseName => name.split('_').first;
 
-  List<List<double>>? get selectionRegionPython {
-    // TODO here
-    return null;
+  List<List<double>> get selectionRegionPython {
+    List<List<double>> relativeSelectionRegionList = [];
+    for (Offset offset in relativeSelectionCoordinates ?? []) {
+      final point = [offset.dx, offset.dy];
+      relativeSelectionRegionList.add(point);
+    }
+    return relativeSelectionRegionList;
   }
 
   factory AbstractImage.fromJson(Map<String, dynamic> json) => AbstractImage(
-        path: json['path'] as String?,
+        filePath: json['path'] as String?,
       );
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> values = {};
-    if (path != null) values['path'] = path;
+    if (filePath != null) values['path'] = filePath;
     if (file != null) values['file'] = file?.bytes;
     return values;
   }
@@ -38,7 +42,7 @@ class AbstractImage {
   @override
   bool operator ==(Object other) {
     if (other is! AbstractImage) return false;
-    if ((other.path == path) && (other.file == file)) {
+    if ((other.filePath == filePath) && (other.file == file)) {
       return true;
     } else {
       return false;
@@ -46,7 +50,7 @@ class AbstractImage {
   }
 
   @override
-  int get hashCode => Object.hash(path, file);
+  int get hashCode => Object.hash(filePath, file);
 }
 
 

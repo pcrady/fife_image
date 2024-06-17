@@ -17,7 +17,7 @@ class Images extends _$Images {
   Future<List<AbstractImage>> build() async {
     final response = await _dio.get(server);
     List<String> filePaths = List<String>.from(response.data);
-    return filePaths.map((path) => AbstractImage(path: path)).toList();
+    return filePaths.map((path) => AbstractImage(filePath: path)).toList();
   }
 
   Future<void> setImages({required List<AbstractImage> images}) async {
@@ -65,14 +65,15 @@ class Images extends _$Images {
   Future<void> backgroundSelect() async {
     final appData = ref.read(appDataProvider);
     final image = appData.selectedImage;
-    if (image?.path == null) return;
-    if (image?.selectionRegionPython == null) return;
+    if (image == null) return;
+    if (image.filePath == null) return;
+    if (image.selectionRegionPython.isEmpty) return;
 
     await _dio.post(
       '$server/background_select',
       data: {
-        'image_path': image!.path!,
-        'selection_region': image.selectionRegionPython!,
+        'image_path': image.filePath!,
+        'selection_region': image.selectionRegionPython,
       },
     );
     ref.invalidateSelf();
