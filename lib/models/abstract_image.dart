@@ -53,7 +53,6 @@ class AbstractImage {
   int get hashCode => Object.hash(filePath, file);
 }
 
-
 class ImageSet {
   String? baseName;
   AbstractImage? channel1;

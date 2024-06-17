@@ -31,7 +31,6 @@ class _BackgroundSelect extends StatelessWidget {
 
   const _BackgroundSelect({
     required this.convexHullState,
-    super.key,
   });
 
   @override
@@ -50,14 +49,14 @@ class _BackgroundSelect extends StatelessWidget {
             Expanded(
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text('Clear'),
+                child: const Text('Clear'),
               ),
             ),
             const SizedBox(width: 8.0),
             Expanded(
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text('Next'),
+                child: const Text('Next'),
               ),
             )
           ],

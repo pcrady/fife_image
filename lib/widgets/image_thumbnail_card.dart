@@ -52,7 +52,6 @@ class _NetworkImage extends StatelessWidget {
 
   const _NetworkImage({
     required this.url,
-    super.key,
   });
 
   @override

@@ -114,7 +114,6 @@ class _AppBarBottomState extends ConsumerState<AppBarBottom> {
 
   Set<String> _segmentedButtonSelection = {_imagesValue};
 
-
   @override
   Widget build(BuildContext context) {
     final appData = ref.watch(appDataProvider);

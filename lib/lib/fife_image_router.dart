@@ -8,7 +8,8 @@ mixin FifeImageRouter {
       GoRoute(
         name: MainScreen.route,
         path: '/',
-        builder: (BuildContext context, GoRouterState state) => const MainScreen(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const MainScreen(),
       ),
     ],
   );

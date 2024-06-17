@@ -1,4 +1,3 @@
-import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/convex_hull_state.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -67,7 +66,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final halfWidth = constraints.maxWidth / 2.0 - 4.0;
-      
+
           return Form(
             key: _formKey,
             child: Column(
