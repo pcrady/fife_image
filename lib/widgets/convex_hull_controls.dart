@@ -1,7 +1,4 @@
 import 'package:fife_image/lib/app_logger.dart';
-import 'package:fife_image/models/abstract_image.dart';
-import 'package:fife_image/models/app_data_store.dart';
-import 'package:fife_image/models/convex_hull_state.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/convex_hull_image_provider.dart';
