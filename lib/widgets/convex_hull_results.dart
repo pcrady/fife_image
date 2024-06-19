@@ -15,7 +15,7 @@ class ConvexHullResults extends ConsumerStatefulWidget {
 class _ConvexHullResultsState extends ConsumerState<ConvexHullResults> {
   @override
   Widget build(BuildContext context) {
-    final convexHullImages = ref.watch(convexHullImageProvider);
+    final convexHullImages = ref.watch(convexHullImageSetsProvider);
     final settings = ref.watch(appDataProvider);
     final convexHullState = settings.convexHullState;
     final width = MediaQuery.of(context).size.width;
@@ -81,7 +81,7 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullResults> {
 }
 
 class _ImageSetWidget extends ConsumerWidget {
-  final ImageSet imageSet;
+  final ConvexHullImageSet imageSet;
 
   const _ImageSetWidget({
     required this.imageSet,
@@ -93,51 +93,97 @@ class _ImageSetWidget extends ConsumerWidget {
     final cardSize = (width / 2.0 / 6.0) - 16.0;
     final appData = ref.read(appDataProvider);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
       children: [
-        SizedBox(
-          width: cardSize,
-          child: Text(
-            imageSet.baseName ?? '',
-            style: const TextStyle(color: Colors.black),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(
+              width: cardSize,
+              child: Text(
+                imageSet.baseName ?? '',
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
+            imageSet.channel1 != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.channel1!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
+            imageSet.channel2 != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.channel2!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
+            imageSet.channel3 != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.channel3!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
+            imageSet.channel4 != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.channel4!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
+            imageSet.overlay != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.overlay!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
+          ],
         ),
-        imageSet.channel1 != null
-            ? SizedBox(
-                width: cardSize,
-                height: cardSize,
-                child: ImageCard(image: imageSet.channel1!),
-              )
-            : SizedBox(width: cardSize, height: cardSize),
-        imageSet.channel2 != null
-            ? SizedBox(
-                width: cardSize,
-                height: cardSize,
-                child: ImageCard(image: imageSet.channel2!),
-              )
-            : SizedBox(width: cardSize, height: cardSize),
-        imageSet.channel3 != null
-            ? SizedBox(
-                width: cardSize,
-                height: cardSize,
-                child: ImageCard(image: imageSet.channel3!),
-              )
-            : SizedBox(width: cardSize, height: cardSize),
-        imageSet.channel4 != null
-            ? SizedBox(
-                width: cardSize,
-                height: cardSize,
-                child: ImageCard(image: imageSet.channel4!),
-              )
-            : SizedBox(width: cardSize, height: cardSize),
-        imageSet.overlay != null
-            ? SizedBox(
-                width: cardSize,
-                height: cardSize,
-                child: ImageCard(image: imageSet.overlay!),
-              )
-            : SizedBox(width: cardSize, height: cardSize),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(
+              width: cardSize,
+              child: Text(
+                '${imageSet.baseName}\nBackground Correction' ?? '',
+
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
+            imageSet.channel1BackgroundCorrect != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.channel1BackgroundCorrect!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
+            imageSet.channel2BackgroundCorrect != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.channel2BackgroundCorrect!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
+            imageSet.channel3BackgroundCorrect != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.channel3BackgroundCorrect!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
+            imageSet.channel4BackgroundCorrect != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.channel4BackgroundCorrect!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
+            SizedBox(width: cardSize, height: cardSize),
+          ],
+        ),
       ],
     );
   }

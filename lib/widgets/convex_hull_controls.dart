@@ -1,5 +1,8 @@
 import 'package:fife_image/lib/app_logger.dart';
+import 'package:fife_image/models/abstract_image.dart';
+import 'package:fife_image/models/app_data_store.dart';
 import 'package:fife_image/models/convex_hull_state.dart';
+import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/convex_hull_image_provider.dart';
 import 'package:flutter/material.dart';
@@ -16,62 +19,100 @@ class _ConvexHullControlsState extends ConsumerState<ConvexHullControls> {
   @override
   Widget build(BuildContext context) {
     final appData = ref.watch(appDataProvider);
-    final convexHullState = appData.convexHullState;
 
-    if (appData.selectedImage == null) {
+    if (appData.leftMenu == LeftMenuEnum.functionResults && appData.selectedImage != null) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        child: _BackgroundSelect(),
+      );
+    } else {
       return Container();
     }
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: _BackgroundSelect(convexHullState: convexHullState),
-    );
   }
 }
 
 class _BackgroundSelect extends ConsumerWidget {
-  final ConvexHullState convexHullState;
-
-  const _BackgroundSelect({
-    required this.convexHullState,
-  });
+  const _BackgroundSelect();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Center(
-          child: Text(
+    final appData = ref.watch(appDataProvider);
+    final correctedImages = ref.read(convexHullImageSetsProvider.notifier).backgroundCorrectionImages();
+    final unmodifiedImages = ref.read(convexHullImageSetsProvider.notifier).unmodifiedImages();
+    final image = appData.selectedImage;
+    final imageName = image?.name ?? '';
+
+    if (correctedImages.contains(image)) {
+      return Column(
+        children: [
+          Text(
+            imageName,
+            style: const TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      );
+    } else if (unmodifiedImages.contains(image)) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            imageName,
+            style: const TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Text(
             'Select the region of highest background signal.',
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 16.0),
           ),
-        ),
-        const SizedBox(height: 8.0),
-        Row(
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text('Clear'),
+          const SizedBox(height: 8.0),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('Clear'),
+                ),
               ),
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      await ref.read(convexHullImageSetsProvider.notifier).backgroundSelect();
+                    } catch (err, stack) {
+                      logger.e(err, stackTrace: stack);
+                    }
+                  },
+                  child: const Text('Perform Background Correction'),
+                ),
+              )
+            ],
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          Text(
+            imageName,
+            style: const TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(width: 8.0),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () async {
-                  try {
-                    await ref.read(convexHullImageProvider.notifier).backgroundSelect();
-                  } catch (err, stack) {
-                    logger.e(err, stackTrace: stack);
-                  }
-                },
-                child: const Text('Perform Background Correction'),
-              ),
-            )
-          ],
-        ),
-      ],
-    );
+          ),
+          const Text(
+            'Select the outline of the islet.',
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 16.0),
+          ),
+        ],
+      );
+    }
   }
 }

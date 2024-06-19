@@ -139,7 +139,6 @@ class CustomRegionSelectionPainter extends CustomPainter {
   void setInitialPoints(List<Offset> initialPoints) {
     points = initialPoints;
     unscaledPoints = List.from(initialPoints);
-    logger.i(unscaledPoints.length);
   }
 
   void addPoint(Offset point) {
@@ -153,7 +152,6 @@ class CustomRegionSelectionPainter extends CustomPainter {
 
   void setUnscaledPoints() {
     unscaledPoints = List.from(points);
-    logger.w(unscaledPoints.length);
   }
 
   List<Offset> scalePoints(double scale) {
