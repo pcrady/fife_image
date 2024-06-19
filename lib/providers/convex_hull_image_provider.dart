@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:fife_image/constants.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -8,7 +10,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'convex_hull_image_provider.g.dart';
 
 @riverpod
-class ConvexHullImageProvider extends _$ConvexHullImageProvider {
+class ConvexHullImage extends _$ConvexHullImage {
+  final _dio = Dio();
+
   @override
   List<ImageSet> build() {
     final asyncValue = ref.watch(imagesProvider);
@@ -71,5 +75,24 @@ class ConvexHullImageProvider extends _$ConvexHullImageProvider {
     } else if (image.name.contains(overlayFilter)) {
       imageSet.overlay = image;
     }
+  }
+
+  Future<Response?> backgroundSelect() async {
+    final appData = ref.read(appDataProvider);
+    final image = appData.selectedImage;
+    if (image == null) return null;
+    if (image.filePath == null) return null;
+    if (image.selectionRegionPython.isEmpty) return null;
+
+    final response = await _dio.post(
+      '${server}background_correction',
+      data: {
+        'image_path': image.filePath!,
+        'selected_region': image.selectionRegionPython,
+      },
+    );
+    logger.i(response);
+    ref.invalidateSelf();
+    return response;
   }
 }

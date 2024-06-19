@@ -1,5 +1,7 @@
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/convex_hull_state.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
+import 'package:fife_image/providers/convex_hull_image_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,7 +28,7 @@ class _ConvexHullControlsState extends ConsumerState<ConvexHullControls> {
   }
 }
 
-class _BackgroundSelect extends StatelessWidget {
+class _BackgroundSelect extends ConsumerWidget {
   final ConvexHullState convexHullState;
 
   const _BackgroundSelect({
@@ -34,14 +36,16 @@ class _BackgroundSelect extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Select the region of highest background signal.',
-          textAlign: TextAlign.start,
-          style: TextStyle(fontSize: 16.0),
+        const Center(
+          child: Text(
+            'Select the region of highest background signal.',
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 16.0),
+          ),
         ),
         const SizedBox(height: 8.0),
         Row(
@@ -55,9 +59,14 @@ class _BackgroundSelect extends StatelessWidget {
             const SizedBox(width: 8.0),
             Expanded(
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  try {
+                    await ref.read(convexHullImageProvider.notifier).backgroundSelect();
+                  } catch (err, stack) {
+                    logger.e(err, stackTrace: stack);
+                  }
                 },
-                child: const Text('Next'),
+                child: const Text('Perform Background Correction'),
               ),
             )
           ],

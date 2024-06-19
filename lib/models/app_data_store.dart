@@ -14,6 +14,7 @@ class AppDataStore with _$AppDataStore {
     AbstractImage? selectedImage,
     @Default(FunctionsEnum.functions) FunctionsEnum function,
     @Default(LeftMenuEnum.images) LeftMenuEnum leftMenu,
+    @Default(ConvexHullState()) ConvexHullState convexHullState,
   }) = _AppDataStore;
 
   factory AppDataStore.fromJson(Map<String, dynamic> json) => _$AppDataStoreFromJson(json);

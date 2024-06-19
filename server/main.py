@@ -91,9 +91,11 @@ def background_correction():
     data = request.get_json()
 
     if file_path_parameter not in data:
+        print('fucking here')
         return jsonify({"error": "No filepath provided"}), 400
 
     if selected_region_parameter not in data:
+        print('ufasdfasdf')
         return jsonify({"error": "No selection region provided"}), 400
 
     file_path = data[file_path_parameter]
@@ -101,6 +103,8 @@ def background_correction():
 
     print(file_path)
     print(selected_region)
+    return jsonify({"response": "cool"}), 200
+
 
 
 

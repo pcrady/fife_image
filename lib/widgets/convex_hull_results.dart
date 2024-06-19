@@ -15,7 +15,7 @@ class ConvexHullResults extends ConsumerStatefulWidget {
 class _ConvexHullResultsState extends ConsumerState<ConvexHullResults> {
   @override
   Widget build(BuildContext context) {
-    final convexHullImages = ref.watch(convexHullImageProviderProvider);
+    final convexHullImages = ref.watch(convexHullImageProvider);
     final settings = ref.watch(appDataProvider);
     final convexHullState = settings.convexHullState;
     final width = MediaQuery.of(context).size.width;

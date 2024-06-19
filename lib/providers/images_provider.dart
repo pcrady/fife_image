@@ -59,21 +59,4 @@ class Images extends _$Images {
     );
     ref.invalidateSelf();
   }
-
-  Future<void> backgroundSelect() async {
-    final appData = ref.read(appDataProvider);
-    final image = appData.selectedImage;
-    if (image == null) return;
-    if (image.filePath == null) return;
-    if (image.selectionRegionPython.isEmpty) return;
-
-    await _dio.post(
-      '$server/background_correction',
-      data: {
-        'image_path': image.filePath!,
-        'selection_region': image.selectionRegionPython,
-      },
-    );
-    ref.invalidateSelf();
-  }
 }
