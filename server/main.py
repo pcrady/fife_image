@@ -4,6 +4,7 @@ from flask_cors import CORS
 import os
 import numpy as np
 from skimage import io, draw
+import hashlib
 
 app = Flask(__name__)
 CORS(app)
@@ -119,9 +120,25 @@ def download_file(filename):
 @app.route('/', methods=['GET'])
 def converted_paths():
     converted_files = os.listdir(app.config['OUTPUT_FOLDER'])
-    converted_paths = [os.path.join(app.config['OUTPUT_FOLDER'], filename)
-                       for filename in converted_files]
-    return jsonify(converted_paths)
+    converted_paths_with_hashes = []
+
+    for filename in converted_files:
+        file_path = os.path.join(app.config['OUTPUT_FOLDER'], filename)
+        md5_hash = calculate_md5(file_path)
+        converted_paths_with_hashes.append({
+            'path': file_path,
+            'md5Hash': md5_hash
+        })
+
+    return jsonify(converted_paths_with_hashes)
+
+
+def calculate_md5(file_path):
+    hash_md5 = hashlib.md5()
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
 
 @app.route('/background_correction', methods=['POST'])

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,8 +14,8 @@ class Images extends _$Images {
   @override
   Future<List<AbstractImage>> build() async {
     final response = await _dio.get(server);
-    List<String> filePaths = List<String>.from(response.data);
-    return filePaths.map((path) => AbstractImage(filePath: path)).toList();
+    final data = List<Map<String, dynamic>>.from(response.data);
+    return data.map((fileData) => AbstractImage.fromJson(fileData)).toList();
   }
 
   Future<void> setImages({required List<AbstractImage> images}) async {

@@ -28,7 +28,10 @@ class ImageCard extends ConsumerWidget {
           },
           child: Stack(
             children: [
-              _NetworkImage(url: image.url),
+              _NetworkImage(
+                url: image.url,
+                md5Hash: image.md5Hash ?? '',
+              ),
               Positioned(
                 left: 8.0,
                 bottom: 8.0,
@@ -49,15 +52,18 @@ class ImageCard extends ConsumerWidget {
 
 class _NetworkImage extends StatelessWidget {
   final String url;
+  final String md5Hash;
 
   const _NetworkImage({
     required this.url,
+    required this.md5Hash,
   });
 
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: url,
+      cacheKey: md5Hash,
       placeholder: (context, url) => const CircularProgressIndicator(),
     );
   }

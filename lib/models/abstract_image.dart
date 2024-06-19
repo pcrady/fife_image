@@ -7,11 +7,13 @@ import 'package:path/path.dart';
 class AbstractImage {
   final String? filePath;
   final PlatformFile? file;
+  final String? md5Hash;
   List<Offset>? relativeSelectionCoordinates;
 
   AbstractImage({
     this.filePath,
     this.file,
+    this.md5Hash,
     this.relativeSelectionCoordinates,
   });
 
@@ -30,19 +32,21 @@ class AbstractImage {
 
   factory AbstractImage.fromJson(Map<String, dynamic> json) => AbstractImage(
         filePath: json['path'] as String?,
+        md5Hash: json['md5Hash'] as String?,
       );
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> values = {};
     if (filePath != null) values['path'] = filePath;
     if (file != null) values['file'] = file?.bytes;
+    if (md5Hash != null) values['md5Hash'] = md5Hash;
     return values;
   }
 
   @override
   bool operator ==(Object other) {
     if (other is! AbstractImage) return false;
-    if ((other.filePath == filePath) && (other.file == file)) {
+    if ((other.filePath == filePath) && (other.file == file) && (other.md5Hash == md5Hash)) {
       return true;
     } else {
       return false;
