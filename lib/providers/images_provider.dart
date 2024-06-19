@@ -21,18 +21,13 @@ class Images extends _$Images {
   Future<void> setImages({required List<AbstractImage> images}) async {
     List<Future> futures = [];
     for (final image in images) {
-      futures.add(_sendImage(image: image));
+      futures.add(addImage(image: image));
     }
     await Future.wait(futures);
     ref.invalidateSelf();
   }
 
   Future<void> addImage({required AbstractImage image}) async {
-    await _sendImage(image: image);
-    ref.invalidateSelf();
-  }
-
-  Future<void> _sendImage({required AbstractImage image}) async {
     if (image.file?.bytes == null) return;
     if (image.file?.name == null) return;
 
@@ -50,6 +45,7 @@ class Images extends _$Images {
         headers: {'Content-Type': 'multipart/form-data'},
       ),
     );
+    ref.invalidateSelf();
   }
 
   Future<void> deleteImage({required AbstractImage image}) async {

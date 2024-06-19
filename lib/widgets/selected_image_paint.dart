@@ -20,18 +20,7 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
   double initialWidth = 1.0;
   double currentWidth = 1.0;
   double currentHeight = 1.0;
-
   CustomRegionSelectionPainter painter = CustomRegionSelectionPainter();
-  void onEnter(PointerEnterEvent event) {}
-  void onExit(PointerExitEvent event) {}
-  void onHover(PointerHoverEvent event) {}
-  void onPanStart(DragStartDetails details) {
-    setState(() => painter.clearPoints());
-  }
-
-  void onPanUpdate(DragUpdateDetails details) {
-    setState(() => painter.addPoint(details.localPosition));
-  }
 
   List<Offset> computeRelativePoints({
     required List<Offset> absolutePoints,
@@ -61,9 +50,23 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
     return absolutePoints;
   }
 
+  void onEnter(PointerEnterEvent event) {}
+  void onExit(PointerExitEvent event) {}
+  void onHover(PointerHoverEvent event) {}
+  void onPanStart(DragStartDetails details) {
+    setState(() => painter.clearPoints());
+  }
+
+  void onPanUpdate(DragUpdateDetails details) {
+    setState(() => painter.addPoint(details.localPosition));
+  }
+
   void onPanEnd(
     DragEndDetails details,
   ) {
+    if (painter.points.isNotEmpty) {
+      setState(() => painter.addPoint(painter.points.first));
+    }
     widget.image.relativeSelectionCoordinates = computeRelativePoints(
       absolutePoints: painter.points,
     );
@@ -172,7 +175,7 @@ class CustomRegionSelectionPainter extends CustomPainter {
     Paint paint = Paint()
       ..color = Colors.grey
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 5.0;
+      ..strokeWidth = 2.0;
 
     if (points.isNotEmpty) {
       for (int i = 0; i < points.length - 1; i++) {

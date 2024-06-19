@@ -72,7 +72,9 @@ class _BackgroundSelect extends ConsumerWidget {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    image?.relativeSelectionCoordinates = null;
+                  },
                   child: const Text('Clear'),
                 ),
               ),
