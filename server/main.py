@@ -2,6 +2,8 @@ from flask import Flask, request, redirect, url_for, send_from_directory, render
 from PIL import Image
 from flask_cors import CORS
 import os
+import numpy as np
+from skimage import io, draw
 
 app = Flask(__name__)
 CORS(app)
@@ -12,6 +14,45 @@ app.config['OUTPUT_FOLDER'] = 'converted/'
 # Ensure the upload and output folders exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['OUTPUT_FOLDER'], exist_ok=True)
+
+
+def _scale_region(image, region):
+    polygon = np.array(region)
+    polygon[:, 0] = polygon[:, 0] * image.shape[0]
+    polygon[:, 1] = polygon[:, 1] * image.shape[1]
+    return polygon
+
+
+def _mask_image(image, region):
+    mask = np.zeros(image.shape[:2], dtype=np.uint8)
+    polygon = _scale_region(image, region)
+    rr, cc = draw.polygon(polygon[:, 1], polygon[:, 0], mask.shape)
+    mask[rr, cc] = 255
+    masked_image = image.copy()
+    masked_image[mask == 0] = 0
+    return masked_image
+
+
+def _compute_masked_image_stats(masked_image):
+    pixels = masked_image.reshape(masked_image.shape[0] * masked_image.shape[1], 3)
+    ix = np.nonzero(np.any(pixels, axis=1))[0]
+    return pixels[ix].mean(axis=0), pixels[ix].std(axis=0)
+
+
+def _compute_subtraction_value(means, stds):
+    return means + 3 * stds
+
+
+def subtract_background(image, region):
+    masked_image = _mask_image(image, region)
+    means, stds = _compute_masked_image_stats(masked_image)
+    subtraction_value = _compute_subtraction_value(means, stds)
+    modified_image = image - subtraction_value
+    return np.clip(modified_image, 0, 255).astype(np.uint8)
+
+
+def save_image(name, image):
+    io.imsave(name, image)
 
 
 @app.route('/', methods=['POST'])
@@ -91,22 +132,19 @@ def background_correction():
     data = request.get_json()
 
     if file_path_parameter not in data:
-        print('fucking here')
         return jsonify({"error": "No filepath provided"}), 400
 
     if selected_region_parameter not in data:
-        print('ufasdfasdf')
         return jsonify({"error": "No selection region provided"}), 400
 
     file_path = data[file_path_parameter]
+    image = io.imread(file_path)
     selected_region = data[selected_region_parameter]
 
-    print(file_path)
-    print(selected_region)
-    return jsonify({"response": "cool"}), 200
-
-
-
+    corrected_image = subtract_background(image, selected_region)
+    corrected_image_name = file_path.split('.')[0] + '_bg_correct.png'
+    save_image(corrected_image_name, corrected_image)
+    return converted_paths()
 
 
 if __name__ == '__main__':

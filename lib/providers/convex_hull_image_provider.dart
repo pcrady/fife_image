@@ -77,22 +77,20 @@ class ConvexHullImage extends _$ConvexHullImage {
     }
   }
 
-  Future<Response?> backgroundSelect() async {
+  Future<void> backgroundSelect() async {
     final appData = ref.read(appDataProvider);
     final image = appData.selectedImage;
-    if (image == null) return null;
-    if (image.filePath == null) return null;
-    if (image.selectionRegionPython.isEmpty) return null;
+    if (image == null) return ;
+    if (image.filePath == null) return ;
+    if (image.selectionRegionPython.isEmpty) return ;
 
-    final response = await _dio.post(
+    await _dio.post(
       '${server}background_correction',
       data: {
         'image_path': image.filePath!,
         'selected_region': image.selectionRegionPython,
       },
     );
-    logger.i(response);
-    ref.invalidateSelf();
-    return response;
+    ref.invalidate(imagesProvider);
   }
 }
