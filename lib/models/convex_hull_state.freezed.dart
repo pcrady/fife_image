@@ -21,11 +21,13 @@ ConvexHullState _$ConvexHullStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ConvexHullState {
   String? get activeImageSetBaseName => throw _privateConstructorUsedError;
+  String get channel0SearchPattern => throw _privateConstructorUsedError;
   String get channel1SearchPattern => throw _privateConstructorUsedError;
   String get channel2SearchPattern => throw _privateConstructorUsedError;
   String get channel3SearchPattern => throw _privateConstructorUsedError;
   String get channel4SearchPattern => throw _privateConstructorUsedError;
   String get overlaySearchPattern => throw _privateConstructorUsedError;
+  String get channel0ProteinName => throw _privateConstructorUsedError;
   String get channel1ProteinName => throw _privateConstructorUsedError;
   String get channel2ProteinName => throw _privateConstructorUsedError;
   String get channel3ProteinName => throw _privateConstructorUsedError;
@@ -45,11 +47,13 @@ abstract class $ConvexHullStateCopyWith<$Res> {
   @useResult
   $Res call(
       {String? activeImageSetBaseName,
+      String channel0SearchPattern,
       String channel1SearchPattern,
       String channel2SearchPattern,
       String channel3SearchPattern,
       String channel4SearchPattern,
       String overlaySearchPattern,
+      String channel0ProteinName,
       String channel1ProteinName,
       String channel2ProteinName,
       String channel3ProteinName,
@@ -70,11 +74,13 @@ class _$ConvexHullStateCopyWithImpl<$Res, $Val extends ConvexHullState>
   @override
   $Res call({
     Object? activeImageSetBaseName = freezed,
+    Object? channel0SearchPattern = null,
     Object? channel1SearchPattern = null,
     Object? channel2SearchPattern = null,
     Object? channel3SearchPattern = null,
     Object? channel4SearchPattern = null,
     Object? overlaySearchPattern = null,
+    Object? channel0ProteinName = null,
     Object? channel1ProteinName = null,
     Object? channel2ProteinName = null,
     Object? channel3ProteinName = null,
@@ -85,6 +91,10 @@ class _$ConvexHullStateCopyWithImpl<$Res, $Val extends ConvexHullState>
           ? _value.activeImageSetBaseName
           : activeImageSetBaseName // ignore: cast_nullable_to_non_nullable
               as String?,
+      channel0SearchPattern: null == channel0SearchPattern
+          ? _value.channel0SearchPattern
+          : channel0SearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
       channel1SearchPattern: null == channel1SearchPattern
           ? _value.channel1SearchPattern
           : channel1SearchPattern // ignore: cast_nullable_to_non_nullable
@@ -104,6 +114,10 @@ class _$ConvexHullStateCopyWithImpl<$Res, $Val extends ConvexHullState>
       overlaySearchPattern: null == overlaySearchPattern
           ? _value.overlaySearchPattern
           : overlaySearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      channel0ProteinName: null == channel0ProteinName
+          ? _value.channel0ProteinName
+          : channel0ProteinName // ignore: cast_nullable_to_non_nullable
               as String,
       channel1ProteinName: null == channel1ProteinName
           ? _value.channel1ProteinName
@@ -135,11 +149,13 @@ abstract class _$$ConvexHullStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? activeImageSetBaseName,
+      String channel0SearchPattern,
       String channel1SearchPattern,
       String channel2SearchPattern,
       String channel3SearchPattern,
       String channel4SearchPattern,
       String overlaySearchPattern,
+      String channel0ProteinName,
       String channel1ProteinName,
       String channel2ProteinName,
       String channel3ProteinName,
@@ -158,11 +174,13 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? activeImageSetBaseName = freezed,
+    Object? channel0SearchPattern = null,
     Object? channel1SearchPattern = null,
     Object? channel2SearchPattern = null,
     Object? channel3SearchPattern = null,
     Object? channel4SearchPattern = null,
     Object? overlaySearchPattern = null,
+    Object? channel0ProteinName = null,
     Object? channel1ProteinName = null,
     Object? channel2ProteinName = null,
     Object? channel3ProteinName = null,
@@ -173,6 +191,10 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
           ? _value.activeImageSetBaseName
           : activeImageSetBaseName // ignore: cast_nullable_to_non_nullable
               as String?,
+      channel0SearchPattern: null == channel0SearchPattern
+          ? _value.channel0SearchPattern
+          : channel0SearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
       channel1SearchPattern: null == channel1SearchPattern
           ? _value.channel1SearchPattern
           : channel1SearchPattern // ignore: cast_nullable_to_non_nullable
@@ -192,6 +214,10 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
       overlaySearchPattern: null == overlaySearchPattern
           ? _value.overlaySearchPattern
           : overlaySearchPattern // ignore: cast_nullable_to_non_nullable
+              as String,
+      channel0ProteinName: null == channel0ProteinName
+          ? _value.channel0ProteinName
+          : channel0ProteinName // ignore: cast_nullable_to_non_nullable
               as String,
       channel1ProteinName: null == channel1ProteinName
           ? _value.channel1ProteinName
@@ -220,11 +246,13 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
 class _$ConvexHullStateImpl implements _ConvexHullState {
   const _$ConvexHullStateImpl(
       {this.activeImageSetBaseName,
+      this.channel0SearchPattern = 'ch00',
       this.channel1SearchPattern = 'ch01',
       this.channel2SearchPattern = 'ch02',
       this.channel3SearchPattern = 'ch03',
       this.channel4SearchPattern = 'ch04',
       this.overlaySearchPattern = 'overlay',
+      this.channel0ProteinName = 'IDK',
       this.channel1ProteinName = 'Insulin',
       this.channel2ProteinName = 'Glucagon',
       this.channel3ProteinName = 'CD4',
@@ -235,6 +263,9 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
 
   @override
   final String? activeImageSetBaseName;
+  @override
+  @JsonKey()
+  final String channel0SearchPattern;
   @override
   @JsonKey()
   final String channel1SearchPattern;
@@ -252,6 +283,9 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
   final String overlaySearchPattern;
   @override
   @JsonKey()
+  final String channel0ProteinName;
+  @override
+  @JsonKey()
   final String channel1ProteinName;
   @override
   @JsonKey()
@@ -265,7 +299,7 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
 
   @override
   String toString() {
-    return 'ConvexHullState(activeImageSetBaseName: $activeImageSetBaseName, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName)';
+    return 'ConvexHullState(activeImageSetBaseName: $activeImageSetBaseName, channel0SearchPattern: $channel0SearchPattern, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel0ProteinName: $channel0ProteinName, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName)';
   }
 
   @override
@@ -275,6 +309,8 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
             other is _$ConvexHullStateImpl &&
             (identical(other.activeImageSetBaseName, activeImageSetBaseName) ||
                 other.activeImageSetBaseName == activeImageSetBaseName) &&
+            (identical(other.channel0SearchPattern, channel0SearchPattern) ||
+                other.channel0SearchPattern == channel0SearchPattern) &&
             (identical(other.channel1SearchPattern, channel1SearchPattern) ||
                 other.channel1SearchPattern == channel1SearchPattern) &&
             (identical(other.channel2SearchPattern, channel2SearchPattern) ||
@@ -285,6 +321,8 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
                 other.channel4SearchPattern == channel4SearchPattern) &&
             (identical(other.overlaySearchPattern, overlaySearchPattern) ||
                 other.overlaySearchPattern == overlaySearchPattern) &&
+            (identical(other.channel0ProteinName, channel0ProteinName) ||
+                other.channel0ProteinName == channel0ProteinName) &&
             (identical(other.channel1ProteinName, channel1ProteinName) ||
                 other.channel1ProteinName == channel1ProteinName) &&
             (identical(other.channel2ProteinName, channel2ProteinName) ||
@@ -300,11 +338,13 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
   int get hashCode => Object.hash(
       runtimeType,
       activeImageSetBaseName,
+      channel0SearchPattern,
       channel1SearchPattern,
       channel2SearchPattern,
       channel3SearchPattern,
       channel4SearchPattern,
       overlaySearchPattern,
+      channel0ProteinName,
       channel1ProteinName,
       channel2ProteinName,
       channel3ProteinName,
@@ -328,11 +368,13 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
 abstract class _ConvexHullState implements ConvexHullState {
   const factory _ConvexHullState(
       {final String? activeImageSetBaseName,
+      final String channel0SearchPattern,
       final String channel1SearchPattern,
       final String channel2SearchPattern,
       final String channel3SearchPattern,
       final String channel4SearchPattern,
       final String overlaySearchPattern,
+      final String channel0ProteinName,
       final String channel1ProteinName,
       final String channel2ProteinName,
       final String channel3ProteinName,
@@ -344,6 +386,8 @@ abstract class _ConvexHullState implements ConvexHullState {
   @override
   String? get activeImageSetBaseName;
   @override
+  String get channel0SearchPattern;
+  @override
   String get channel1SearchPattern;
   @override
   String get channel2SearchPattern;
@@ -353,6 +397,8 @@ abstract class _ConvexHullState implements ConvexHullState {
   String get channel4SearchPattern;
   @override
   String get overlaySearchPattern;
+  @override
+  String get channel0ProteinName;
   @override
   String get channel1ProteinName;
   @override

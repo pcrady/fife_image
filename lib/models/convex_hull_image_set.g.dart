@@ -10,6 +10,13 @@ _$ConvexHullImageSetImpl _$$ConvexHullImageSetImplFromJson(
         Map<String, dynamic> json) =>
     _$ConvexHullImageSetImpl(
       baseName: json['base_name'] as String?,
+      channel0: json['channel0'] == null
+          ? null
+          : AbstractImage.fromJson(json['channel0'] as Map<String, dynamic>),
+      channel0BackgroundCorrect: json['channel0_background_correct'] == null
+          ? null
+          : AbstractImage.fromJson(
+              json['channel0_background_correct'] as Map<String, dynamic>),
       channel1: json['channel1'] == null
           ? null
           : AbstractImage.fromJson(json['channel1'] as Map<String, dynamic>),
@@ -54,6 +61,9 @@ Map<String, dynamic> _$$ConvexHullImageSetImplToJson(
   }
 
   writeNotNull('base_name', instance.baseName);
+  writeNotNull('channel0', instance.channel0?.toJson());
+  writeNotNull('channel0_background_correct',
+      instance.channel0BackgroundCorrect?.toJson());
   writeNotNull('channel1', instance.channel1?.toJson());
   writeNotNull('channel1_background_correct',
       instance.channel1BackgroundCorrect?.toJson());

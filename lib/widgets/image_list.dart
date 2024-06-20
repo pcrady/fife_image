@@ -17,7 +17,7 @@ class ImageList extends ConsumerWidget {
         return GridView.builder(
           shrinkWrap: true,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 5,
+            crossAxisCount: 6,
           ),
           itemCount: images.length,
           itemBuilder: (BuildContext context, int index) {

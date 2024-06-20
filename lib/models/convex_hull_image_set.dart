@@ -11,6 +11,8 @@ class ConvexHullImageSet with _$ConvexHullImageSet {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   factory ConvexHullImageSet({
     String? baseName,
+    AbstractImage? channel0,
+    AbstractImage? channel0BackgroundCorrect,
     AbstractImage? channel1,
     AbstractImage? channel1BackgroundCorrect,
     AbstractImage? channel2,
@@ -26,6 +28,9 @@ class ConvexHullImageSet with _$ConvexHullImageSet {
 
   List<AbstractImage> get backgroundCorrectedImages {
     List<AbstractImage> values = [];
+    if (channel0BackgroundCorrect != null) {
+      values.add(channel0BackgroundCorrect!);
+    }
     if (channel1BackgroundCorrect != null) {
       values.add(channel1BackgroundCorrect!);
     }
@@ -43,6 +48,9 @@ class ConvexHullImageSet with _$ConvexHullImageSet {
 
   List<AbstractImage> get unmodifiedImages {
     List<AbstractImage> values = [];
+    if (channel0 != null) {
+      values.add(channel0!);
+    }
     if (channel1 != null) {
       values.add(channel1!);
     }

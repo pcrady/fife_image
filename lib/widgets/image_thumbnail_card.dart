@@ -16,8 +16,20 @@ class ImageCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(appDataProvider);
+    final selectedImage = data.selectedImage;
+
     return Card(
       clipBehavior: Clip.antiAlias,
+      shape: image == selectedImage
+          ? RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              side: const BorderSide(
+                color: Colors.green,
+                width: 4.0,
+              ),
+            )
+          : null,
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
@@ -40,6 +52,7 @@ class ImageCard extends ConsumerWidget {
                   image.name,
                   style: const TextStyle(
                     color: Colors.white,
+                    fontSize: 12.0,
                   ),
                 ),
               )

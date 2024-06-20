@@ -13,11 +13,13 @@ class ConvexHullSettings extends ConsumerStatefulWidget {
 
 class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   final _formKey = GlobalKey<FormState>();
+  late TextEditingController channel0Controller;
   late TextEditingController channel1Controller;
   late TextEditingController channel2Controller;
   late TextEditingController channel3Controller;
   late TextEditingController channel4Controller;
   late TextEditingController overlayController;
+  late TextEditingController channel0NameController;
   late TextEditingController channel1NameController;
   late TextEditingController channel2NameController;
   late TextEditingController channel3NameController;
@@ -34,11 +36,13 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   void initState() {
     final settings = ref.read(appDataProvider);
     final convexHullState = settings.convexHullState;
+    channel0Controller = TextEditingController(text: convexHullState.channel0SearchPattern);
     channel1Controller = TextEditingController(text: convexHullState.channel1SearchPattern);
     channel2Controller = TextEditingController(text: convexHullState.channel2SearchPattern);
     channel3Controller = TextEditingController(text: convexHullState.channel3SearchPattern);
     channel4Controller = TextEditingController(text: convexHullState.channel4SearchPattern);
     overlayController = TextEditingController(text: convexHullState.overlaySearchPattern);
+    channel0NameController = TextEditingController(text: convexHullState.channel0ProteinName);
     channel1NameController = TextEditingController(text: convexHullState.channel1ProteinName);
     channel2NameController = TextEditingController(text: convexHullState.channel2ProteinName);
     channel3NameController = TextEditingController(text: convexHullState.channel3ProteinName);
@@ -48,11 +52,13 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
 
   @override
   void dispose() {
+    channel0Controller.dispose();
     channel1Controller.dispose();
     channel2Controller.dispose();
     channel3Controller.dispose();
     channel4Controller.dispose();
     overlayController.dispose();
+    channel0NameController.dispose();
     channel1NameController.dispose();
     channel2NameController.dispose();
     channel3NameController.dispose();
@@ -71,6 +77,36 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
             key: _formKey,
             child: Column(
               children: [
+                const SizedBox(height: 8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: halfWidth,
+                      child: TextFormField(
+                        validator: validator,
+                        controller: channel0Controller,
+                        decoration: const InputDecoration(
+                          hintText: 'Set Channel 0 Search Pattern',
+                          border: OutlineInputBorder(),
+                          labelText: 'Channel 0 Search Pattern',
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: halfWidth,
+                      child: TextFormField(
+                        validator: validator,
+                        controller: channel0NameController,
+                        decoration: const InputDecoration(
+                          hintText: 'Set Channel 0 Protein Name',
+                          border: OutlineInputBorder(),
+                          labelText: 'Channel 0 Protein Name',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 8.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

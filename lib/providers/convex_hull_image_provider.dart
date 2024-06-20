@@ -33,6 +33,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
           final newImageSet = _addToImageSet(
             imageSet: oldImageSet,
             image: image,
+            channel0Filter: convexHullState.channel1SearchPattern,
             channel1Filter: convexHullState.channel1SearchPattern,
             channel2Filter: convexHullState.channel2SearchPattern,
             channel3Filter: convexHullState.channel3SearchPattern,
@@ -80,6 +81,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
   ConvexHullImageSet _addToImageSet({
     required ConvexHullImageSet imageSet,
     required AbstractImage image,
+    required String channel0Filter,
     required String channel1Filter,
     required String channel2Filter,
     required String channel3Filter,
@@ -87,7 +89,9 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     required String overlayFilter,
   }) {
     ConvexHullImageSet returnSet = imageSet.copyWith(baseName: image.baseName);
-    if (_isPrimaryImage(image, channel1Filter)) {
+    if (_isPrimaryImage(image, channel0Filter)) {
+      returnSet = returnSet.copyWith(channel0: image);
+    } else if (_isPrimaryImage(image, channel1Filter)) {
       returnSet = returnSet.copyWith(channel1: image);
     } else if (_isPrimaryImage(image, channel2Filter)) {
       returnSet = returnSet.copyWith(channel2: image);
@@ -97,6 +101,8 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       returnSet = returnSet.copyWith(channel4: image);
     } else if (_isPrimaryImage(image, overlayFilter)) {
       returnSet = returnSet.copyWith(overlay: image);
+    } else if (_isCorrectedImage(image, channel0Filter)) {
+      returnSet = returnSet.copyWith(channel0BackgroundCorrect: image);
     } else if (_isCorrectedImage(image, channel1Filter)) {
       returnSet = returnSet.copyWith(channel1BackgroundCorrect: image);
     } else if (_isCorrectedImage(image, channel2Filter)) {

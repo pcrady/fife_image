@@ -9,11 +9,13 @@ class ConvexHullState with _$ConvexHullState {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   const factory ConvexHullState({
     String? activeImageSetBaseName,
+    @Default('ch00') String channel0SearchPattern,
     @Default('ch01') String channel1SearchPattern,
     @Default('ch02') String channel2SearchPattern,
     @Default('ch03') String channel3SearchPattern,
     @Default('ch04') String channel4SearchPattern,
     @Default('overlay') String overlaySearchPattern,
+    @Default('IDK') String channel0ProteinName,
     @Default('Insulin') String channel1ProteinName,
     @Default('Glucagon') String channel2ProteinName,
     @Default('CD4') String channel3ProteinName,
