@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // flutter pub run build_runner build
@@ -18,7 +19,19 @@ class Images extends _$Images {
     return data.map((fileData) => AbstractImage.fromJson(fileData)).toList();
   }
 
-  Future<void> setImages({required List<AbstractImage> images}) async {
+  Future<void> setImages({required FilePickerResult? filePickerResult}) async {
+    if (filePickerResult == null) return;
+    List<AbstractImage> images = [];
+
+    for (final file in filePickerResult.files) {
+      images.add(
+        AbstractImage(
+          imagePath: file.name,
+          file: file.bytes,
+        ),
+      );
+    }
+
     List<Future> futures = [];
     for (final image in images) {
       futures.add(addImage(image: image));
@@ -28,16 +41,14 @@ class Images extends _$Images {
   }
 
   Future<void> addImage({required AbstractImage image}) async {
-    if (image.file?.bytes == null) return;
-    if (image.file?.name == null) return;
-
+    final bytes = image.file;
+    if (bytes == null) return;
     FormData formData = FormData.fromMap({
       "file": MultipartFile.fromBytes(
-        image.file!.bytes!,
-        filename: image.file!.name,
+        bytes,
+        filename: image.imagePath,
       ),
     });
-
     await _dio.post(
       server,
       data: formData,
@@ -58,11 +69,11 @@ class Images extends _$Images {
 
   Future<void> clearSelectionPath({required AbstractImage image}) async {
     logger.i('here');
-    final images = await future;
+    /*final images = await future;
     images.remove(image);
     logger.i(image.relativeSelectionCoordinates);
     image.relativeSelectionCoordinates = null;
     images.add(image);
-    state = AsyncData(images);
+    state = AsyncData(images);*/
   }
 }

@@ -126,10 +126,9 @@ def converted_paths():
         file_path = os.path.join(app.config['OUTPUT_FOLDER'], filename)
         md5_hash = calculate_md5(file_path)
         converted_paths_with_hashes.append({
-            'path': file_path,
-            'md5Hash': md5_hash
+            'image_path': file_path,
+            'md5_hash': md5_hash
         })
-
     return jsonify(converted_paths_with_hashes)
 
 
@@ -144,7 +143,7 @@ def calculate_md5(file_path):
 @app.route('/background_correction', methods=['POST'])
 def background_correction():
     file_path_parameter = 'image_path'
-    selected_region_parameter = 'selected_region'
+    selected_region_parameter = 'relative_selected_coordinates'
 
     data = request.get_json()
 

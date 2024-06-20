@@ -43,6 +43,7 @@ abstract class $AppDataStoreCopyWith<$Res> {
       LeftMenuEnum leftMenu,
       ConvexHullState convexHullState});
 
+  $AbstractImageCopyWith<$Res>? get selectedImage;
   $ConvexHullStateCopyWith<$Res> get convexHullState;
 }
 
@@ -86,6 +87,18 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
 
   @override
   @pragma('vm:prefer-inline')
+  $AbstractImageCopyWith<$Res>? get selectedImage {
+    if (_value.selectedImage == null) {
+      return null;
+    }
+
+    return $AbstractImageCopyWith<$Res>(_value.selectedImage!, (value) {
+      return _then(_value.copyWith(selectedImage: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $ConvexHullStateCopyWith<$Res> get convexHullState {
     return $ConvexHullStateCopyWith<$Res>(_value.convexHullState, (value) {
       return _then(_value.copyWith(convexHullState: value) as $Val);
@@ -107,6 +120,8 @@ abstract class _$$AppDataStoreImplCopyWith<$Res>
       LeftMenuEnum leftMenu,
       ConvexHullState convexHullState});
 
+  @override
+  $AbstractImageCopyWith<$Res>? get selectedImage;
   @override
   $ConvexHullStateCopyWith<$Res> get convexHullState;
 }

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
@@ -65,6 +66,9 @@ class _NetworkImage extends StatelessWidget {
       imageUrl: url,
       cacheKey: md5Hash,
       placeholder: (context, url) => const CircularProgressIndicator(),
+      errorListener: (error) {
+        logger.e(error);
+      },
     );
   }
 }

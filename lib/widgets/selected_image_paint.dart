@@ -68,9 +68,10 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
     if (painter.points.isNotEmpty) {
       setState(() => painter.addPoint(painter.points.first));
     }
-    widget.image.relativeSelectionCoordinates = computeRelativePoints(
-      absolutePoints: painter.points,
-    );
+    //TODO fix this
+    //widget.image.relativeSelectionCoordinates = computeRelativePoints(
+    //  absolutePoints: painter.points,
+    //);
     painter.setUnscaledPoints();
   }
 

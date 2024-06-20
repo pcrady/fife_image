@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
+import 'package:fife_image/models/convex_hull_image_set.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -23,15 +24,13 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       data: (images) {
         List<ConvexHullImageSet> sortedImages = [];
         for (AbstractImage image in images) {
-          final baseNames = sortedImages.map((imageSet) => imageSet.baseName).toList();
-
-          ConvexHullImageSet imageSet = sortedImages.firstWhere(
+          final oldImageSet = sortedImages.firstWhere(
             (element) => element.baseName == image.baseName,
             orElse: () => ConvexHullImageSet(),
           );
 
-          _addToImageSet(
-            imageSet: imageSet,
+          final newImageSet = _addToImageSet(
+            imageSet: oldImageSet,
             image: image,
             channel1Filter: convexHullState.channel1SearchPattern,
             channel2Filter: convexHullState.channel2SearchPattern,
@@ -39,11 +38,10 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
             channel4Filter: convexHullState.channel4SearchPattern,
             overlayFilter: convexHullState.overlaySearchPattern,
           );
-
-          if (!baseNames.contains(imageSet.baseName)) {
-            sortedImages.add(imageSet);
-          }
+          sortedImages.remove(oldImageSet);
+          sortedImages.add(newImageSet);
         }
+
         return sortedImages;
       },
       error: (err, stack) {
@@ -78,7 +76,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     return image.name.contains(filter) && image.name.contains(bgTag);
   }
 
-  _addToImageSet({
+  ConvexHullImageSet _addToImageSet({
     required ConvexHullImageSet imageSet,
     required AbstractImage image,
     required String channel1Filter,
@@ -87,42 +85,38 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     required String channel4Filter,
     required String overlayFilter,
   }) {
-    imageSet.baseName ??= image.baseName;
-
+    ConvexHullImageSet returnSet = imageSet.copyWith(baseName: image.baseName);
     if (_isPrimaryImage(image, channel1Filter)) {
-      imageSet.channel1 = image;
+      returnSet = returnSet.copyWith(channel1: image);
     } else if (_isPrimaryImage(image, channel2Filter)) {
-      imageSet.channel2 = image;
+      returnSet = returnSet.copyWith(channel2: image);
     } else if (_isPrimaryImage(image, channel3Filter)) {
-      imageSet.channel3 = image;
+      returnSet = returnSet.copyWith(channel3: image);
     } else if (_isPrimaryImage(image, channel4Filter)) {
-      imageSet.channel4 = image;
+      returnSet = returnSet.copyWith(channel4: image);
     } else if (_isPrimaryImage(image, overlayFilter)) {
-      imageSet.overlay = image;
+      returnSet = returnSet.copyWith(overlay: image);
     } else if (_isCorrectedImage(image, channel1Filter)) {
-      imageSet.channel1BackgroundCorrect = image;
+      returnSet = returnSet.copyWith(channel1BackgroundCorrect: image);
     } else if (_isCorrectedImage(image, channel2Filter)) {
-      imageSet.channel2BackgroundCorrect = image;
+      returnSet = returnSet.copyWith(channel2BackgroundCorrect: image);
     } else if (_isCorrectedImage(image, channel3Filter)) {
-      imageSet.channel3BackgroundCorrect = image;
+      returnSet = returnSet.copyWith(channel3BackgroundCorrect: image);
     } else if (_isCorrectedImage(image, channel4Filter)) {
-      imageSet.channel4BackgroundCorrect = image;
+      returnSet = returnSet.copyWith(channel4BackgroundCorrect: image);
     }
+
+    return returnSet;
   }
 
   Future<void> backgroundSelect() async {
     final appData = ref.read(appDataProvider);
     final image = appData.selectedImage;
-    if (image == null) return ;
-    if (image.filePath == null) return ;
-    if (image.selectionRegionPython.isEmpty) return ;
+    if (image == null) return;
 
     await _dio.post(
       '${server}background_correction',
-      data: {
-        'image_path': image.filePath!,
-        'selected_region': image.selectionRegionPython,
-      },
+      data: image.toJson(),
     );
     ref.invalidate(imagesProvider);
   }
