@@ -15,14 +15,14 @@ class AbstractImage with _$AbstractImage {
 
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   const factory AbstractImage({
-    String? imagePath,
+    required String imagePath,
     String? md5Hash,
     @Uint8ListConverter() Uint8List? file,
     @OffsetListConverter() List<Offset>? relativeSelectionCoordinates,
   }) = _AbstractImage;
 
-  String get url => server + (imagePath ?? '');
-  String get name => basename(imagePath ?? '').split('.').first;
+  String get url => server + imagePath;
+  String get name => basename(imagePath).split('.').first;
   String get baseName => name.split('_').first;
 
   factory AbstractImage.fromJson(Map<String, dynamic> json) => _$AbstractImageFromJson(json);

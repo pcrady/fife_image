@@ -8,7 +8,7 @@ part of 'abstract_image.dart';
 
 _$AbstractImageImpl _$$AbstractImageImplFromJson(Map<String, dynamic> json) =>
     _$AbstractImageImpl(
-      imagePath: json['image_path'] as String?,
+      imagePath: json['image_path'] as String,
       md5Hash: json['md5_hash'] as String?,
       file: const Uint8ListConverter().fromJson(json['file'] as List<int>?),
       relativeSelectionCoordinates: const OffsetListConverter().fromJson(
@@ -16,7 +16,9 @@ _$AbstractImageImpl _$$AbstractImageImplFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$$AbstractImageImplToJson(_$AbstractImageImpl instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'image_path': instance.imagePath,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -24,7 +26,6 @@ Map<String, dynamic> _$$AbstractImageImplToJson(_$AbstractImageImpl instance) {
     }
   }
 
-  writeNotNull('image_path', instance.imagePath);
   writeNotNull('md5_hash', instance.md5Hash);
   writeNotNull('file', const Uint8ListConverter().toJson(instance.file));
   writeNotNull(

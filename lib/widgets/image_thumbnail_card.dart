@@ -25,7 +25,7 @@ class ImageCard extends ConsumerWidget {
             ref.read(appDataProvider.notifier).selectImage(image: image);
           },
           onLongPress: () async {
-            await ref.read(imagesProvider.notifier).deleteImage(image: image);
+            await ref.read(imagesProvider.notifier).deleteImageFromServer(image: image);
           },
           child: Stack(
             children: [

@@ -3,6 +3,7 @@ import 'package:fife_image/constants.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // flutter pub run build_runner build
@@ -16,10 +17,14 @@ class Images extends _$Images {
   Future<List<AbstractImage>> build() async {
     final response = await _dio.get(server);
     final data = List<Map<String, dynamic>>.from(response.data);
-    return data.map((fileData) => AbstractImage.fromJson(fileData)).toList();
+    var images = data.map((fileData) => AbstractImage.fromJson(fileData)).toList();
+    images.sort((a, b) => a.imagePath.compareTo(b.imagePath));
+    return images;
   }
 
-  Future<void> setImages({required FilePickerResult? filePickerResult}) async {
+  Future<void> uploadImages({
+    required FilePickerResult? filePickerResult,
+  }) async {
     if (filePickerResult == null) return;
     List<AbstractImage> images = [];
 
@@ -34,13 +39,15 @@ class Images extends _$Images {
 
     List<Future> futures = [];
     for (final image in images) {
-      futures.add(addImage(image: image));
+      futures.add(_uploadImage(image: image));
     }
     await Future.wait(futures);
     ref.invalidateSelf();
   }
 
-  Future<void> addImage({required AbstractImage image}) async {
+  Future<void> _uploadImage({
+    required AbstractImage image,
+  }) async {
     final bytes = image.file;
     if (bytes == null) return;
     FormData formData = FormData.fromMap({
@@ -59,7 +66,9 @@ class Images extends _$Images {
     ref.invalidateSelf();
   }
 
-  Future<void> deleteImage({required AbstractImage image}) async {
+  Future<void> deleteImageFromServer({
+    required AbstractImage image,
+  }) async {
     await _dio.post(
       '$server/delete',
       data: {'filename': image.name},
@@ -67,7 +76,21 @@ class Images extends _$Images {
     ref.invalidateSelf();
   }
 
-  Future<void> clearSelectionPath({required AbstractImage image}) async {
+  Future<void> updateSelection({
+    required AbstractImage image,
+    required List<Offset>? selection,
+  }) async {
+    final images = await future;
+    images.remove(image);
+    final newImage = image.copyWith(relativeSelectionCoordinates: selection);
+    images.add(newImage);
+    images.sort((a, b) => a.imagePath.compareTo(b.imagePath));
+    ref.notifyListeners();
+  }
+
+  Future<void> clearSelectionPath({
+    required AbstractImage image,
+  }) async {
     logger.i('here');
     /*final images = await future;
     images.remove(image);

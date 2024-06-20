@@ -20,7 +20,7 @@ AbstractImage _$AbstractImageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AbstractImage {
-  String? get imagePath => throw _privateConstructorUsedError;
+  String get imagePath => throw _privateConstructorUsedError;
   String? get md5Hash => throw _privateConstructorUsedError;
   @Uint8ListConverter()
   Uint8List? get file => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ abstract class $AbstractImageCopyWith<$Res> {
       _$AbstractImageCopyWithImpl<$Res, AbstractImage>;
   @useResult
   $Res call(
-      {String? imagePath,
+      {String imagePath,
       String? md5Hash,
       @Uint8ListConverter() Uint8List? file,
       @OffsetListConverter() List<Offset>? relativeSelectionCoordinates});
@@ -60,16 +60,16 @@ class _$AbstractImageCopyWithImpl<$Res, $Val extends AbstractImage>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? imagePath = freezed,
+    Object? imagePath = null,
     Object? md5Hash = freezed,
     Object? file = freezed,
     Object? relativeSelectionCoordinates = freezed,
   }) {
     return _then(_value.copyWith(
-      imagePath: freezed == imagePath
+      imagePath: null == imagePath
           ? _value.imagePath
           : imagePath // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       md5Hash: freezed == md5Hash
           ? _value.md5Hash
           : md5Hash // ignore: cast_nullable_to_non_nullable
@@ -95,7 +95,7 @@ abstract class _$$AbstractImageImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? imagePath,
+      {String imagePath,
       String? md5Hash,
       @Uint8ListConverter() Uint8List? file,
       @OffsetListConverter() List<Offset>? relativeSelectionCoordinates});
@@ -112,16 +112,16 @@ class __$$AbstractImageImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? imagePath = freezed,
+    Object? imagePath = null,
     Object? md5Hash = freezed,
     Object? file = freezed,
     Object? relativeSelectionCoordinates = freezed,
   }) {
     return _then(_$AbstractImageImpl(
-      imagePath: freezed == imagePath
+      imagePath: null == imagePath
           ? _value.imagePath
           : imagePath // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       md5Hash: freezed == md5Hash
           ? _value.md5Hash
           : md5Hash // ignore: cast_nullable_to_non_nullable
@@ -144,7 +144,7 @@ class __$$AbstractImageImplCopyWithImpl<$Res>
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class _$AbstractImageImpl extends _AbstractImage {
   const _$AbstractImageImpl(
-      {this.imagePath,
+      {required this.imagePath,
       this.md5Hash,
       @Uint8ListConverter() this.file,
       @OffsetListConverter() final List<Offset>? relativeSelectionCoordinates})
@@ -155,7 +155,7 @@ class _$AbstractImageImpl extends _AbstractImage {
       _$$AbstractImageImplFromJson(json);
 
   @override
-  final String? imagePath;
+  final String imagePath;
   @override
   final String? md5Hash;
   @override
@@ -217,7 +217,7 @@ class _$AbstractImageImpl extends _AbstractImage {
 
 abstract class _AbstractImage extends AbstractImage {
   const factory _AbstractImage(
-      {final String? imagePath,
+      {required final String imagePath,
       final String? md5Hash,
       @Uint8ListConverter() final Uint8List? file,
       @OffsetListConverter()
@@ -228,7 +228,7 @@ abstract class _AbstractImage extends AbstractImage {
       _$AbstractImageImpl.fromJson;
 
   @override
-  String? get imagePath;
+  String get imagePath;
   @override
   String? get md5Hash;
   @override

@@ -7,7 +7,7 @@ part of 'convex_hull_image_provider.dart';
 // **************************************************************************
 
 String _$convexHullImageSetsHash() =>
-    r'21c006c54faac2de86f42f27d0117eb0b9b5fcbe';
+    r'c0138d58f3e75bbaee48fc45f3c6658fc0456280';
 
 /// See also [ConvexHullImageSets].
 @ProviderFor(ConvexHullImageSets)

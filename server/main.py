@@ -144,22 +144,31 @@ def calculate_md5(file_path):
 def background_correction():
     file_path_parameter = 'image_path'
     selected_region_parameter = 'relative_selected_coordinates'
-
+    print('here1')
     data = request.get_json()
-
+    print('here2')
     if file_path_parameter not in data:
+        print('here3')
         return jsonify({"error": "No filepath provided"}), 400
 
+    print('here4')
     if selected_region_parameter not in data:
+        print('here5')
         return jsonify({"error": "No selection region provided"}), 400
 
+    print('here6')
     file_path = data[file_path_parameter]
+    print('here7')
     image = io.imread(file_path)
+    print('here8')
     selected_region = data[selected_region_parameter]
-
+    print('here9')
     corrected_image = subtract_background(image, selected_region)
+    print('here10')
     corrected_image_name = file_path.split('.')[0] + '_bg_correct.png'
+    print('here11')
     save_image(corrected_image_name, corrected_image)
+    print('here12')
     return converted_paths()
 
 

@@ -14,6 +14,7 @@ part 'convex_hull_image_provider.g.dart';
 class ConvexHullImageSets extends _$ConvexHullImageSets {
   final _dio = Dio();
 
+  // TODO redo this it cant be performant maybe build a json structure
   @override
   List<ConvexHullImageSet> build() {
     final asyncValue = ref.watch(imagesProvider);
@@ -113,6 +114,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     final appData = ref.read(appDataProvider);
     final image = appData.selectedImage;
     if (image == null) return;
+    logger.i(image.toJson());
 
     await _dio.post(
       '${server}background_correction',
