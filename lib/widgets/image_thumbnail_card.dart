@@ -6,22 +6,29 @@ import 'package:fife_image/providers/images_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ImageCard extends ConsumerWidget {
+class ImageThumbnailCard extends ConsumerStatefulWidget {
   final AbstractImage image;
 
-  const ImageCard({
+  const ImageThumbnailCard({
     required this.image,
     super.key,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ImageThumbnailCard> createState() => _ImageThumbnailCardState();
+}
+
+class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
+  bool mouseHover = false;
+
+  @override
+  Widget build(BuildContext context) {
     final data = ref.watch(appDataProvider);
     final selectedImage = data.selectedImage;
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      shape: image == selectedImage
+      shape: widget.image == selectedImage
           ? RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
               side: const BorderSide(
@@ -32,24 +39,40 @@ class ImageCard extends ConsumerWidget {
           : null,
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
+        onEnter: (_) {
+          setState(() => mouseHover = true);
+        },
+        onExit: (_) {
+          setState(() => mouseHover = false);
+        },
         child: GestureDetector(
           onTap: () {
-            ref.read(appDataProvider.notifier).selectImage(image: image);
-          },
-          onLongPress: () async {
-            await ref.read(imagesProvider.notifier).deleteImageFromServer(image: image);
+            ref.read(appDataProvider.notifier).selectImage(image: widget.image);
           },
           child: Stack(
             children: [
               _NetworkImage(
-                url: image.url,
-                md5Hash: image.md5Hash ?? '',
+                url: widget.image.url,
+                md5Hash: widget.image.md5Hash ?? '',
               ),
+              mouseHover ? Positioned(
+                right: 0.0,
+                top: 0.0,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    await ref.read(imagesProvider.notifier).deleteImageFromServer(image: widget.image);
+                  },
+                ),
+              ) : Container(),
               Positioned(
                 left: 8.0,
                 bottom: 8.0,
                 child: Text(
-                  image.name,
+                  widget.image.name,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12.0,

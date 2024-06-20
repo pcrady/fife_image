@@ -124,42 +124,42 @@ class _ImageSetWidget extends ConsumerWidget {
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.channel0!),
+                    child: ImageThumbnailCard(image: imageSet.channel0!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel1 != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.channel1!),
+                    child: ImageThumbnailCard(image: imageSet.channel1!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel2 != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.channel2!),
+                    child: ImageThumbnailCard(image: imageSet.channel2!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel3 != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.channel3!),
+                    child: ImageThumbnailCard(image: imageSet.channel3!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel4 != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.channel4!),
+                    child: ImageThumbnailCard(image: imageSet.channel4!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.overlay != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.overlay!),
+                    child: ImageThumbnailCard(image: imageSet.overlay!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
           ],
@@ -175,35 +175,35 @@ class _ImageSetWidget extends ConsumerWidget {
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.channel0BackgroundCorrect!),
+                    child: ImageThumbnailCard(image: imageSet.channel0BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel1BackgroundCorrect != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.channel1BackgroundCorrect!),
+                    child: ImageThumbnailCard(image: imageSet.channel1BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel2BackgroundCorrect != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.channel2BackgroundCorrect!),
+                    child: ImageThumbnailCard(image: imageSet.channel2BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel3BackgroundCorrect != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.channel3BackgroundCorrect!),
+                    child: ImageThumbnailCard(image: imageSet.channel3BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel4BackgroundCorrect != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageCard(image: imageSet.channel4BackgroundCorrect!),
+                    child: ImageThumbnailCard(image: imageSet.channel4BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             SizedBox(width: cardSize, height: cardSize),
