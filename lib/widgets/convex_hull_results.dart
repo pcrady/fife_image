@@ -1,3 +1,4 @@
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/models/convex_hull_image_set.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -19,93 +20,109 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullResults> {
     final convexHullImages = ref.watch(convexHullImageSetsProvider);
     final settings = ref.watch(appDataProvider);
     final convexHullState = settings.convexHullState;
-    final width = MediaQuery.of(context).size.width;
-    final cardSize = (width / 2.0 / 6.0) - 16.0;
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.widthConstraints().maxWidth;
+      final cardSize = (width - 20) / 6.0;
+
+      return SingleChildScrollView(
+        child: SizedBox(
+          width: width,
+          child: Column(
             children: [
-              SizedBox(width: cardSize),
-              SizedBox(
-                width: cardSize,
-                child: Text(
-                  convexHullState.channel1ProteinName,
-                  textAlign: TextAlign.center,
-                ),
+              Row(
+                children: [
+                  const SizedBox(width: 20.0),
+                  SizedBox(
+                    width: cardSize,
+                    child: Text(
+                      convexHullState.channel0ProteinName,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    width: cardSize,
+                    child: Text(
+                      convexHullState.channel1ProteinName,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    width: cardSize,
+                    child: Text(
+                      convexHullState.channel2ProteinName,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    width: cardSize,
+                    child: Text(
+                      convexHullState.channel3ProteinName,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    width: cardSize,
+                    child: Text(
+                      convexHullState.channel4ProteinName,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    width: cardSize,
+                    child: const Text(
+                      'Overlay',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
-                width: cardSize,
-                child: Text(
-                  convexHullState.channel2ProteinName,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                width: cardSize,
-                child: Text(
-                  convexHullState.channel3ProteinName,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                width: cardSize,
-                child: Text(
-                  convexHullState.channel4ProteinName,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                width: cardSize,
-                child: const Text(
-                  'Overlay',
-                  textAlign: TextAlign.center,
-                ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: convexHullImages.length,
+                itemBuilder: (context, index) {
+                  return _ImageSetWidget(
+                    imageSet: convexHullImages[index],
+                    cardSize: cardSize,
+                  );
+                },
               ),
             ],
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: convexHullImages.length,
-            itemBuilder: (context, index) {
-              return _ImageSetWidget(
-                imageSet: convexHullImages[index],
-              );
-            },
-          ),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 }
 
 class _ImageSetWidget extends ConsumerWidget {
   final ConvexHullImageSet imageSet;
+  final double cardSize;
 
   const _ImageSetWidget({
     required this.imageSet,
+    required this.cardSize,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final width = MediaQuery.of(context).size.width;
-    final cardSize = (width / 2.0 / 6.0) - 16.0;
-    final appData = ref.read(appDataProvider);
 
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(
-              width: cardSize,
-              child: Text(
-                imageSet.baseName ?? '',
-                style: const TextStyle(color: Colors.black),
-              ),
+            RotatedBox(
+              quarterTurns: 3,
+              child: Text(imageSet.baseName ?? ''),
             ),
+            imageSet.channel0 != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.channel0!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel1 != null
                 ? SizedBox(
                     width: cardSize,
@@ -146,14 +163,17 @@ class _ImageSetWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(
-              width: cardSize,
-              child: Text(
-                '${imageSet.baseName}\nBackground Correction' ?? '',
-
-                style: const TextStyle(color: Colors.black),
-              ),
+            const RotatedBox(
+              quarterTurns: 3,
+              child: Text('Results'),
             ),
+            imageSet.channel0BackgroundCorrect != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageCard(image: imageSet.channel0BackgroundCorrect!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel1BackgroundCorrect != null
                 ? SizedBox(
                     width: cardSize,

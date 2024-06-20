@@ -33,7 +33,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
           final newImageSet = _addToImageSet(
             imageSet: oldImageSet,
             image: image,
-            channel0Filter: convexHullState.channel1SearchPattern,
+            channel0Filter: convexHullState.channel0SearchPattern,
             channel1Filter: convexHullState.channel1SearchPattern,
             channel2Filter: convexHullState.channel2SearchPattern,
             channel3Filter: convexHullState.channel3SearchPattern,

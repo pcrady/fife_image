@@ -1,3 +1,4 @@
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/convex_hull_state.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -253,11 +254,13 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                           if (_formKey.currentState!.validate()) {
                             final appData = ref.read(appDataProvider.notifier);
                             final convexHullState = ConvexHullState(
+                              channel0SearchPattern: channel0Controller.text,
                               channel1SearchPattern: channel1Controller.text,
                               channel2SearchPattern: channel2Controller.text,
                               channel3SearchPattern: channel3Controller.text,
                               channel4SearchPattern: channel4Controller.text,
                               overlaySearchPattern: overlayController.text,
+                              channel0ProteinName: channel0NameController.text,
                               channel1ProteinName: channel1NameController.text,
                               channel2ProteinName: channel2NameController.text,
                               channel3ProteinName: channel3NameController.text,

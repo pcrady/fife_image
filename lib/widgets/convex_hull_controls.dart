@@ -99,6 +99,7 @@ class _BackgroundSelect extends ConsumerWidget {
         ],
       );
     } else {
+      logger.i(image?.name ?? '');
       return Column(
         children: [
           Text(
