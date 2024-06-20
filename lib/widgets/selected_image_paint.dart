@@ -69,15 +69,9 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
     if (painter.points.isNotEmpty) {
       setState(() => painter.addPoint(painter.points.first));
     }
-
-    final relativePoints = computeRelativePoints(
-      absolutePoints: painter.points,
-    );
+    final relativePoints = computeRelativePoints(absolutePoints: painter.points);
     final images = ref.read(imagesProvider.notifier);
-    images.updateSelection(
-      image: widget.image,
-      selection: relativePoints,
-    );
+    images.updateSelection(image: widget.image, selection: relativePoints);
     painter.setUnscaledPoints();
   }
 
@@ -96,7 +90,6 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
         painter.clearPoints();
       }
     });
-    logger.w(widget.image.toJson());
     super.initState();
   }
 

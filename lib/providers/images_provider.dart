@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
+import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -85,18 +86,7 @@ class Images extends _$Images {
     final newImage = image.copyWith(relativeSelectionCoordinates: selection);
     images.add(newImage);
     images.sort((a, b) => a.imagePath.compareTo(b.imagePath));
+    ref.read(appDataProvider.notifier).selectImage(image: newImage);
     ref.notifyListeners();
-  }
-
-  Future<void> clearSelectionPath({
-    required AbstractImage image,
-  }) async {
-    logger.i('here');
-    /*final images = await future;
-    images.remove(image);
-    logger.i(image.relativeSelectionCoordinates);
-    image.relativeSelectionCoordinates = null;
-    images.add(image);
-    state = AsyncData(images);*/
   }
 }

@@ -143,7 +143,7 @@ def calculate_md5(file_path):
 @app.route('/background_correction', methods=['POST'])
 def background_correction():
     file_path_parameter = 'image_path'
-    selected_region_parameter = 'relative_selected_coordinates'
+    selected_region_parameter = 'relative_selection_coordinates'
     print('here1')
     data = request.get_json()
     print('here2')

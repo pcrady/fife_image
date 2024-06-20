@@ -120,7 +120,6 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     final appData = ref.read(appDataProvider);
     final image = appData.selectedImage;
     if (image == null) return;
-    logger.i(image.toJson());
 
     await _dio.post(
       '${server}background_correction',

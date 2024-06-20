@@ -75,7 +75,7 @@ class _BackgroundSelect extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     if (image != null) {
-                      ref.read(imagesProvider.notifier).clearSelectionPath(image: image);
+                      ref.read(imagesProvider.notifier).updateSelection(image: image, selection: null);
                     }
                   },
                   child: const Text('Clear Selection'),

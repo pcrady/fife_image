@@ -81,9 +81,14 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullResults> {
                 shrinkWrap: true,
                 itemCount: convexHullImages.length,
                 itemBuilder: (context, index) {
-                  return _ImageSetWidget(
-                    imageSet: convexHullImages[index],
-                    cardSize: cardSize,
+                  return Column(
+                    children: [
+                      _ImageSetWidget(
+                        imageSet: convexHullImages[index],
+                        cardSize: cardSize,
+                      ),
+                      index < convexHullImages.length - 1 ? const Divider(color: Colors.black) : Container(),
+                    ],
                   );
                 },
               ),
@@ -106,7 +111,6 @@ class _ImageSetWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return Column(
       children: [
         Row(
