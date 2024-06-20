@@ -2,6 +2,7 @@ import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/convex_hull_image_provider.dart';
+import 'package:fife_image/providers/images_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -73,9 +74,11 @@ class _BackgroundSelect extends ConsumerWidget {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    image?.relativeSelectionCoordinates = null;
+                    if (image != null) {
+                      ref.read(imagesProvider.notifier).clearSelectionPath(image: image);
+                    }
                   },
-                  child: const Text('Clear'),
+                  child: const Text('Clear Selection'),
                 ),
               ),
               const SizedBox(width: 8.0),

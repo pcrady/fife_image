@@ -55,4 +55,14 @@ class Images extends _$Images {
     );
     ref.invalidateSelf();
   }
+
+  Future<void> clearSelectionPath({required AbstractImage image}) async {
+    logger.i('here');
+    final images = await future;
+    images.remove(image);
+    logger.i(image.relativeSelectionCoordinates);
+    image.relativeSelectionCoordinates = null;
+    images.add(image);
+    state = AsyncData(images);
+  }
 }

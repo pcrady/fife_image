@@ -46,7 +46,10 @@ class AbstractImage {
   @override
   bool operator ==(Object other) {
     if (other is! AbstractImage) return false;
-    if ((other.filePath == filePath) && (other.file == file) && (other.md5Hash == md5Hash)) {
+    if ((other.filePath == filePath) &&
+        (other.file == file) &&
+        (other.md5Hash == md5Hash) &&
+        (other.relativeSelectionCoordinates == relativeSelectionCoordinates)) {
       return true;
     } else {
       return false;
@@ -54,7 +57,7 @@ class AbstractImage {
   }
 
   @override
-  int get hashCode => Object.hash(filePath, file);
+  int get hashCode => Object.hash(filePath, file, md5Hash, relativeSelectionCoordinates);
 }
 
 class ConvexHullImageSet {

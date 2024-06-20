@@ -1,5 +1,6 @@
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
+import 'package:fife_image/providers/images_provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -102,6 +103,8 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
   // TODO BUG - draw path, switch image, resize screen
   @override
   Widget build(BuildContext context) {
+    ref.watch(imagesProvider);
+
     return LayoutBuilder(
       builder: (_, constraints) {
         currentWidth = constraints.widthConstraints().maxWidth;
