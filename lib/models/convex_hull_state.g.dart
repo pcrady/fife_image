@@ -22,13 +22,13 @@ _$ConvexHullStateImpl _$$ConvexHullStateImplFromJson(
           json['channel4_search_pattern'] as String? ?? 'ch04',
       overlaySearchPattern:
           json['overlay_search_pattern'] as String? ?? 'overlay',
-      channel0ProteinName: json['channel0_protein_name'] as String? ?? 'IDK',
+      channel0ProteinName: json['channel0_protein_name'] as String? ?? 'CD4',
       channel1ProteinName:
-          json['channel1_protein_name'] as String? ?? 'Insulin',
+          json['channel1_protein_name'] as String? ?? 'Glucagon',
       channel2ProteinName:
-          json['channel2_protein_name'] as String? ?? 'Glucagon',
-      channel3ProteinName: json['channel3_protein_name'] as String? ?? 'CD4',
-      channel4ProteinName: json['channel4_protein_name'] as String? ?? 'CD8',
+          json['channel2_protein_name'] as String? ?? 'Insulin',
+      channel3ProteinName: json['channel3_protein_name'] as String? ?? 'CD8',
+      channel4ProteinName: json['channel4_protein_name'] as String? ?? '???',
     );
 
 Map<String, dynamic> _$$ConvexHullStateImplToJson(

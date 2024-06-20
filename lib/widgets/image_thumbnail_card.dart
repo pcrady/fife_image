@@ -56,14 +56,14 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
                 md5Hash: widget.image.md5Hash ?? '',
               ),
               mouseHover ? Positioned(
-                right: 0.0,
-                top: 0.0,
-                child: IconButton(
-                  icon: const Icon(
+                right: 2.0,
+                top: 2.0,
+                child: GestureDetector(
+                  child: const Icon(
                     Icons.close,
                     color: Colors.white,
                   ),
-                  onPressed: () async {
+                  onLongPress: () async {
                     await ref.read(imagesProvider.notifier).deleteImageFromServer(image: widget.image);
                   },
                 ),

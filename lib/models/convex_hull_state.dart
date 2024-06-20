@@ -15,11 +15,11 @@ class ConvexHullState with _$ConvexHullState {
     @Default('ch03') String channel3SearchPattern,
     @Default('ch04') String channel4SearchPattern,
     @Default('overlay') String overlaySearchPattern,
-    @Default('IDK') String channel0ProteinName,
-    @Default('Insulin') String channel1ProteinName,
-    @Default('Glucagon') String channel2ProteinName,
-    @Default('CD4') String channel3ProteinName,
-    @Default('CD8') String channel4ProteinName,
+    @Default('CD4') String channel0ProteinName,
+    @Default('Glucagon') String channel1ProteinName,
+    @Default('Insulin') String channel2ProteinName,
+    @Default('CD8') String channel3ProteinName,
+    @Default('???') String channel4ProteinName,
   }) = _ConvexHullState;
 
   factory ConvexHullState.fromJson(Map<String, dynamic> json) => _$ConvexHullStateFromJson(json);

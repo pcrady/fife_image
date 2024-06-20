@@ -252,11 +252,11 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
       this.channel3SearchPattern = 'ch03',
       this.channel4SearchPattern = 'ch04',
       this.overlaySearchPattern = 'overlay',
-      this.channel0ProteinName = 'IDK',
-      this.channel1ProteinName = 'Insulin',
-      this.channel2ProteinName = 'Glucagon',
-      this.channel3ProteinName = 'CD4',
-      this.channel4ProteinName = 'CD8'});
+      this.channel0ProteinName = 'CD4',
+      this.channel1ProteinName = 'Glucagon',
+      this.channel2ProteinName = 'Insulin',
+      this.channel3ProteinName = 'CD8',
+      this.channel4ProteinName = '???'});
 
   factory _$ConvexHullStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullStateImplFromJson(json);
