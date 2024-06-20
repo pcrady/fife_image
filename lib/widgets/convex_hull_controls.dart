@@ -100,6 +100,7 @@ class _BackgroundSelect extends ConsumerWidget {
       );
     } else {
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             imageName,
@@ -112,6 +113,34 @@ class _BackgroundSelect extends ConsumerWidget {
             'Select the outline of the islet.',
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 16.0),
+          ),
+          const SizedBox(height: 8.0),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (image != null) {
+                      ref.read(imagesProvider.notifier).updateSelection(image: image, selection: null);
+                    }
+                  },
+                  child: const Text('Clear Selection'),
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      await ref.read(convexHullImageSetsProvider.notifier).performCalculation();
+                    } catch (err, stack) {
+                      logger.e(err, stackTrace: stack);
+                    }
+                  },
+                  child: const Text('Perform Calculations'),
+                ),
+              )
+            ],
           ),
         ],
       );

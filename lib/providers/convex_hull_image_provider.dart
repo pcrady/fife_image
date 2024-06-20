@@ -127,4 +127,17 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     );
     ref.invalidate(imagesProvider);
   }
+
+  Future<void> performCalculation() async {
+    final appData = ref.read(appDataProvider);
+    final image = appData.selectedImage;
+    if (image == null) return;
+
+    await _dio.post(
+      '${server}background_correction',
+      data: {},
+    );
+
+    ref.invalidate(imagesProvider);
+  }
 }

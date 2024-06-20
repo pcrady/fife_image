@@ -28,7 +28,7 @@ _$ConvexHullConfigImpl _$$ConvexHullConfigImplFromJson(
       channel2ProteinName:
           json['channel2_protein_name'] as String? ?? 'Insulin',
       channel3ProteinName: json['channel3_protein_name'] as String? ?? 'CD8',
-      channel4ProteinName: json['channel4_protein_name'] as String? ?? '???',
+      channel4ProteinName: json['channel4_protein_name'] as String? ?? 'DAPI',
     );
 
 Map<String, dynamic> _$$ConvexHullConfigImplToJson(

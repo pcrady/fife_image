@@ -160,6 +160,11 @@ def background_correction():
     return converted_paths()
 
 
+@app.route('/convex_hull_calculation', methods=['POST'])
+def convex_hull_calculation():
+    pass
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 

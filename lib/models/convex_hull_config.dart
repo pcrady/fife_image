@@ -19,7 +19,7 @@ class ConvexHullConfig with _$ConvexHullConfig {
     @Default('Glucagon') String channel1ProteinName,
     @Default('Insulin') String channel2ProteinName,
     @Default('CD8') String channel3ProteinName,
-    @Default('???') String channel4ProteinName,
+    @Default('DAPI') String channel4ProteinName,
   }) = _ConvexHullConfig;
 
   factory ConvexHullConfig.fromJson(Map<String, dynamic> json) => _$ConvexHullConfigFromJson(json);

@@ -16,10 +16,13 @@ class SelectedImage extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Card(
-            clipBehavior: Clip.antiAlias,
-            child: SelectedImagePaint(image: image),
-          ),
+          MouseRegion(
+            cursor: SystemMouseCursors.precise,
+            child: Card(
+              clipBehavior: Clip.antiAlias,
+              child: SelectedImagePaint(image: image),
+            ),
+          )
         ],
       );
     } else {
