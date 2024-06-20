@@ -19,7 +19,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
   List<ConvexHullImageSet> build() {
     final asyncValue = ref.watch(imagesProvider);
     final settings = ref.watch(appDataProvider);
-    final convexHullState = settings.convexHullState;
+    final convexHullConfig = settings.convexHullConfig;
 
     return asyncValue.when(
       data: (images) {
@@ -33,12 +33,12 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
           final newImageSet = _addToImageSet(
             imageSet: oldImageSet,
             image: image,
-            channel0Filter: convexHullState.channel0SearchPattern,
-            channel1Filter: convexHullState.channel1SearchPattern,
-            channel2Filter: convexHullState.channel2SearchPattern,
-            channel3Filter: convexHullState.channel3SearchPattern,
-            channel4Filter: convexHullState.channel4SearchPattern,
-            overlayFilter: convexHullState.overlaySearchPattern,
+            channel0Filter: convexHullConfig.channel0SearchPattern,
+            channel1Filter: convexHullConfig.channel1SearchPattern,
+            channel2Filter: convexHullConfig.channel2SearchPattern,
+            channel3Filter: convexHullConfig.channel3SearchPattern,
+            channel4Filter: convexHullConfig.channel4SearchPattern,
+            overlayFilter: convexHullConfig.overlaySearchPattern,
           );
           sortedImages.remove(oldImageSet);
           sortedImages.add(newImageSet);

@@ -1,5 +1,5 @@
 import 'package:fife_image/lib/app_logger.dart';
-import 'package:fife_image/models/convex_hull_state.dart';
+import 'package:fife_image/models/convex_hull_config.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:flutter/material.dart';
@@ -36,18 +36,18 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   @override
   void initState() {
     final settings = ref.read(appDataProvider);
-    final convexHullState = settings.convexHullState;
-    channel0Controller = TextEditingController(text: convexHullState.channel0SearchPattern);
-    channel1Controller = TextEditingController(text: convexHullState.channel1SearchPattern);
-    channel2Controller = TextEditingController(text: convexHullState.channel2SearchPattern);
-    channel3Controller = TextEditingController(text: convexHullState.channel3SearchPattern);
-    channel4Controller = TextEditingController(text: convexHullState.channel4SearchPattern);
-    overlayController = TextEditingController(text: convexHullState.overlaySearchPattern);
-    channel0NameController = TextEditingController(text: convexHullState.channel0ProteinName);
-    channel1NameController = TextEditingController(text: convexHullState.channel1ProteinName);
-    channel2NameController = TextEditingController(text: convexHullState.channel2ProteinName);
-    channel3NameController = TextEditingController(text: convexHullState.channel3ProteinName);
-    channel4NameController = TextEditingController(text: convexHullState.channel4ProteinName);
+    final convexHullConfig = settings.convexHullConfig;
+    channel0Controller = TextEditingController(text: convexHullConfig.channel0SearchPattern);
+    channel1Controller = TextEditingController(text: convexHullConfig.channel1SearchPattern);
+    channel2Controller = TextEditingController(text: convexHullConfig.channel2SearchPattern);
+    channel3Controller = TextEditingController(text: convexHullConfig.channel3SearchPattern);
+    channel4Controller = TextEditingController(text: convexHullConfig.channel4SearchPattern);
+    overlayController = TextEditingController(text: convexHullConfig.overlaySearchPattern);
+    channel0NameController = TextEditingController(text: convexHullConfig.channel0ProteinName);
+    channel1NameController = TextEditingController(text: convexHullConfig.channel1ProteinName);
+    channel2NameController = TextEditingController(text: convexHullConfig.channel2ProteinName);
+    channel3NameController = TextEditingController(text: convexHullConfig.channel3ProteinName);
+    channel4NameController = TextEditingController(text: convexHullConfig.channel4ProteinName);
     super.initState();
   }
 
@@ -253,7 +253,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             final appData = ref.read(appDataProvider.notifier);
-                            final convexHullState = ConvexHullState(
+                            final convexHullConfig = ConvexHullConfig(
                               channel0SearchPattern: channel0Controller.text,
                               channel1SearchPattern: channel1Controller.text,
                               channel2SearchPattern: channel2Controller.text,
@@ -266,7 +266,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               channel3ProteinName: channel3NameController.text,
                               channel4ProteinName: channel4NameController.text,
                             );
-                            appData.setConvexHullState(convexHullState: convexHullState);
+                            appData.setConvexHullConfig(convexHullConfig: convexHullConfig);
                             appData.setMenuSetting(leftMenu: LeftMenuEnum.functionResults);
                           }
                         },

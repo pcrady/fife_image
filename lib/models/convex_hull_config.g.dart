@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'convex_hull_state.dart';
+part of 'convex_hull_config.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ConvexHullStateImpl _$$ConvexHullStateImplFromJson(
+_$ConvexHullConfigImpl _$$ConvexHullConfigImplFromJson(
         Map<String, dynamic> json) =>
-    _$ConvexHullStateImpl(
+    _$ConvexHullConfigImpl(
       activeImageSetBaseName: json['active_image_set_base_name'] as String?,
       channel0SearchPattern:
           json['channel0_search_pattern'] as String? ?? 'ch00',
@@ -31,8 +31,8 @@ _$ConvexHullStateImpl _$$ConvexHullStateImplFromJson(
       channel4ProteinName: json['channel4_protein_name'] as String? ?? '???',
     );
 
-Map<String, dynamic> _$$ConvexHullStateImplToJson(
-    _$ConvexHullStateImpl instance) {
+Map<String, dynamic> _$$ConvexHullConfigImplToJson(
+    _$ConvexHullConfigImpl instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {

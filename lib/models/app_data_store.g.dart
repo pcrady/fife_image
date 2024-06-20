@@ -16,10 +16,10 @@ _$AppDataStoreImpl _$$AppDataStoreImplFromJson(Map<String, dynamic> json) =>
           FunctionsEnum.functions,
       leftMenu: $enumDecodeNullable(_$LeftMenuEnumEnumMap, json['left_menu']) ??
           LeftMenuEnum.images,
-      convexHullState: json['convex_hull_state'] == null
-          ? const ConvexHullState()
-          : ConvexHullState.fromJson(
-              json['convex_hull_state'] as Map<String, dynamic>),
+      convexHullConfig: json['convex_hull_config'] == null
+          ? const ConvexHullConfig()
+          : ConvexHullConfig.fromJson(
+              json['convex_hull_config'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) {
@@ -34,7 +34,7 @@ Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) {
   writeNotNull('selected_image', instance.selectedImage?.toJson());
   val['function'] = _$FunctionsEnumEnumMap[instance.function]!;
   val['left_menu'] = _$LeftMenuEnumEnumMap[instance.leftMenu]!;
-  val['convex_hull_state'] = instance.convexHullState.toJson();
+  val['convex_hull_config'] = instance.convexHullConfig.toJson();
   return val;
 }
 

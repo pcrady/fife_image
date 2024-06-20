@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'convex_hull_state.dart';
+part of 'convex_hull_config.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-ConvexHullState _$ConvexHullStateFromJson(Map<String, dynamic> json) {
-  return _ConvexHullState.fromJson(json);
+ConvexHullConfig _$ConvexHullConfigFromJson(Map<String, dynamic> json) {
+  return _ConvexHullConfig.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ConvexHullState {
+mixin _$ConvexHullConfig {
   String? get activeImageSetBaseName => throw _privateConstructorUsedError;
   String get channel0SearchPattern => throw _privateConstructorUsedError;
   String get channel1SearchPattern => throw _privateConstructorUsedError;
@@ -35,15 +35,15 @@ mixin _$ConvexHullState {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ConvexHullStateCopyWith<ConvexHullState> get copyWith =>
+  $ConvexHullConfigCopyWith<ConvexHullConfig> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ConvexHullStateCopyWith<$Res> {
-  factory $ConvexHullStateCopyWith(
-          ConvexHullState value, $Res Function(ConvexHullState) then) =
-      _$ConvexHullStateCopyWithImpl<$Res, ConvexHullState>;
+abstract class $ConvexHullConfigCopyWith<$Res> {
+  factory $ConvexHullConfigCopyWith(
+          ConvexHullConfig value, $Res Function(ConvexHullConfig) then) =
+      _$ConvexHullConfigCopyWithImpl<$Res, ConvexHullConfig>;
   @useResult
   $Res call(
       {String? activeImageSetBaseName,
@@ -61,9 +61,9 @@ abstract class $ConvexHullStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ConvexHullStateCopyWithImpl<$Res, $Val extends ConvexHullState>
-    implements $ConvexHullStateCopyWith<$Res> {
-  _$ConvexHullStateCopyWithImpl(this._value, this._then);
+class _$ConvexHullConfigCopyWithImpl<$Res, $Val extends ConvexHullConfig>
+    implements $ConvexHullConfigCopyWith<$Res> {
+  _$ConvexHullConfigCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -140,11 +140,11 @@ class _$ConvexHullStateCopyWithImpl<$Res, $Val extends ConvexHullState>
 }
 
 /// @nodoc
-abstract class _$$ConvexHullStateImplCopyWith<$Res>
-    implements $ConvexHullStateCopyWith<$Res> {
-  factory _$$ConvexHullStateImplCopyWith(_$ConvexHullStateImpl value,
-          $Res Function(_$ConvexHullStateImpl) then) =
-      __$$ConvexHullStateImplCopyWithImpl<$Res>;
+abstract class _$$ConvexHullConfigImplCopyWith<$Res>
+    implements $ConvexHullConfigCopyWith<$Res> {
+  factory _$$ConvexHullConfigImplCopyWith(_$ConvexHullConfigImpl value,
+          $Res Function(_$ConvexHullConfigImpl) then) =
+      __$$ConvexHullConfigImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -163,11 +163,11 @@ abstract class _$$ConvexHullStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ConvexHullStateImplCopyWithImpl<$Res>
-    extends _$ConvexHullStateCopyWithImpl<$Res, _$ConvexHullStateImpl>
-    implements _$$ConvexHullStateImplCopyWith<$Res> {
-  __$$ConvexHullStateImplCopyWithImpl(
-      _$ConvexHullStateImpl _value, $Res Function(_$ConvexHullStateImpl) _then)
+class __$$ConvexHullConfigImplCopyWithImpl<$Res>
+    extends _$ConvexHullConfigCopyWithImpl<$Res, _$ConvexHullConfigImpl>
+    implements _$$ConvexHullConfigImplCopyWith<$Res> {
+  __$$ConvexHullConfigImplCopyWithImpl(_$ConvexHullConfigImpl _value,
+      $Res Function(_$ConvexHullConfigImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -186,7 +186,7 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
     Object? channel3ProteinName = null,
     Object? channel4ProteinName = null,
   }) {
-    return _then(_$ConvexHullStateImpl(
+    return _then(_$ConvexHullConfigImpl(
       activeImageSetBaseName: freezed == activeImageSetBaseName
           ? _value.activeImageSetBaseName
           : activeImageSetBaseName // ignore: cast_nullable_to_non_nullable
@@ -243,8 +243,8 @@ class __$$ConvexHullStateImplCopyWithImpl<$Res>
 
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
-class _$ConvexHullStateImpl implements _ConvexHullState {
-  const _$ConvexHullStateImpl(
+class _$ConvexHullConfigImpl implements _ConvexHullConfig {
+  const _$ConvexHullConfigImpl(
       {this.activeImageSetBaseName,
       this.channel0SearchPattern = 'ch00',
       this.channel1SearchPattern = 'ch01',
@@ -258,8 +258,8 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
       this.channel3ProteinName = 'CD8',
       this.channel4ProteinName = '???'});
 
-  factory _$ConvexHullStateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ConvexHullStateImplFromJson(json);
+  factory _$ConvexHullConfigImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ConvexHullConfigImplFromJson(json);
 
   @override
   final String? activeImageSetBaseName;
@@ -299,14 +299,14 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
 
   @override
   String toString() {
-    return 'ConvexHullState(activeImageSetBaseName: $activeImageSetBaseName, channel0SearchPattern: $channel0SearchPattern, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel0ProteinName: $channel0ProteinName, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName)';
+    return 'ConvexHullConfig(activeImageSetBaseName: $activeImageSetBaseName, channel0SearchPattern: $channel0SearchPattern, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel0ProteinName: $channel0ProteinName, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ConvexHullStateImpl &&
+            other is _$ConvexHullConfigImpl &&
             (identical(other.activeImageSetBaseName, activeImageSetBaseName) ||
                 other.activeImageSetBaseName == activeImageSetBaseName) &&
             (identical(other.channel0SearchPattern, channel0SearchPattern) ||
@@ -353,20 +353,20 @@ class _$ConvexHullStateImpl implements _ConvexHullState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ConvexHullStateImplCopyWith<_$ConvexHullStateImpl> get copyWith =>
-      __$$ConvexHullStateImplCopyWithImpl<_$ConvexHullStateImpl>(
+  _$$ConvexHullConfigImplCopyWith<_$ConvexHullConfigImpl> get copyWith =>
+      __$$ConvexHullConfigImplCopyWithImpl<_$ConvexHullConfigImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ConvexHullStateImplToJson(
+    return _$$ConvexHullConfigImplToJson(
       this,
     );
   }
 }
 
-abstract class _ConvexHullState implements ConvexHullState {
-  const factory _ConvexHullState(
+abstract class _ConvexHullConfig implements ConvexHullConfig {
+  const factory _ConvexHullConfig(
       {final String? activeImageSetBaseName,
       final String channel0SearchPattern,
       final String channel1SearchPattern,
@@ -378,10 +378,10 @@ abstract class _ConvexHullState implements ConvexHullState {
       final String channel1ProteinName,
       final String channel2ProteinName,
       final String channel3ProteinName,
-      final String channel4ProteinName}) = _$ConvexHullStateImpl;
+      final String channel4ProteinName}) = _$ConvexHullConfigImpl;
 
-  factory _ConvexHullState.fromJson(Map<String, dynamic> json) =
-      _$ConvexHullStateImpl.fromJson;
+  factory _ConvexHullConfig.fromJson(Map<String, dynamic> json) =
+      _$ConvexHullConfigImpl.fromJson;
 
   @override
   String? get activeImageSetBaseName;
@@ -409,6 +409,6 @@ abstract class _ConvexHullState implements ConvexHullState {
   String get channel4ProteinName;
   @override
   @JsonKey(ignore: true)
-  _$$ConvexHullStateImplCopyWith<_$ConvexHullStateImpl> get copyWith =>
+  _$$ConvexHullConfigImplCopyWith<_$ConvexHullConfigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -19,7 +19,7 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullResults> {
   Widget build(BuildContext context) {
     final convexHullImages = ref.watch(convexHullImageSetsProvider);
     final settings = ref.watch(appDataProvider);
-    final convexHullState = settings.convexHullState;
+    final convexHullConfig = settings.convexHullConfig;
 
     return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.widthConstraints().maxWidth;
@@ -36,35 +36,35 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullResults> {
                   SizedBox(
                     width: cardSize,
                     child: Text(
-                      convexHullState.channel0ProteinName,
+                      convexHullConfig.channel0ProteinName,
                       textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(
                     width: cardSize,
                     child: Text(
-                      convexHullState.channel1ProteinName,
+                      convexHullConfig.channel1ProteinName,
                       textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(
                     width: cardSize,
                     child: Text(
-                      convexHullState.channel2ProteinName,
+                      convexHullConfig.channel2ProteinName,
                       textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(
                     width: cardSize,
                     child: Text(
-                      convexHullState.channel3ProteinName,
+                      convexHullConfig.channel3ProteinName,
                       textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(
                     width: cardSize,
                     child: Text(
-                      convexHullState.channel4ProteinName,
+                      convexHullConfig.channel4ProteinName,
                       textAlign: TextAlign.center,
                     ),
                   ),
