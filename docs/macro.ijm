@@ -129,7 +129,7 @@ for (i=0; i<stackIDs.length; i++){
 	waitForUser("Outline brightest region of negative " + subimage5 + " signal using the ROI tool,\nthen click 'OK' to proceed.");
 	run("Measure");
 	background4 = (getResult("Mean", 0) + (subimage5_SD * getResult("StdDev", 0)));
-	run("Select All");
+	lectWindow("insulin");run("Select All");
 	run("Subtract...", "value=background4");
 	run("Clear Results");
 	close("Results");
@@ -217,6 +217,7 @@ for (i=1; i<=n; i++){
 	run("Clear Results");
 	close("Results");
 
+// HERE -------------------------------------------------------------------------------------------------------------------------------------
 	//If a signal was derived from the combined and thresholded glucagon and insulin channels, analysis can proceed.
 	if (Outline_Mean > 0){
 		//Applies convex hull to combined and threhsolded glucagon and insulin channels
