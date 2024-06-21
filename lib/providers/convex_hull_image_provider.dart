@@ -130,12 +130,22 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
 
   Future<void> performCalculation() async {
     final appData = ref.read(appDataProvider);
-    final image = appData.selectedImage;
-    if (image == null) return;
+    final selectedImage = appData.selectedImage;
+    final imageSet = state.singleWhere(
+      (imageSet) => imageSet.overlay == selectedImage,
+      orElse: () => ConvexHullImageSet(),
+    );
+    if (selectedImage == null) return;
+    if (imageSet.overlay != selectedImage) return;
 
     final result = await _dio.post(
       '${server}convex_hull_calculation',
-      data: image.toJson(),
+      data: {
+        'cd4':
+        'cd8':
+
+        'overlay': selectedImage.toJson()
+      },
     );
 
     logger.i(result);
