@@ -217,7 +217,6 @@ for (i=1; i<=n; i++){
 	run("Clear Results");
 	close("Results");
 
-// HERE -------------------------------------------------------------------------------------------------------------------------------------
 	//If a signal was derived from the combined and thresholded glucagon and insulin channels, analysis can proceed.
 	if (Outline_Mean > 0){
 		//Applies convex hull to combined and threhsolded glucagon and insulin channels
@@ -226,6 +225,8 @@ for (i=1; i<=n; i++){
 		run("Create Mask");
 		selectWindow("Result of insulin");
 		run("Select None");
+
+    // TODO here---------------------------------------------------------------------------------------------------------------------------
 
 		//Thresholds CD4 and CD8 channels
 		selectWindow("CD4");
