@@ -133,10 +133,12 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     final image = appData.selectedImage;
     if (image == null) return;
 
-    await _dio.post(
-      '${server}background_correction',
-      data: {},
+    final result = await _dio.post(
+      '${server}convex_hull_calculation',
+      data: image.toJson(),
     );
+
+    logger.i(result);
 
     ref.invalidate(imagesProvider);
   }

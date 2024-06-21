@@ -162,7 +162,22 @@ def background_correction():
 
 @app.route('/convex_hull_calculation', methods=['POST'])
 def convex_hull_calculation():
-    pass
+    file_path_parameter = 'image_path'
+    selected_region_parameter = 'relative_selection_coordinates'
+    data = request.get_json()
+
+    if file_path_parameter not in data:
+        return jsonify({"error": "No filepath provided"}), 400
+
+    if selected_region_parameter not in data:
+        return jsonify({"error": "No selection region provided"}), 400
+
+    file_path = data[file_path_parameter]
+    image = io.imread(file_path)
+    selected_region = data[selected_region_parameter]
+    print(selected_region)
+ 
+    return 'ass'
 
 
 if __name__ == '__main__':
