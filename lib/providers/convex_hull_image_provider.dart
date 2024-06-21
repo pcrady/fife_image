@@ -137,14 +137,29 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     );
     if (selectedImage == null) return;
     if (imageSet.overlay != selectedImage) return;
+    if (imageSet.channel0BackgroundCorrect == null) return;
+    if (imageSet.channel1BackgroundCorrect == null) return;
+    if (imageSet.channel2BackgroundCorrect == null) return;
+    if (imageSet.channel3BackgroundCorrect == null) return;
+    if (imageSet.channel4BackgroundCorrect == null) return;
+
+    final config = appData.convexHullConfig;
+    final channel0Name = config.channel0ProteinName;
+    final channel1Name = config.channel1ProteinName;
+    final channel2Name = config.channel2ProteinName;
+    final channel3Name = config.channel3ProteinName;
+    final channel4Name = config.channel4ProteinName;
 
     final result = await _dio.post(
       '${server}convex_hull_calculation',
       data: {
-        'cd4':
-        'cd8':
-
-        'overlay': selectedImage.toJson()
+        'base_image': imageSet.overlay?.baseName ?? '',
+        channel0Name: imageSet.channel0BackgroundCorrect!.toJson(),
+        channel1Name: imageSet.channel1BackgroundCorrect!.toJson(),
+        channel2Name: imageSet.channel2BackgroundCorrect!.toJson(),
+        channel3Name: imageSet.channel3BackgroundCorrect!.toJson(),
+        channel4Name: imageSet.channel4BackgroundCorrect!.toJson(),
+        'Overlay': selectedImage.toJson(),
       },
     );
 

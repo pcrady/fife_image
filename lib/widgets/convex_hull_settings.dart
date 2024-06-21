@@ -1,3 +1,4 @@
+import 'package:fife_image/constants.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/convex_hull_config.dart';
 import 'package:fife_image/models/enums.dart';
@@ -20,11 +21,11 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   late TextEditingController channel3Controller;
   late TextEditingController channel4Controller;
   late TextEditingController overlayController;
-  late TextEditingController channel0NameController;
-  late TextEditingController channel1NameController;
-  late TextEditingController channel2NameController;
-  late TextEditingController channel3NameController;
-  late TextEditingController channel4NameController;
+  late String channel0Name;
+  late String channel1Name;
+  late String channel2Name;
+  late String channel3Name;
+  late String channel4Name;
 
   String? validator(String? value) {
     if (value == null || value.isEmpty) {
@@ -43,11 +44,11 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     channel3Controller = TextEditingController(text: convexHullConfig.channel3SearchPattern);
     channel4Controller = TextEditingController(text: convexHullConfig.channel4SearchPattern);
     overlayController = TextEditingController(text: convexHullConfig.overlaySearchPattern);
-    channel0NameController = TextEditingController(text: convexHullConfig.channel0ProteinName);
-    channel1NameController = TextEditingController(text: convexHullConfig.channel1ProteinName);
-    channel2NameController = TextEditingController(text: convexHullConfig.channel2ProteinName);
-    channel3NameController = TextEditingController(text: convexHullConfig.channel3ProteinName);
-    channel4NameController = TextEditingController(text: convexHullConfig.channel4ProteinName);
+    channel0Name = convexHullConfig.channel0ProteinName;
+    channel1Name = convexHullConfig.channel1ProteinName;
+    channel2Name = convexHullConfig.channel2ProteinName;
+    channel3Name = convexHullConfig.channel3ProteinName;
+    channel4Name = convexHullConfig.channel4ProteinName;
     super.initState();
   }
 
@@ -59,11 +60,6 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     channel3Controller.dispose();
     channel4Controller.dispose();
     overlayController.dispose();
-    channel0NameController.dispose();
-    channel1NameController.dispose();
-    channel2NameController.dispose();
-    channel3NameController.dispose();
-    channel4NameController.dispose();
     super.dispose();
   }
 
@@ -96,13 +92,29 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     ),
                     SizedBox(
                       width: halfWidth,
-                      child: TextFormField(
-                        validator: validator,
-                        controller: channel0NameController,
-                        decoration: const InputDecoration(
-                          hintText: 'Set Channel 0 Protein Name',
-                          border: OutlineInputBorder(),
-                          labelText: 'Channel 0 Protein Name',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54),
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: channel0Name,
+                            onChanged: (String? value) {
+                              setState(() {
+                                channel0Name = value!;
+                              });
+                            },
+                            items: proteins.map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(value),
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ),
@@ -126,13 +138,29 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     ),
                     SizedBox(
                       width: halfWidth,
-                      child: TextFormField(
-                        validator: validator,
-                        controller: channel1NameController,
-                        decoration: const InputDecoration(
-                          hintText: 'Set Channel 1 Protein Name',
-                          border: OutlineInputBorder(),
-                          labelText: 'Channel 1 Protein Name',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54),
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: channel1Name,
+                            onChanged: (String? value) {
+                              setState(() {
+                                channel1Name = value!;
+                              });
+                            },
+                            items: proteins.map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(value),
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ),
@@ -156,13 +184,29 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     ),
                     SizedBox(
                       width: halfWidth,
-                      child: TextFormField(
-                        validator: validator,
-                        controller: channel2NameController,
-                        decoration: const InputDecoration(
-                          hintText: 'Set Channel 2 Protein Name',
-                          border: OutlineInputBorder(),
-                          labelText: 'Channel 2 Protein Name',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54),
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: channel2Name,
+                            onChanged: (String? value) {
+                              setState(() {
+                                channel2Name = value!;
+                              });
+                            },
+                            items: proteins.map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(value),
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ),
@@ -186,13 +230,29 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     ),
                     SizedBox(
                       width: halfWidth,
-                      child: TextFormField(
-                        validator: validator,
-                        controller: channel3NameController,
-                        decoration: const InputDecoration(
-                          hintText: 'Set Channel 3 Protein Name',
-                          border: OutlineInputBorder(),
-                          labelText: 'Channel 3 Protein Name',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54),
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: channel3Name,
+                            onChanged: (String? value) {
+                              setState(() {
+                                channel3Name = value!;
+                              });
+                            },
+                            items: proteins.map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(value),
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ),
@@ -216,13 +276,29 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     ),
                     SizedBox(
                       width: halfWidth,
-                      child: TextFormField(
-                        validator: validator,
-                        controller: channel4NameController,
-                        decoration: const InputDecoration(
-                          hintText: 'Set Channel 4 Protein Name',
-                          border: OutlineInputBorder(),
-                          labelText: 'Channel 4 Protein Name',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54),
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: channel4Name,
+                            onChanged: (String? value) {
+                              setState(() {
+                                channel4Name = value!;
+                              });
+                            },
+                            items: proteins.map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(value),
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ),
@@ -260,11 +336,11 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               channel3SearchPattern: channel3Controller.text,
                               channel4SearchPattern: channel4Controller.text,
                               overlaySearchPattern: overlayController.text,
-                              channel0ProteinName: channel0NameController.text,
-                              channel1ProteinName: channel1NameController.text,
-                              channel2ProteinName: channel2NameController.text,
-                              channel3ProteinName: channel3NameController.text,
-                              channel4ProteinName: channel4NameController.text,
+                              channel0ProteinName: channel0Name,
+                              channel1ProteinName: channel1Name,
+                              channel2ProteinName: channel2Name,
+                              channel3ProteinName: channel3Name,
+                              channel4ProteinName: channel4Name,
                             );
                             appData.setConvexHullConfig(convexHullConfig: convexHullConfig);
                             appData.setMenuSetting(leftMenu: LeftMenuEnum.functionResults);

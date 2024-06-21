@@ -1,3 +1,4 @@
+import 'package:fife_image/constants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // flutter pub run build_runner build
@@ -15,11 +16,11 @@ class ConvexHullConfig with _$ConvexHullConfig {
     @Default('ch03') String channel3SearchPattern,
     @Default('ch04') String channel4SearchPattern,
     @Default('overlay') String overlaySearchPattern,
-    @Default('CD4') String channel0ProteinName,
-    @Default('Glucagon') String channel1ProteinName,
-    @Default('Insulin') String channel2ProteinName,
-    @Default('CD8') String channel3ProteinName,
-    @Default('DAPI') String channel4ProteinName,
+    @Default(cd4) String channel0ProteinName,
+    @Default(glucagon) String channel1ProteinName,
+    @Default(insulin) String channel2ProteinName,
+    @Default(cd8) String channel3ProteinName,
+    @Default(dapi) String channel4ProteinName,
   }) = _ConvexHullConfig;
 
   factory ConvexHullConfig.fromJson(Map<String, dynamic> json) => _$ConvexHullConfigFromJson(json);
