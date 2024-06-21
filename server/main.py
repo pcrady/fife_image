@@ -72,13 +72,6 @@ def save_image(name, image):
     io.imsave(name, image)
 
 
-
-
-
-
-
-
-
 def _convert_to_mask(image, lower_threshold, upper_threshold):
     image[image < lower_threshold] = 0
     mask = color.rgb2gray(image)
@@ -91,7 +84,7 @@ def _combine_images(image1, image2):
 
 
 def _remove_small_objects_and_holes(image):
-    object_size = islet_outlier_size = (5**5) * 3.14
+    object_size = islet_outlier_size ** islet_outlier_size * 3.14
     cleaned_image = morphology.remove_small_objects(image, object_size)
     cleaned_image = morphology.remove_small_holes(cleaned_image, object_size * 4)
     return cleaned_image

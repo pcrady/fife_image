@@ -5,5 +5,5 @@ const cd4 = 'CD4';
 const cd8 = 'CD8';
 const glucagon = 'Glucagon';
 const insulin = 'Insulin';
-const dapi = 'DAPI';
-const proteins = [cd4, glucagon, insulin, cd8, dapi];
+const pdl1 = 'PD-L1';
+const proteins = [cd4, glucagon, insulin, cd8, pdl1];

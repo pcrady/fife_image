@@ -252,11 +252,11 @@ class _$ConvexHullConfigImpl implements _ConvexHullConfig {
       this.channel3SearchPattern = 'ch03',
       this.channel4SearchPattern = 'ch04',
       this.overlaySearchPattern = 'overlay',
-      this.channel0ProteinName = 'CD4',
-      this.channel1ProteinName = 'Glucagon',
-      this.channel2ProteinName = 'Insulin',
-      this.channel3ProteinName = 'CD8',
-      this.channel4ProteinName = 'DAPI'});
+      this.channel0ProteinName = cd4,
+      this.channel1ProteinName = glucagon,
+      this.channel2ProteinName = insulin,
+      this.channel3ProteinName = cd8,
+      this.channel4ProteinName = pdl1});
 
   factory _$ConvexHullConfigImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullConfigImplFromJson(json);

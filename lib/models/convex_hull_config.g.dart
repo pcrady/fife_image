@@ -22,13 +22,11 @@ _$ConvexHullConfigImpl _$$ConvexHullConfigImplFromJson(
           json['channel4_search_pattern'] as String? ?? 'ch04',
       overlaySearchPattern:
           json['overlay_search_pattern'] as String? ?? 'overlay',
-      channel0ProteinName: json['channel0_protein_name'] as String? ?? 'CD4',
-      channel1ProteinName:
-          json['channel1_protein_name'] as String? ?? 'Glucagon',
-      channel2ProteinName:
-          json['channel2_protein_name'] as String? ?? 'Insulin',
-      channel3ProteinName: json['channel3_protein_name'] as String? ?? 'CD8',
-      channel4ProteinName: json['channel4_protein_name'] as String? ?? 'DAPI',
+      channel0ProteinName: json['channel0_protein_name'] as String? ?? cd4,
+      channel1ProteinName: json['channel1_protein_name'] as String? ?? glucagon,
+      channel2ProteinName: json['channel2_protein_name'] as String? ?? insulin,
+      channel3ProteinName: json['channel3_protein_name'] as String? ?? cd8,
+      channel4ProteinName: json['channel4_protein_name'] as String? ?? pdl1,
     );
 
 Map<String, dynamic> _$$ConvexHullConfigImplToJson(
