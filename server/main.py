@@ -176,13 +176,8 @@ def save_mask_cd4_cd8(image_name, cd4, cd8, crop_region, hull, ins_gluc_points):
     for simplex in hull.simplices:
         plt.plot(ins_gluc_points[simplex, 1], ins_gluc_points[simplex, 0], 'w-')
     plt.axis('off')
-    file_path = os.path.join(app.config['OUTPUT_FOLDER'], image_name) + '_inflamation.png'
+    file_path = os.path.join(app.config['OUTPUT_FOLDER'], image_name) + '_inflammation.png'
     plt.savefig(file_path, bbox_inches='tight', pad_inches=0, dpi=dpi)
-
-
-
-
-
 
 
 @app.route('/', methods=['POST'])

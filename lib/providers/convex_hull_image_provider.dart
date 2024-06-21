@@ -113,6 +113,14 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       returnSet = returnSet.copyWith(channel4BackgroundCorrect: image);
     }
 
+    if (image.name.contains('inflammation')) {
+      returnSet = returnSet.copyWith(inflammation: image);
+    }
+
+    if (image.name.contains('simplex')) {
+      returnSet = returnSet.copyWith(simplex: image);
+    }
+
     return returnSet;
   }
 
@@ -150,7 +158,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     final channel3Name = config.channel3ProteinName;
     final channel4Name = config.channel4ProteinName;
 
-    final result = await _dio.post(
+    await _dio.post(
       '${server}convex_hull_calculation',
       data: {
         'base_image': imageSet.overlay?.baseName ?? '',
@@ -162,8 +170,6 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
         'Overlay': selectedImage.toJson(),
       },
     );
-
-    logger.i(result);
 
     ref.invalidate(imagesProvider);
   }

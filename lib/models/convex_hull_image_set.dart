@@ -22,6 +22,8 @@ class ConvexHullImageSet with _$ConvexHullImageSet {
     AbstractImage? channel4,
     AbstractImage? channel4BackgroundCorrect,
     AbstractImage? overlay,
+    AbstractImage? simplex,
+    AbstractImage? inflammation,
   }) = _ConvexHullImageSet;
 
   factory ConvexHullImageSet.fromJson(Map<String, dynamic> json) => _$ConvexHullImageSetFromJson(json);

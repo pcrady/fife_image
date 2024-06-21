@@ -206,7 +206,13 @@ class _ImageSetWidget extends ConsumerWidget {
                     child: ImageThumbnailCard(image: imageSet.channel4BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
-            SizedBox(width: cardSize, height: cardSize),
+            imageSet.inflammation != null
+                ? SizedBox(
+                    width: cardSize,
+                    height: cardSize,
+                    child: ImageThumbnailCard(image: imageSet.inflammation!),
+                  )
+                : SizedBox(width: cardSize, height: cardSize),
           ],
         ),
       ],

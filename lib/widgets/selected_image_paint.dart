@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -105,6 +106,7 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
   @override
   Widget build(BuildContext context) {
     ref.watch(imagesProvider);
+    logger.w(widget.image.hashCode);
 
     return LayoutBuilder(
       builder: (_, constraints) {
@@ -125,7 +127,13 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
               width: currentWidth,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(widget.image.url),
+                  image:  CachedNetworkImageProvider(
+                    widget.image.url,
+                    cacheKey: widget.image.md5Hash,
+                    errorListener: (error) {
+                      logger.e(error);
+                    },
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),

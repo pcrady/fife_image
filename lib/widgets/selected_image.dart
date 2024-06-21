@@ -1,3 +1,4 @@
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/widgets/selected_image_paint.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ class SelectedImage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appData = ref.watch(appDataProvider);
     final image = appData.selectedImage;
+    logger.i(image?.url);
+
 
     if (image != null) {
       return Column(
