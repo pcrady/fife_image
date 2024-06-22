@@ -1,8 +1,5 @@
-import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
-import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/models/abstract_image.dart';
-import 'package:fife_image/models/enums.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // flutter pub run build_runner build

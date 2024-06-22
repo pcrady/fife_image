@@ -1,6 +1,5 @@
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
-import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
 import 'package:file_picker/file_picker.dart';

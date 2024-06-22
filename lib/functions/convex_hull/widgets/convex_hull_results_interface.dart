@@ -1,13 +1,10 @@
 import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
-import 'package:fife_image/lib/app_logger.dart';
-import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/widgets/image_thumbnail_card.dart';
 import 'package:fife_image/widgets/results_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ConvexHullResultsInterface extends ConsumerStatefulWidget {
   const ConvexHullResultsInterface({super.key});
