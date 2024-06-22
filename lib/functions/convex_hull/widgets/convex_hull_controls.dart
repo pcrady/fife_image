@@ -1,3 +1,4 @@
+import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
@@ -18,8 +19,10 @@ class _ConvexHullControlsState extends ConsumerState<ConvexHullControls> {
   @override
   Widget build(BuildContext context) {
     final appData = ref.watch(appDataProvider);
+    final convexHullConfig = ref.watch(convexHullConfigProvider);
 
-    if (appData.leftMenu == LeftMenuEnum.functionResults && appData.selectedImage != null) {
+
+    if (convexHullConfig.leftMenuEnum == LeftMenuEnum.functionResults && appData.selectedImage != null) {
       return const Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: _BackgroundSelect(),

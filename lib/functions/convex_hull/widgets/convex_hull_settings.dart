@@ -344,7 +344,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               channel4ProteinName: channel4Name,
                             );
                             ref.read(convexHullConfigProvider.notifier).setConvexHullConfig(convexHullConfigModel: newConfig);
-                            appData.setMenuSetting(leftMenu: LeftMenuEnum.functionResults);
+                            //appData.setMenuSetting(leftMenu: LeftMenuEnum.functionResults);
                           }
                         },
                         child: const Text('Start'),

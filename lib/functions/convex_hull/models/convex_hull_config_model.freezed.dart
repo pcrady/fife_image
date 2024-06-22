@@ -24,6 +24,7 @@ mixin _$ConvexHullConfigModel {
   String? get activeImageSetBaseName => throw _privateConstructorUsedError;
   AbstractImage? get activeImage => throw _privateConstructorUsedError;
   ConvexHullResults? get activeResults => throw _privateConstructorUsedError;
+  LeftMenuEnum get leftMenuEnum => throw _privateConstructorUsedError;
   String get channel0SearchPattern => throw _privateConstructorUsedError;
   String get channel1SearchPattern => throw _privateConstructorUsedError;
   String get channel2SearchPattern => throw _privateConstructorUsedError;
@@ -52,6 +53,7 @@ abstract class $ConvexHullConfigModelCopyWith<$Res> {
       {String? activeImageSetBaseName,
       AbstractImage? activeImage,
       ConvexHullResults? activeResults,
+      LeftMenuEnum leftMenuEnum,
       String channel0SearchPattern,
       String channel1SearchPattern,
       String channel2SearchPattern,
@@ -85,6 +87,7 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
     Object? activeImageSetBaseName = freezed,
     Object? activeImage = freezed,
     Object? activeResults = freezed,
+    Object? leftMenuEnum = null,
     Object? channel0SearchPattern = null,
     Object? channel1SearchPattern = null,
     Object? channel2SearchPattern = null,
@@ -110,6 +113,10 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
           ? _value.activeResults
           : activeResults // ignore: cast_nullable_to_non_nullable
               as ConvexHullResults?,
+      leftMenuEnum: null == leftMenuEnum
+          ? _value.leftMenuEnum
+          : leftMenuEnum // ignore: cast_nullable_to_non_nullable
+              as LeftMenuEnum,
       channel0SearchPattern: null == channel0SearchPattern
           ? _value.channel0SearchPattern
           : channel0SearchPattern // ignore: cast_nullable_to_non_nullable
@@ -195,6 +202,7 @@ abstract class _$$ConvexHullConfigModelImplCopyWith<$Res>
       {String? activeImageSetBaseName,
       AbstractImage? activeImage,
       ConvexHullResults? activeResults,
+      LeftMenuEnum leftMenuEnum,
       String channel0SearchPattern,
       String channel1SearchPattern,
       String channel2SearchPattern,
@@ -228,6 +236,7 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
     Object? activeImageSetBaseName = freezed,
     Object? activeImage = freezed,
     Object? activeResults = freezed,
+    Object? leftMenuEnum = null,
     Object? channel0SearchPattern = null,
     Object? channel1SearchPattern = null,
     Object? channel2SearchPattern = null,
@@ -253,6 +262,10 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
           ? _value.activeResults
           : activeResults // ignore: cast_nullable_to_non_nullable
               as ConvexHullResults?,
+      leftMenuEnum: null == leftMenuEnum
+          ? _value.leftMenuEnum
+          : leftMenuEnum // ignore: cast_nullable_to_non_nullable
+              as LeftMenuEnum,
       channel0SearchPattern: null == channel0SearchPattern
           ? _value.channel0SearchPattern
           : channel0SearchPattern // ignore: cast_nullable_to_non_nullable
@@ -310,6 +323,7 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       {this.activeImageSetBaseName,
       this.activeImage,
       this.activeResults,
+      this.leftMenuEnum = LeftMenuEnum.functionSettings,
       this.channel0SearchPattern = 'ch00',
       this.channel1SearchPattern = 'ch01',
       this.channel2SearchPattern = 'ch02',
@@ -331,6 +345,9 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   final AbstractImage? activeImage;
   @override
   final ConvexHullResults? activeResults;
+  @override
+  @JsonKey()
+  final LeftMenuEnum leftMenuEnum;
   @override
   @JsonKey()
   final String channel0SearchPattern;
@@ -367,7 +384,7 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
 
   @override
   String toString() {
-    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, channel0SearchPattern: $channel0SearchPattern, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel0ProteinName: $channel0ProteinName, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName)';
+    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, channel0SearchPattern: $channel0SearchPattern, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel0ProteinName: $channel0ProteinName, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName)';
   }
 
   @override
@@ -381,6 +398,8 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
                 other.activeImage == activeImage) &&
             (identical(other.activeResults, activeResults) ||
                 other.activeResults == activeResults) &&
+            (identical(other.leftMenuEnum, leftMenuEnum) ||
+                other.leftMenuEnum == leftMenuEnum) &&
             (identical(other.channel0SearchPattern, channel0SearchPattern) ||
                 other.channel0SearchPattern == channel0SearchPattern) &&
             (identical(other.channel1SearchPattern, channel1SearchPattern) ||
@@ -412,6 +431,7 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       activeImageSetBaseName,
       activeImage,
       activeResults,
+      leftMenuEnum,
       channel0SearchPattern,
       channel1SearchPattern,
       channel2SearchPattern,
@@ -444,6 +464,7 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
       {final String? activeImageSetBaseName,
       final AbstractImage? activeImage,
       final ConvexHullResults? activeResults,
+      final LeftMenuEnum leftMenuEnum,
       final String channel0SearchPattern,
       final String channel1SearchPattern,
       final String channel2SearchPattern,
@@ -465,6 +486,8 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   AbstractImage? get activeImage;
   @override
   ConvexHullResults? get activeResults;
+  @override
+  LeftMenuEnum get leftMenuEnum;
   @override
   String get channel0SearchPattern;
   @override

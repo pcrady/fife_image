@@ -18,6 +18,9 @@ _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
           ? null
           : ConvexHullResults.fromJson(
               json['active_results'] as Map<String, dynamic>),
+      leftMenuEnum:
+          $enumDecodeNullable(_$LeftMenuEnumEnumMap, json['left_menu_enum']) ??
+              LeftMenuEnum.functionSettings,
       channel0SearchPattern:
           json['channel0_search_pattern'] as String? ?? 'ch00',
       channel1SearchPattern:
@@ -50,6 +53,7 @@ Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
   writeNotNull('active_image_set_base_name', instance.activeImageSetBaseName);
   writeNotNull('active_image', instance.activeImage?.toJson());
   writeNotNull('active_results', instance.activeResults?.toJson());
+  val['left_menu_enum'] = _$LeftMenuEnumEnumMap[instance.leftMenuEnum]!;
   val['channel0_search_pattern'] = instance.channel0SearchPattern;
   val['channel1_search_pattern'] = instance.channel1SearchPattern;
   val['channel2_search_pattern'] = instance.channel2SearchPattern;
@@ -63,3 +67,8 @@ Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
   val['channel4_protein_name'] = instance.channel4ProteinName;
   return val;
 }
+
+const _$LeftMenuEnumEnumMap = {
+  LeftMenuEnum.functionSettings: 'functionSettings',
+  LeftMenuEnum.functionResults: 'functionResults',
+};

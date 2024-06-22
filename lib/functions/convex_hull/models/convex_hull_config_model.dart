@@ -1,6 +1,7 @@
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/models/abstract_image.dart';
+import 'package:fife_image/models/enums.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // flutter pub run build_runner build
@@ -14,6 +15,7 @@ class ConvexHullConfigModel with _$ConvexHullConfigModel {
     String? activeImageSetBaseName,
     AbstractImage? activeImage,
     ConvexHullResults? activeResults,
+    @Default(LeftMenuEnum.functionSettings) LeftMenuEnum leftMenuEnum,
     @Default('ch00') String channel0SearchPattern,
     @Default('ch01') String channel1SearchPattern,
     @Default('ch02') String channel2SearchPattern,

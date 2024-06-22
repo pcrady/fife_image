@@ -14,8 +14,6 @@ _$AppDataStoreImpl _$$AppDataStoreImplFromJson(Map<String, dynamic> json) =>
               json['selected_image'] as Map<String, dynamic>),
       function: $enumDecodeNullable(_$FunctionsEnumEnumMap, json['function']) ??
           FunctionsEnum.functions,
-      leftMenu: $enumDecodeNullable(_$LeftMenuEnumEnumMap, json['left_menu']) ??
-          LeftMenuEnum.images,
     );
 
 Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) {
@@ -29,17 +27,10 @@ Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) {
 
   writeNotNull('selected_image', instance.selectedImage?.toJson());
   val['function'] = _$FunctionsEnumEnumMap[instance.function]!;
-  val['left_menu'] = _$LeftMenuEnumEnumMap[instance.leftMenu]!;
   return val;
 }
 
 const _$FunctionsEnumEnumMap = {
   FunctionsEnum.functions: 'functions',
   FunctionsEnum.convexHull: 'convexHull',
-};
-
-const _$LeftMenuEnumEnumMap = {
-  LeftMenuEnum.images: 'images',
-  LeftMenuEnum.functionSettings: 'functionSettings',
-  LeftMenuEnum.functionResults: 'functionResults',
 };
