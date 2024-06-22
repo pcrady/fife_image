@@ -11,4 +11,4 @@ To run the server:
 cd server/
 python main.py
 ```
-testing the back end functions can be done with the scratchipynb notebook
+testing the back end functions can be done with the scratch.ipynb notebook
