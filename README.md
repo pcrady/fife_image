@@ -1,16 +1,13 @@
 # fife_image
 
-A new Flutter project.
+Image processing for the Fife Lab.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+The flutter project is designed to be used in the browser.
 
-A few resources to get you started if this is your first Flutter project:
+To run the server:
+cd server/
+python main.py
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+testing the back end functions can be done with the scratchipynb notebook
