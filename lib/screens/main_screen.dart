@@ -26,13 +26,13 @@ class MainScreen extends ConsumerWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: leftSide,
+              child: SingleChildScrollView(child: leftSide),
             ),
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: rightSide,
+              child: SingleChildScrollView(child: rightSide),
             ),
           )
         ],

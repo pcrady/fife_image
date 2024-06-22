@@ -21,6 +21,7 @@ class _ConvexHullLeftSideState extends ConsumerState<ConvexHullLeftSide> {
 
     return Column(
       children: [
+        const SizedBox(height: 4.0),
         const ConvexHullTopButtons(),
         const SizedBox(height: 8.0),
         switch (leftMenu) {

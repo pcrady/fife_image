@@ -1,8 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
-import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
 import 'package:fife_image/widgets/selected_image.dart';
 import 'package:flutter/material.dart';
@@ -18,18 +19,61 @@ class ConvexHullControls extends ConsumerStatefulWidget {
 class _ConvexHullControlsState extends ConsumerState<ConvexHullControls> {
   @override
   Widget build(BuildContext context) {
-    final appData = ref.watch(appDataProvider);
     final convexHullConfig = ref.watch(convexHullConfigProvider);
 
-
-    if (convexHullConfig.leftMenuEnum == LeftMenuEnum.functionResults && appData.selectedImage != null) {
+    if (convexHullConfig.leftMenuEnum == LeftMenuEnum.functionResults && convexHullConfig.activeImage != null) {
       return const Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: _BackgroundSelect(),
       );
+    } else if (convexHullConfig.activeResults != null) {
+      return _ConvexHullResultsDisplay(results: convexHullConfig.activeResults!);
     } else {
       return Container();
     }
+  }
+}
+
+class _ConvexHullResultsDisplay extends StatelessWidget {
+  final ConvexHullResults results;
+
+  const _ConvexHullResultsDisplay({
+    required this.results,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            child: CachedNetworkImage(
+              imageUrl: results.simplex!.url,
+              cacheKey: results.simplex!.md5Hash,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorListener: (error) {
+                logger.e(error);
+              },
+            ),
+          ),
+        ),
+        Expanded(
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            child: CachedNetworkImage(
+              imageUrl: results.inflammation!.url,
+              cacheKey: results.inflammation!.md5Hash,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorListener: (error) {
+                logger.e(error);
+              },
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -38,10 +82,10 @@ class _BackgroundSelect extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appData = ref.watch(appDataProvider);
+    final convexHullConfig = ref.watch(convexHullConfigProvider);
     final correctedImages = ref.read(convexHullImageSetsProvider.notifier).backgroundCorrectionImages();
     final unmodifiedImages = ref.read(convexHullImageSetsProvider.notifier).unmodifiedImages();
-    final image = appData.selectedImage;
+    final image = convexHullConfig.activeImage;
 
     if (correctedImages.contains(image)) {
       return const Column(
@@ -90,6 +134,7 @@ class _BackgroundSelect extends ConsumerWidget {
         ],
       );
     } else {
+      logger.w('here');
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
