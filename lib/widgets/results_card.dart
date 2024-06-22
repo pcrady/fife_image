@@ -1,24 +1,20 @@
-import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ResultsCard extends ConsumerWidget {
-  final double cardSize;
+class ResultsCard extends StatelessWidget {
+  final void Function()? callback;
 
   const ResultsCard({
-    required this.cardSize,
+    this.callback,
     super.key,
   });
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () {
-          ref.read(appDataProvider.notifier).selectImage(image: null);
-        },
+        onTap: callback,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
@@ -29,12 +25,11 @@ class ResultsCard extends ConsumerWidget {
           ),
           color: Colors.purpleAccent,
           clipBehavior: Clip.antiAlias,
-          child: Column(
+          child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 FontAwesomeIcons.flaskVial,
-                size: cardSize * 0.5,
               ),
               const Text(
                 'Results',

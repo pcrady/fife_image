@@ -37,8 +37,7 @@ mixin _$ConvexHullImageSet {
   AbstractImage? get channel4BackgroundCorrect =>
       throw _privateConstructorUsedError;
   AbstractImage? get overlay => throw _privateConstructorUsedError;
-  AbstractImage? get simplex => throw _privateConstructorUsedError;
-  AbstractImage? get inflammation => throw _privateConstructorUsedError;
+  ConvexHullResults get results => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -65,8 +64,7 @@ abstract class $ConvexHullImageSetCopyWith<$Res> {
       AbstractImage? channel4,
       AbstractImage? channel4BackgroundCorrect,
       AbstractImage? overlay,
-      AbstractImage? simplex,
-      AbstractImage? inflammation});
+      ConvexHullResults results});
 
   $AbstractImageCopyWith<$Res>? get channel0;
   $AbstractImageCopyWith<$Res>? get channel0BackgroundCorrect;
@@ -79,8 +77,7 @@ abstract class $ConvexHullImageSetCopyWith<$Res> {
   $AbstractImageCopyWith<$Res>? get channel4;
   $AbstractImageCopyWith<$Res>? get channel4BackgroundCorrect;
   $AbstractImageCopyWith<$Res>? get overlay;
-  $AbstractImageCopyWith<$Res>? get simplex;
-  $AbstractImageCopyWith<$Res>? get inflammation;
+  $ConvexHullResultsCopyWith<$Res> get results;
 }
 
 /// @nodoc
@@ -108,8 +105,7 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     Object? channel4 = freezed,
     Object? channel4BackgroundCorrect = freezed,
     Object? overlay = freezed,
-    Object? simplex = freezed,
-    Object? inflammation = freezed,
+    Object? results = null,
   }) {
     return _then(_value.copyWith(
       baseName: freezed == baseName
@@ -160,14 +156,10 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
           ? _value.overlay
           : overlay // ignore: cast_nullable_to_non_nullable
               as AbstractImage?,
-      simplex: freezed == simplex
-          ? _value.simplex
-          : simplex // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      inflammation: freezed == inflammation
-          ? _value.inflammation
-          : inflammation // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
+      results: null == results
+          ? _value.results
+          : results // ignore: cast_nullable_to_non_nullable
+              as ConvexHullResults,
     ) as $Val);
   }
 
@@ -310,25 +302,9 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
 
   @override
   @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get simplex {
-    if (_value.simplex == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.simplex!, (value) {
-      return _then(_value.copyWith(simplex: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get inflammation {
-    if (_value.inflammation == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.inflammation!, (value) {
-      return _then(_value.copyWith(inflammation: value) as $Val);
+  $ConvexHullResultsCopyWith<$Res> get results {
+    return $ConvexHullResultsCopyWith<$Res>(_value.results, (value) {
+      return _then(_value.copyWith(results: value) as $Val);
     });
   }
 }
@@ -354,8 +330,7 @@ abstract class _$$ConvexHullImageSetImplCopyWith<$Res>
       AbstractImage? channel4,
       AbstractImage? channel4BackgroundCorrect,
       AbstractImage? overlay,
-      AbstractImage? simplex,
-      AbstractImage? inflammation});
+      ConvexHullResults results});
 
   @override
   $AbstractImageCopyWith<$Res>? get channel0;
@@ -380,9 +355,7 @@ abstract class _$$ConvexHullImageSetImplCopyWith<$Res>
   @override
   $AbstractImageCopyWith<$Res>? get overlay;
   @override
-  $AbstractImageCopyWith<$Res>? get simplex;
-  @override
-  $AbstractImageCopyWith<$Res>? get inflammation;
+  $ConvexHullResultsCopyWith<$Res> get results;
 }
 
 /// @nodoc
@@ -408,8 +381,7 @@ class __$$ConvexHullImageSetImplCopyWithImpl<$Res>
     Object? channel4 = freezed,
     Object? channel4BackgroundCorrect = freezed,
     Object? overlay = freezed,
-    Object? simplex = freezed,
-    Object? inflammation = freezed,
+    Object? results = null,
   }) {
     return _then(_$ConvexHullImageSetImpl(
       baseName: freezed == baseName
@@ -460,14 +432,10 @@ class __$$ConvexHullImageSetImplCopyWithImpl<$Res>
           ? _value.overlay
           : overlay // ignore: cast_nullable_to_non_nullable
               as AbstractImage?,
-      simplex: freezed == simplex
-          ? _value.simplex
-          : simplex // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      inflammation: freezed == inflammation
-          ? _value.inflammation
-          : inflammation // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
+      results: null == results
+          ? _value.results
+          : results // ignore: cast_nullable_to_non_nullable
+              as ConvexHullResults,
     ));
   }
 }
@@ -490,8 +458,7 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
       this.channel4,
       this.channel4BackgroundCorrect,
       this.overlay,
-      this.simplex,
-      this.inflammation})
+      this.results = const ConvexHullResults()})
       : super._();
 
   factory _$ConvexHullImageSetImpl.fromJson(Map<String, dynamic> json) =>
@@ -522,13 +489,12 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
   @override
   final AbstractImage? overlay;
   @override
-  final AbstractImage? simplex;
-  @override
-  final AbstractImage? inflammation;
+  @JsonKey()
+  final ConvexHullResults results;
 
   @override
   String toString() {
-    return 'ConvexHullImageSet(baseName: $baseName, channel0: $channel0, channel0BackgroundCorrect: $channel0BackgroundCorrect, channel1: $channel1, channel1BackgroundCorrect: $channel1BackgroundCorrect, channel2: $channel2, channel2BackgroundCorrect: $channel2BackgroundCorrect, channel3: $channel3, channel3BackgroundCorrect: $channel3BackgroundCorrect, channel4: $channel4, channel4BackgroundCorrect: $channel4BackgroundCorrect, overlay: $overlay, simplex: $simplex, inflammation: $inflammation)';
+    return 'ConvexHullImageSet(baseName: $baseName, channel0: $channel0, channel0BackgroundCorrect: $channel0BackgroundCorrect, channel1: $channel1, channel1BackgroundCorrect: $channel1BackgroundCorrect, channel2: $channel2, channel2BackgroundCorrect: $channel2BackgroundCorrect, channel3: $channel3, channel3BackgroundCorrect: $channel3BackgroundCorrect, channel4: $channel4, channel4BackgroundCorrect: $channel4BackgroundCorrect, overlay: $overlay, results: $results)';
   }
 
   @override
@@ -564,9 +530,7 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
                     channel4BackgroundCorrect) ||
                 other.channel4BackgroundCorrect == channel4BackgroundCorrect) &&
             (identical(other.overlay, overlay) || other.overlay == overlay) &&
-            (identical(other.simplex, simplex) || other.simplex == simplex) &&
-            (identical(other.inflammation, inflammation) ||
-                other.inflammation == inflammation));
+            (identical(other.results, results) || other.results == results));
   }
 
   @JsonKey(ignore: true)
@@ -585,8 +549,7 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
       channel4,
       channel4BackgroundCorrect,
       overlay,
-      simplex,
-      inflammation);
+      results);
 
   @JsonKey(ignore: true)
   @override
@@ -617,8 +580,7 @@ abstract class _ConvexHullImageSet extends ConvexHullImageSet {
       final AbstractImage? channel4,
       final AbstractImage? channel4BackgroundCorrect,
       final AbstractImage? overlay,
-      final AbstractImage? simplex,
-      final AbstractImage? inflammation}) = _$ConvexHullImageSetImpl;
+      final ConvexHullResults results}) = _$ConvexHullImageSetImpl;
   _ConvexHullImageSet._() : super._();
 
   factory _ConvexHullImageSet.fromJson(Map<String, dynamic> json) =
@@ -649,9 +611,7 @@ abstract class _ConvexHullImageSet extends ConvexHullImageSet {
   @override
   AbstractImage? get overlay;
   @override
-  AbstractImage? get simplex;
-  @override
-  AbstractImage? get inflammation;
+  ConvexHullResults get results;
   @override
   @JsonKey(ignore: true)
   _$$ConvexHullImageSetImplCopyWith<_$ConvexHullImageSetImpl> get copyWith =>

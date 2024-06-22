@@ -16,6 +16,9 @@ _$ConvexHullResultsImpl _$$ConvexHullResultsImplFromJson(
       simplex: json['simplex'] == null
           ? null
           : AbstractImage.fromJson(json['simplex'] as Map<String, dynamic>),
+      data: (json['data'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$$ConvexHullResultsImplToJson(
@@ -30,5 +33,6 @@ Map<String, dynamic> _$$ConvexHullResultsImplToJson(
 
   writeNotNull('inflammation', instance.inflammation?.toJson());
   writeNotNull('simplex', instance.simplex?.toJson());
+  writeNotNull('data', instance.data);
   return val;
 }

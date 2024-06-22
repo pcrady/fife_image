@@ -113,11 +113,15 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     }
 
     if (image.name.contains('inflammation')) {
-      returnSet = returnSet.copyWith(inflammation: image);
+      final results = returnSet.results;
+      final newResults = results.copyWith(inflammation: image);
+      returnSet = returnSet.copyWith(results: newResults);
     }
 
     if (image.name.contains('simplex')) {
-      returnSet = returnSet.copyWith(simplex: image);
+      final results = returnSet.results;
+      final newResults = results.copyWith(simplex: image);
+      returnSet = returnSet.copyWith(results: newResults);
     }
 
     return returnSet;

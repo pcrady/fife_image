@@ -1,5 +1,5 @@
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
-import 'package:fife_image/functions/convex_hull/widgets/convex_hull_control_buttons.dart';
+import 'package:fife_image/functions/convex_hull/widgets/convex_hull_top_buttons.dart';
 import 'package:fife_image/functions/convex_hull/widgets/convex_hull_results_interface.dart';
 import 'package:fife_image/functions/convex_hull/widgets/convex_hull_settings.dart';
 import 'package:fife_image/models/enums.dart';
@@ -21,7 +21,7 @@ class _ConvexHullLeftSideState extends ConsumerState<ConvexHullLeftSide> {
 
     return Column(
       children: [
-        const ConvexHullControlButtons(),
+        const ConvexHullTopButtons(),
         const SizedBox(height: 8.0),
         switch (leftMenu) {
           LeftMenuEnum.functionSettings => const ConvexHullSettings(),

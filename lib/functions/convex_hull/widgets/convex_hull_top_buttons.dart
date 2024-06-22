@@ -3,14 +3,14 @@ import 'package:fife_image/models/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ConvexHullControlButtons extends ConsumerStatefulWidget {
-  const ConvexHullControlButtons({super.key});
+class ConvexHullTopButtons extends ConsumerStatefulWidget {
+  const ConvexHullTopButtons({super.key});
 
   @override
-  ConsumerState createState() => _ConvexHullControlButtonsState();
+  ConsumerState createState() => _ConvexHullTopButtonsState();
 }
 
-class _ConvexHullControlButtonsState extends ConsumerState<ConvexHullControlButtons> {
+class _ConvexHullTopButtonsState extends ConsumerState<ConvexHullTopButtons> {
   static const _settingsValue = 'Function Settings';
   static const _resultsValue = 'Function Results';
 

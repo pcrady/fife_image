@@ -48,13 +48,9 @@ _$ConvexHullImageSetImpl _$$ConvexHullImageSetImplFromJson(
       overlay: json['overlay'] == null
           ? null
           : AbstractImage.fromJson(json['overlay'] as Map<String, dynamic>),
-      simplex: json['simplex'] == null
-          ? null
-          : AbstractImage.fromJson(json['simplex'] as Map<String, dynamic>),
-      inflammation: json['inflammation'] == null
-          ? null
-          : AbstractImage.fromJson(
-              json['inflammation'] as Map<String, dynamic>),
+      results: json['results'] == null
+          ? const ConvexHullResults()
+          : ConvexHullResults.fromJson(json['results'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$ConvexHullImageSetImplToJson(
@@ -84,7 +80,6 @@ Map<String, dynamic> _$$ConvexHullImageSetImplToJson(
   writeNotNull('channel4_background_correct',
       instance.channel4BackgroundCorrect?.toJson());
   writeNotNull('overlay', instance.overlay?.toJson());
-  writeNotNull('simplex', instance.simplex?.toJson());
-  writeNotNull('inflammation', instance.inflammation?.toJson());
+  val['results'] = instance.results.toJson();
   return val;
 }

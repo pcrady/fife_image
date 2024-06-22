@@ -1,8 +1,7 @@
 import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
-import 'package:fife_image/widgets/image_thumbnail_card.dart';
-import 'package:fife_image/widgets/results_card.dart';
+import 'package:fife_image/functions/convex_hull/widgets/convex_hull_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -122,42 +121,42 @@ class _ImageSetWidget extends ConsumerWidget {
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.channel0!),
+                    child: ConvexHullCard(image: imageSet.channel0!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel1 != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.channel1!),
+                    child: ConvexHullCard(image: imageSet.channel1!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel2 != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.channel2!),
+                    child: ConvexHullCard(image: imageSet.channel2!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel3 != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.channel3!),
+                    child: ConvexHullCard(image: imageSet.channel3!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel4 != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.channel4!),
+                    child: ConvexHullCard(image: imageSet.channel4!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.overlay != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.overlay!),
+                    child: ConvexHullCard(image: imageSet.overlay!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
           ],
@@ -173,42 +172,42 @@ class _ImageSetWidget extends ConsumerWidget {
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.channel0BackgroundCorrect!),
+                    child: ConvexHullCard(image: imageSet.channel0BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel1BackgroundCorrect != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.channel1BackgroundCorrect!),
+                    child: ConvexHullCard(image: imageSet.channel1BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel2BackgroundCorrect != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.channel2BackgroundCorrect!),
+                    child: ConvexHullCard(image: imageSet.channel2BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel3BackgroundCorrect != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.channel3BackgroundCorrect!),
+                    child: ConvexHullCard(image: imageSet.channel3BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
             imageSet.channel4BackgroundCorrect != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.channel4BackgroundCorrect!),
+                    child: ConvexHullCard(image: imageSet.channel4BackgroundCorrect!),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
-            imageSet.inflammation != null
+            imageSet.results.inflammation != null
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ResultsCard(cardSize: cardSize),
+                    child: ConvexHullCard(results: imageSet.results),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
           ],

@@ -8,9 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ImageThumbnailCard extends ConsumerStatefulWidget {
   final AbstractImage image;
+  final void Function()? callback;
 
   const ImageThumbnailCard({
     required this.image,
+    this.callback,
     super.key,
   });
 
@@ -48,6 +50,10 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
         child: GestureDetector(
           onTap: () {
             ref.read(appDataProvider.notifier).selectImage(image: widget.image);
+            final callback = widget.callback;
+            if (callback != null) {
+              callback();
+            }
           },
           child: Stack(
             children: [
@@ -55,20 +61,22 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
                 url: widget.image.url,
                 md5Hash: widget.image.md5Hash ?? '',
               ),
-              mouseHover ? Positioned(
-                right: 2.0,
-                top: 2.0,
-                child: GestureDetector(
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 18.0,
-                  ),
-                  onTap: () async {
-                    await ref.read(imagesProvider.notifier).deleteImageFromServer(image: widget.image);
-                  },
-                ),
-              ) : Container(),
+              mouseHover
+                  ? Positioned(
+                      right: 2.0,
+                      top: 2.0,
+                      child: GestureDetector(
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 18.0,
+                        ),
+                        onTap: () async {
+                          await ref.read(imagesProvider.notifier).deleteImageFromServer(image: widget.image);
+                        },
+                      ),
+                    )
+                  : Container(),
               Positioned(
                 left: 8.0,
                 bottom: 8.0,

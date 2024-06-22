@@ -1,5 +1,6 @@
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
+import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -340,8 +341,9 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               channel3ProteinName: channel3Name,
                               channel4ProteinName: channel4Name,
                             );
-                            ref.read(convexHullConfigProvider.notifier).setConvexHullConfig(convexHullConfigModel: newConfig);
-                            //appData.setMenuSetting(leftMenu: LeftMenuEnum.functionResults);
+                            final config = ref.read(convexHullConfigProvider.notifier);
+                            config.setConvexHullConfig(convexHullConfigModel: newConfig);
+                            config.setLeftMenu(leftMenu: LeftMenuEnum.functionResults);
                           }
                         },
                         child: const Text('Start'),

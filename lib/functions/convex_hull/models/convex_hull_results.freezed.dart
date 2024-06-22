@@ -22,6 +22,7 @@ ConvexHullResults _$ConvexHullResultsFromJson(Map<String, dynamic> json) {
 mixin _$ConvexHullResults {
   AbstractImage? get inflammation => throw _privateConstructorUsedError;
   AbstractImage? get simplex => throw _privateConstructorUsedError;
+  Map<String, String>? get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,10 @@ abstract class $ConvexHullResultsCopyWith<$Res> {
           ConvexHullResults value, $Res Function(ConvexHullResults) then) =
       _$ConvexHullResultsCopyWithImpl<$Res, ConvexHullResults>;
   @useResult
-  $Res call({AbstractImage? inflammation, AbstractImage? simplex});
+  $Res call(
+      {AbstractImage? inflammation,
+      AbstractImage? simplex,
+      Map<String, String>? data});
 
   $AbstractImageCopyWith<$Res>? get inflammation;
   $AbstractImageCopyWith<$Res>? get simplex;
@@ -56,6 +60,7 @@ class _$ConvexHullResultsCopyWithImpl<$Res, $Val extends ConvexHullResults>
   $Res call({
     Object? inflammation = freezed,
     Object? simplex = freezed,
+    Object? data = freezed,
   }) {
     return _then(_value.copyWith(
       inflammation: freezed == inflammation
@@ -66,6 +71,10 @@ class _$ConvexHullResultsCopyWithImpl<$Res, $Val extends ConvexHullResults>
           ? _value.simplex
           : simplex // ignore: cast_nullable_to_non_nullable
               as AbstractImage?,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>?,
     ) as $Val);
   }
 
@@ -102,7 +111,10 @@ abstract class _$$ConvexHullResultsImplCopyWith<$Res>
       __$$ConvexHullResultsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({AbstractImage? inflammation, AbstractImage? simplex});
+  $Res call(
+      {AbstractImage? inflammation,
+      AbstractImage? simplex,
+      Map<String, String>? data});
 
   @override
   $AbstractImageCopyWith<$Res>? get inflammation;
@@ -123,6 +135,7 @@ class __$$ConvexHullResultsImplCopyWithImpl<$Res>
   $Res call({
     Object? inflammation = freezed,
     Object? simplex = freezed,
+    Object? data = freezed,
   }) {
     return _then(_$ConvexHullResultsImpl(
       inflammation: freezed == inflammation
@@ -133,6 +146,10 @@ class __$$ConvexHullResultsImplCopyWithImpl<$Res>
           ? _value.simplex
           : simplex // ignore: cast_nullable_to_non_nullable
               as AbstractImage?,
+      data: freezed == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>?,
     ));
   }
 }
@@ -142,7 +159,10 @@ class __$$ConvexHullResultsImplCopyWithImpl<$Res>
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class _$ConvexHullResultsImpl extends _ConvexHullResults {
-  const _$ConvexHullResultsImpl({this.inflammation, this.simplex}) : super._();
+  const _$ConvexHullResultsImpl(
+      {this.inflammation, this.simplex, final Map<String, String>? data})
+      : _data = data,
+        super._();
 
   factory _$ConvexHullResultsImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullResultsImplFromJson(json);
@@ -151,10 +171,19 @@ class _$ConvexHullResultsImpl extends _ConvexHullResults {
   final AbstractImage? inflammation;
   @override
   final AbstractImage? simplex;
+  final Map<String, String>? _data;
+  @override
+  Map<String, String>? get data {
+    final value = _data;
+    if (value == null) return null;
+    if (_data is EqualUnmodifiableMapView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
 
   @override
   String toString() {
-    return 'ConvexHullResults(inflammation: $inflammation, simplex: $simplex)';
+    return 'ConvexHullResults(inflammation: $inflammation, simplex: $simplex, data: $data)';
   }
 
   @override
@@ -164,12 +193,14 @@ class _$ConvexHullResultsImpl extends _ConvexHullResults {
             other is _$ConvexHullResultsImpl &&
             (identical(other.inflammation, inflammation) ||
                 other.inflammation == inflammation) &&
-            (identical(other.simplex, simplex) || other.simplex == simplex));
+            (identical(other.simplex, simplex) || other.simplex == simplex) &&
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, inflammation, simplex);
+  int get hashCode => Object.hash(runtimeType, inflammation, simplex,
+      const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
@@ -189,7 +220,8 @@ class _$ConvexHullResultsImpl extends _ConvexHullResults {
 abstract class _ConvexHullResults extends ConvexHullResults {
   const factory _ConvexHullResults(
       {final AbstractImage? inflammation,
-      final AbstractImage? simplex}) = _$ConvexHullResultsImpl;
+      final AbstractImage? simplex,
+      final Map<String, String>? data}) = _$ConvexHullResultsImpl;
   const _ConvexHullResults._() : super._();
 
   factory _ConvexHullResults.fromJson(Map<String, dynamic> json) =
@@ -199,6 +231,8 @@ abstract class _ConvexHullResults extends ConvexHullResults {
   AbstractImage? get inflammation;
   @override
   AbstractImage? get simplex;
+  @override
+  Map<String, String>? get data;
   @override
   @JsonKey(ignore: true)
   _$$ConvexHullResultsImplCopyWith<_$ConvexHullResultsImpl> get copyWith =>
