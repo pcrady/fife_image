@@ -7,7 +7,8 @@ Image processing for the Fife Lab.
 The flutter project is designed to be used in the browser.
 
 To run the server:
+```
 cd server/
 python main.py
-
+```
 testing the back end functions can be done with the scratchipynb notebook
