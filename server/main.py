@@ -297,6 +297,7 @@ def convex_hull_calculation():
     hull, points = save_convex_hull_overlay(base_image_name,
                                             overlay, insulin, glucagon, crop_region)
     save_mask_cd4_cd8(base_image_name, cd4, cd8, crop_region, hull, points)
+    # TODO save a file with all the data in it and pass it to the front end
     return converted_paths()
 
 

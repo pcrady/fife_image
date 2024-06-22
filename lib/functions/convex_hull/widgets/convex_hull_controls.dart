@@ -48,26 +48,42 @@ class _ConvexHullResultsDisplay extends StatelessWidget {
         Expanded(
           child: Card(
             clipBehavior: Clip.antiAlias,
-            child: CachedNetworkImage(
-              imageUrl: results.simplex!.url,
-              cacheKey: results.simplex!.md5Hash,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorListener: (error) {
-                logger.e(error);
-              },
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () {
+                  //TODO popup modal
+                },
+                child: CachedNetworkImage(
+                  imageUrl: results.simplex!.url,
+                  cacheKey: results.simplex!.md5Hash,
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorListener: (error) {
+                    logger.e(error);
+                  },
+                ),
+              ),
             ),
           ),
         ),
         Expanded(
           child: Card(
             clipBehavior: Clip.antiAlias,
-            child: CachedNetworkImage(
-              imageUrl: results.inflammation!.url,
-              cacheKey: results.inflammation!.md5Hash,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorListener: (error) {
-                logger.e(error);
-              },
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () {
+                  //TODO popup modal
+                },
+                child: CachedNetworkImage(
+                  imageUrl: results.inflammation!.url,
+                  cacheKey: results.inflammation!.md5Hash,
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorListener: (error) {
+                    logger.e(error);
+                  },
+                ),
+              ),
             ),
           ),
         ),
