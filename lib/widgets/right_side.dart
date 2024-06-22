@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class RightSide extends StatelessWidget {
   const RightSide({super.key});
 
+  // TOdo add results for convex hull once finished
   @override
   Widget build(BuildContext context) {
     return const Column(

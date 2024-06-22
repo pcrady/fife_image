@@ -62,8 +62,9 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
                   child: const Icon(
                     Icons.close,
                     color: Colors.white,
+                    size: 18.0,
                   ),
-                  onLongPress: () async {
+                  onTap: () async {
                     await ref.read(imagesProvider.notifier).deleteImageFromServer(image: widget.image);
                   },
                 ),
