@@ -73,6 +73,10 @@ class Images extends _$Images {
       '$server/delete',
       data: {'filename': image.name},
     );
+    final appData = ref.read(appDataProvider);
+    if (appData.selectedImage == image) {
+      ref.read(appDataProvider.notifier).selectImage(image: null);
+    }
     ref.invalidateSelf();
   }
 

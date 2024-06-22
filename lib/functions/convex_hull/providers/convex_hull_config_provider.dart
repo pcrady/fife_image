@@ -23,14 +23,14 @@ class ConvexHullConfig extends _$ConvexHullConfig {
     state = state.copyWith(leftMenuEnum: leftMenu);
   }
 
-  void setActiveImage({required AbstractImage activeImage})  {
+  void setActiveImage({required AbstractImage? activeImage})  {
     state = state.copyWith(
       activeImage: activeImage,
       activeResults: null,
     );
   }
 
-  void setActiveResults({required ConvexHullResults results})  {
+  void setActiveResults({required ConvexHullResults? results})  {
     state = state.copyWith(
       activeImage: null,
       activeResults: results,

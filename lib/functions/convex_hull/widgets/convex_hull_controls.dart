@@ -87,16 +87,16 @@ class _BackgroundSelect extends ConsumerWidget {
     final image = convexHullConfig.activeImage;
 
     if (correctedImages.contains(image)) {
-      return const Column(
+      return Column(
         children: [
-          SelectedImage(),
+          image != null ? SelectedImage(image: image) : Container(),
         ],
       );
     } else if (unmodifiedImages.contains(image)) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SelectedImage(),
+          image != null ? SelectedImage(image: image) : Container(),
           const Text(
             'Select the region of highest background signal.',
             textAlign: TextAlign.start,
@@ -137,7 +137,7 @@ class _BackgroundSelect extends ConsumerWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SelectedImage(),
+          image != null ? SelectedImage(image: image) : Container(),
           const Text(
             'Select the outline of the islet.',
             textAlign: TextAlign.start,

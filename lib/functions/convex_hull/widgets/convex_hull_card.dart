@@ -26,6 +26,11 @@ class ConvexHullCard extends ConsumerWidget {
         callback: () {
           ref.read(convexHullConfigProvider.notifier).setActiveImage(activeImage: image!);
         },
+        deleteCallback: () {
+          if (ref.read(convexHullConfigProvider).activeImage == image) {
+            ref.read(convexHullConfigProvider.notifier).setActiveImage(activeImage: null);
+          }
+        },
       );
     } else if (results != null) {
       return MouseRegion(

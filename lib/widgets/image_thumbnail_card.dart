@@ -9,10 +9,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ImageThumbnailCard extends ConsumerStatefulWidget {
   final AbstractImage image;
   final void Function()? callback;
+  final void Function()? deleteCallback;
 
   const ImageThumbnailCard({
     required this.image,
     this.callback,
+    this.deleteCallback,
     super.key,
   });
 
@@ -73,6 +75,10 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
                         ),
                         onTap: () async {
                           await ref.read(imagesProvider.notifier).deleteImageFromServer(image: widget.image);
+                          final deleteCallback = widget.deleteCallback;
+                          if (deleteCallback != null) {
+                            deleteCallback();
+                          }
                         },
                       ),
                     )
