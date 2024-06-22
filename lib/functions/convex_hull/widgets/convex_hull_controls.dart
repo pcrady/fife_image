@@ -39,7 +39,6 @@ class _ConvexHullResultsDisplay extends StatelessWidget {
 
   const _ConvexHullResultsDisplay({
     required this.results,
-    super.key,
   });
 
   @override
