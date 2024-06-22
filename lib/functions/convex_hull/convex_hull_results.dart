@@ -1,8 +1,6 @@
-import 'package:fife_image/lib/app_logger.dart';
-import 'package:fife_image/models/abstract_image.dart';
-import 'package:fife_image/models/convex_hull_image_set.dart';
+import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.dart';
+import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
-import 'package:fife_image/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/widgets/image_thumbnail_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -106,7 +106,6 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
   @override
   Widget build(BuildContext context) {
     ref.watch(imagesProvider);
-    logger.w(widget.image.hashCode);
 
     return LayoutBuilder(
       builder: (_, constraints) {

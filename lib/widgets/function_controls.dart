@@ -1,6 +1,6 @@
+import 'package:fife_image/functions/convex_hull/convex_hull_controls.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
-import 'package:fife_image/widgets/convex_hull_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
