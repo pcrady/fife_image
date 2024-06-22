@@ -1,4 +1,4 @@
-import 'package:fife_image/functions/convex_hull/models/convex_hull_config.dart';
+import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/models/enums.dart';
@@ -15,8 +15,6 @@ class AppDataStore with _$AppDataStore {
     AbstractImage? selectedImage,
     @Default(FunctionsEnum.functions) FunctionsEnum function,
     @Default(LeftMenuEnum.images) LeftMenuEnum leftMenu,
-    @Default(ConvexHullConfig()) ConvexHullConfig convexHullConfig,
-    @Default(ConvexHullResults()) ConvexHullResults convexHullResults,
   }) = _AppDataStore;
 
   factory AppDataStore.fromJson(Map<String, dynamic> json) => _$AppDataStoreFromJson(json);

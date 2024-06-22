@@ -1,15 +1,19 @@
 import 'package:fife_image/constants.dart';
+import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
+import 'package:fife_image/models/abstract_image.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // flutter pub run build_runner build
-part 'convex_hull_config.freezed.dart';
-part 'convex_hull_config.g.dart';
+part 'convex_hull_config_model.freezed.dart';
+part 'convex_hull_config_model.g.dart';
 
 @freezed
-class ConvexHullConfig with _$ConvexHullConfig {
+class ConvexHullConfigModel with _$ConvexHullConfigModel {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
-  const factory ConvexHullConfig({
+  const factory ConvexHullConfigModel({
     String? activeImageSetBaseName,
+    AbstractImage? activeImage,
+    ConvexHullResults? activeResults,
     @Default('ch00') String channel0SearchPattern,
     @Default('ch01') String channel1SearchPattern,
     @Default('ch02') String channel2SearchPattern,
@@ -21,7 +25,7 @@ class ConvexHullConfig with _$ConvexHullConfig {
     @Default(insulin) String channel2ProteinName,
     @Default(cd8) String channel3ProteinName,
     @Default(pdl1) String channel4ProteinName,
-  }) = _ConvexHullConfig;
+  }) = _ConvexHullConfigModel;
 
-  factory ConvexHullConfig.fromJson(Map<String, dynamic> json) => _$ConvexHullConfigFromJson(json);
+  factory ConvexHullConfigModel.fromJson(Map<String, dynamic> json) => _$ConvexHullConfigModelFromJson(json);
 }

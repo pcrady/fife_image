@@ -23,8 +23,6 @@ mixin _$AppDataStore {
   AbstractImage? get selectedImage => throw _privateConstructorUsedError;
   FunctionsEnum get function => throw _privateConstructorUsedError;
   LeftMenuEnum get leftMenu => throw _privateConstructorUsedError;
-  ConvexHullConfig get convexHullConfig => throw _privateConstructorUsedError;
-  ConvexHullResults get convexHullResults => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,13 +39,9 @@ abstract class $AppDataStoreCopyWith<$Res> {
   $Res call(
       {AbstractImage? selectedImage,
       FunctionsEnum function,
-      LeftMenuEnum leftMenu,
-      ConvexHullConfig convexHullConfig,
-      ConvexHullResults convexHullResults});
+      LeftMenuEnum leftMenu});
 
   $AbstractImageCopyWith<$Res>? get selectedImage;
-  $ConvexHullConfigCopyWith<$Res> get convexHullConfig;
-  $ConvexHullResultsCopyWith<$Res> get convexHullResults;
 }
 
 /// @nodoc
@@ -66,8 +60,6 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
     Object? selectedImage = freezed,
     Object? function = null,
     Object? leftMenu = null,
-    Object? convexHullConfig = null,
-    Object? convexHullResults = null,
   }) {
     return _then(_value.copyWith(
       selectedImage: freezed == selectedImage
@@ -82,14 +74,6 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
           ? _value.leftMenu
           : leftMenu // ignore: cast_nullable_to_non_nullable
               as LeftMenuEnum,
-      convexHullConfig: null == convexHullConfig
-          ? _value.convexHullConfig
-          : convexHullConfig // ignore: cast_nullable_to_non_nullable
-              as ConvexHullConfig,
-      convexHullResults: null == convexHullResults
-          ? _value.convexHullResults
-          : convexHullResults // ignore: cast_nullable_to_non_nullable
-              as ConvexHullResults,
     ) as $Val);
   }
 
@@ -102,22 +86,6 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
 
     return $AbstractImageCopyWith<$Res>(_value.selectedImage!, (value) {
       return _then(_value.copyWith(selectedImage: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ConvexHullConfigCopyWith<$Res> get convexHullConfig {
-    return $ConvexHullConfigCopyWith<$Res>(_value.convexHullConfig, (value) {
-      return _then(_value.copyWith(convexHullConfig: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ConvexHullResultsCopyWith<$Res> get convexHullResults {
-    return $ConvexHullResultsCopyWith<$Res>(_value.convexHullResults, (value) {
-      return _then(_value.copyWith(convexHullResults: value) as $Val);
     });
   }
 }
@@ -133,16 +101,10 @@ abstract class _$$AppDataStoreImplCopyWith<$Res>
   $Res call(
       {AbstractImage? selectedImage,
       FunctionsEnum function,
-      LeftMenuEnum leftMenu,
-      ConvexHullConfig convexHullConfig,
-      ConvexHullResults convexHullResults});
+      LeftMenuEnum leftMenu});
 
   @override
   $AbstractImageCopyWith<$Res>? get selectedImage;
-  @override
-  $ConvexHullConfigCopyWith<$Res> get convexHullConfig;
-  @override
-  $ConvexHullResultsCopyWith<$Res> get convexHullResults;
 }
 
 /// @nodoc
@@ -159,8 +121,6 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
     Object? selectedImage = freezed,
     Object? function = null,
     Object? leftMenu = null,
-    Object? convexHullConfig = null,
-    Object? convexHullResults = null,
   }) {
     return _then(_$AppDataStoreImpl(
       selectedImage: freezed == selectedImage
@@ -175,14 +135,6 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
           ? _value.leftMenu
           : leftMenu // ignore: cast_nullable_to_non_nullable
               as LeftMenuEnum,
-      convexHullConfig: null == convexHullConfig
-          ? _value.convexHullConfig
-          : convexHullConfig // ignore: cast_nullable_to_non_nullable
-              as ConvexHullConfig,
-      convexHullResults: null == convexHullResults
-          ? _value.convexHullResults
-          : convexHullResults // ignore: cast_nullable_to_non_nullable
-              as ConvexHullResults,
     ));
   }
 }
@@ -195,9 +147,7 @@ class _$AppDataStoreImpl implements _AppDataStore {
   const _$AppDataStoreImpl(
       {this.selectedImage,
       this.function = FunctionsEnum.functions,
-      this.leftMenu = LeftMenuEnum.images,
-      this.convexHullConfig = const ConvexHullConfig(),
-      this.convexHullResults = const ConvexHullResults()});
+      this.leftMenu = LeftMenuEnum.images});
 
   factory _$AppDataStoreImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppDataStoreImplFromJson(json);
@@ -210,16 +160,10 @@ class _$AppDataStoreImpl implements _AppDataStore {
   @override
   @JsonKey()
   final LeftMenuEnum leftMenu;
-  @override
-  @JsonKey()
-  final ConvexHullConfig convexHullConfig;
-  @override
-  @JsonKey()
-  final ConvexHullResults convexHullResults;
 
   @override
   String toString() {
-    return 'AppDataStore(selectedImage: $selectedImage, function: $function, leftMenu: $leftMenu, convexHullConfig: $convexHullConfig, convexHullResults: $convexHullResults)';
+    return 'AppDataStore(selectedImage: $selectedImage, function: $function, leftMenu: $leftMenu)';
   }
 
   @override
@@ -232,17 +176,13 @@ class _$AppDataStoreImpl implements _AppDataStore {
             (identical(other.function, function) ||
                 other.function == function) &&
             (identical(other.leftMenu, leftMenu) ||
-                other.leftMenu == leftMenu) &&
-            (identical(other.convexHullConfig, convexHullConfig) ||
-                other.convexHullConfig == convexHullConfig) &&
-            (identical(other.convexHullResults, convexHullResults) ||
-                other.convexHullResults == convexHullResults));
+                other.leftMenu == leftMenu));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, selectedImage, function,
-      leftMenu, convexHullConfig, convexHullResults);
+  int get hashCode =>
+      Object.hash(runtimeType, selectedImage, function, leftMenu);
 
   @JsonKey(ignore: true)
   @override
@@ -262,9 +202,7 @@ abstract class _AppDataStore implements AppDataStore {
   const factory _AppDataStore(
       {final AbstractImage? selectedImage,
       final FunctionsEnum function,
-      final LeftMenuEnum leftMenu,
-      final ConvexHullConfig convexHullConfig,
-      final ConvexHullResults convexHullResults}) = _$AppDataStoreImpl;
+      final LeftMenuEnum leftMenu}) = _$AppDataStoreImpl;
 
   factory _AppDataStore.fromJson(Map<String, dynamic> json) =
       _$AppDataStoreImpl.fromJson;
@@ -275,10 +213,6 @@ abstract class _AppDataStore implements AppDataStore {
   FunctionsEnum get function;
   @override
   LeftMenuEnum get leftMenu;
-  @override
-  ConvexHullConfig get convexHullConfig;
-  @override
-  ConvexHullResults get convexHullResults;
   @override
   @JsonKey(ignore: true)
   _$$AppDataStoreImplCopyWith<_$AppDataStoreImpl> get copyWith =>

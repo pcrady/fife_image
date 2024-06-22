@@ -1,5 +1,7 @@
 import 'package:fife_image/constants.dart';
-import 'package:fife_image/functions/convex_hull/models/convex_hull_config.dart';
+import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
+import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +37,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
 
   @override
   void initState() {
-    final settings = ref.read(appDataProvider);
-    final convexHullConfig = settings.convexHullConfig;
+    final convexHullConfig = ref.read(convexHullConfigProvider);
     channel0Controller = TextEditingController(text: convexHullConfig.channel0SearchPattern);
     channel1Controller = TextEditingController(text: convexHullConfig.channel1SearchPattern);
     channel2Controller = TextEditingController(text: convexHullConfig.channel2SearchPattern);
@@ -328,7 +329,8 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             final appData = ref.read(appDataProvider.notifier);
-                            final convexHullConfig = ConvexHullConfig(
+                            final oldConfig = ref.read(convexHullConfigProvider);
+                            final newConfig = oldConfig.copyWith(
                               channel0SearchPattern: channel0Controller.text,
                               channel1SearchPattern: channel1Controller.text,
                               channel2SearchPattern: channel2Controller.text,
@@ -341,7 +343,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               channel3ProteinName: channel3Name,
                               channel4ProteinName: channel4Name,
                             );
-                            appData.setConvexHullConfig(convexHullConfig: convexHullConfig);
+                            ref.read(convexHullConfigProvider.notifier).setConvexHullConfig(convexHullConfigModel: newConfig);
                             appData.setMenuSetting(leftMenu: LeftMenuEnum.functionResults);
                           }
                         },

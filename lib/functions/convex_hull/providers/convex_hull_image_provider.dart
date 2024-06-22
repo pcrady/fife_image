@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.dart';
+import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -14,12 +15,10 @@ part 'convex_hull_image_provider.g.dart';
 class ConvexHullImageSets extends _$ConvexHullImageSets {
   final _dio = Dio();
 
-  // TODO redo this it cant be performant maybe build a json structure
   @override
   List<ConvexHullImageSet> build() {
     final asyncValue = ref.watch(imagesProvider);
-    final settings = ref.watch(appDataProvider);
-    final convexHullConfig = settings.convexHullConfig;
+    final convexHullConfig = ref.watch(convexHullConfigProvider);
 
     return asyncValue.when(
       data: (images) {
@@ -151,7 +150,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     if (imageSet.channel3BackgroundCorrect == null) return;
     if (imageSet.channel4BackgroundCorrect == null) return;
 
-    final config = appData.convexHullConfig;
+    final config = ref.read(convexHullConfigProvider);
     final channel0Name = config.channel0ProteinName;
     final channel1Name = config.channel1ProteinName;
     final channel2Name = config.channel2ProteinName;

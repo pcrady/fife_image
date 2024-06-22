@@ -1,4 +1,5 @@
 import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.dart';
+import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -19,8 +20,7 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullResultsInterface> 
   @override
   Widget build(BuildContext context) {
     final convexHullImages = ref.watch(convexHullImageSetsProvider);
-    final settings = ref.watch(appDataProvider);
-    final convexHullConfig = settings.convexHullConfig;
+    final convexHullConfig = ref.watch(convexHullConfigProvider);
 
     return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.widthConstraints().maxWidth;
