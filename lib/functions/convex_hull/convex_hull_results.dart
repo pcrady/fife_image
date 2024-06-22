@@ -1,9 +1,11 @@
 import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/widgets/image_thumbnail_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ConvexHullResults extends ConsumerStatefulWidget {
   const ConvexHullResults({super.key});
@@ -208,7 +210,33 @@ class _ImageSetWidget extends ConsumerWidget {
                 ? SizedBox(
                     width: cardSize,
                     height: cardSize,
-                    child: ImageThumbnailCard(image: imageSet.inflammation!),
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () {
+                          logger.i('fuck');
+                        },
+                        child: Card(
+                          color: Colors.purpleAccent,
+                          clipBehavior: Clip.antiAlias,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.flaskVial,
+                                size: cardSize * 0.5,
+                              ),
+                              const Text(
+                                'Results',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   )
                 : SizedBox(width: cardSize, height: cardSize),
           ],
