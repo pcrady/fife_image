@@ -65,8 +65,8 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
               ),
               mouseHover
                   ? Positioned(
-                      right: 2.0,
-                      top: 2.0,
+                      right: 4.0,
+                      top: 4.0,
                       child: GestureDetector(
                         child: const Icon(
                           Icons.close,
