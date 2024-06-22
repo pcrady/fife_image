@@ -15,6 +15,7 @@ class SelectedImage extends ConsumerWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           MouseRegion(
             cursor: SystemMouseCursors.precise,
@@ -22,7 +23,14 @@ class SelectedImage extends ConsumerWidget {
               clipBehavior: Clip.antiAlias,
               child: SelectedImagePaint(image: image),
             ),
-          )
+          ),
+          Text(
+            image.name,
+            style: const TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       );
     } else {

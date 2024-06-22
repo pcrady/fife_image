@@ -20,6 +20,10 @@ _$AppDataStoreImpl _$$AppDataStoreImplFromJson(Map<String, dynamic> json) =>
           ? const ConvexHullConfig()
           : ConvexHullConfig.fromJson(
               json['convex_hull_config'] as Map<String, dynamic>),
+      convexHullResults: json['convex_hull_results'] == null
+          ? const ConvexHullResults()
+          : ConvexHullResults.fromJson(
+              json['convex_hull_results'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) {
@@ -35,6 +39,7 @@ Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) {
   val['function'] = _$FunctionsEnumEnumMap[instance.function]!;
   val['left_menu'] = _$LeftMenuEnumEnumMap[instance.leftMenu]!;
   val['convex_hull_config'] = instance.convexHullConfig.toJson();
+  val['convex_hull_results'] = instance.convexHullResults.toJson();
   return val;
 }
 

@@ -3,6 +3,7 @@ import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
+import 'package:fife_image/widgets/selected_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -38,31 +39,18 @@ class _BackgroundSelect extends ConsumerWidget {
     final correctedImages = ref.read(convexHullImageSetsProvider.notifier).backgroundCorrectionImages();
     final unmodifiedImages = ref.read(convexHullImageSetsProvider.notifier).unmodifiedImages();
     final image = appData.selectedImage;
-    final imageName = image?.name ?? '';
 
     if (correctedImages.contains(image)) {
-      return Column(
+      return const Column(
         children: [
-          Text(
-            imageName,
-            style: const TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          SelectedImage(),
         ],
       );
     } else if (unmodifiedImages.contains(image)) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            imageName,
-            style: const TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          const SelectedImage(),
           const Text(
             'Select the region of highest background signal.',
             textAlign: TextAlign.start,
@@ -102,13 +90,7 @@ class _BackgroundSelect extends ConsumerWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            imageName,
-            style: const TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          const SelectedImage(),
           const Text(
             'Select the outline of the islet.',
             textAlign: TextAlign.start,

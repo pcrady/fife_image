@@ -1,4 +1,4 @@
-import 'package:fife_image/functions/convex_hull/convex_hull_results.dart';
+import 'package:fife_image/functions/convex_hull/convex_hull_results_interface.dart';
 import 'package:fife_image/functions/convex_hull/convex_hull_settings.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -21,7 +21,7 @@ class LeftSide extends ConsumerWidget {
       }
     } else if (settings.leftMenu == LeftMenuEnum.functionResults) {
       if (settings.function == FunctionsEnum.convexHull) {
-        return const ConvexHullResults();
+        return const ConvexHullResultsInterface();
       }
     }
     return Container();
