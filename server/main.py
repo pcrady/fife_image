@@ -8,6 +8,7 @@ import hashlib
 import matplotlib.pyplot as plt
 from scipy.spatial import ConvexHull
 from skimage.draw import polygon
+import cv2
 
 plt.switch_backend('Agg')
 
@@ -39,12 +40,27 @@ def _scale_region(image, region):
     polygon[:, 1] = polygon[:, 1] * image.shape[1]
     return polygon
 
+def _polygon_containing_region(image, polygon, indicator_value=1):
+    mask = np.zeros_like(image, dtype=np.uint8)
+    int_polygon = np.int32([np.round(polygon, 0)])
+    cv2.fillPoly(mask, int_polygon, (indicator_value))
+    return mask
+
 
 def _mask_image(image, region):
     mask = np.zeros(image.shape[:2], dtype=np.uint8)
     polygon = _scale_region(image, region)
     rr, cc = draw.polygon(polygon[:, 1], polygon[:, 0], mask.shape)
     mask[rr, cc] = 255
+    masked_image = image.copy()
+    masked_image[mask == 0] = 0
+    return masked_image
+
+def _mask_image_cv2(image, region):
+   
+    polygon = _scale_region(image, region)
+    mask = _polygon_containing_region(image, polygon, indicator_value=255)
+
     masked_image = image.copy()
     masked_image[mask == 0] = 0
     return masked_image
@@ -119,13 +135,16 @@ def _save_simplex_plot(image_name, image, ins_gluc_points, hull):
     width_inch = width_px / dpi
     height_inch = height_px / dpi
 
-    mask = np.zeros_like(image, dtype=np.uint8)
-    rr, cc = polygon(ins_gluc_points[hull.vertices, 0],
-                     ins_gluc_points[hull.vertices, 1], mask.shape)
-    mask[rr, cc] = 1
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    hull_polygon = ins_gluc_points[hull.vertices]
+    hull_polygon = np.concatenate([hull_polygon, np.array([hull_polygon[0]])])
+    mask = _polygon_containing_region(gray, hull_polygon, indicator_value=255)
+
+    full_mask = np.stack([mask, mask, mask]).T
 
     dimmed_image = image.copy()
-    dimmed_image[mask == 0] = (dimmed_image[mask == 0] * 0.5).astype(image.dtype)
+    dimmed_image[full_mask == 0] = (dimmed_image[full_mask == 0] * 0.5).astype(image.dtype)
 
     plt.figure(figsize=(width_inch, height_inch), dpi=dpi)
     plt.imshow(dimmed_image)
@@ -138,7 +157,7 @@ def _save_simplex_plot(image_name, image, ins_gluc_points, hull):
 
 def save_convex_hull_overlay(image_name, overlay, insulin, glucagon, crop_region):
     ins_gluc_mask = _create_insulin_glucagon_mask(insulin, glucagon)
-    cropped_ins_gluc_mask = _mask_image(ins_gluc_mask, crop_region)
+    cropped_ins_gluc_mask = _mask_image_cv2(ins_gluc_mask, crop_region)
     ins_gluc_points = _mask_to_points(cropped_ins_gluc_mask)
     hull = _compute_convex_hull(ins_gluc_points)
     _save_simplex_plot(image_name, overlay, ins_gluc_points, hull)

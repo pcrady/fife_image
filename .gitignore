@@ -44,3 +44,4 @@ app.*.map.json
 
 # Jupyter checkpoints
 /.ipynb_checkpoints
+/notebooks
