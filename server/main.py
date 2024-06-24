@@ -77,7 +77,7 @@ def _compute_subtraction_value(means, stds):
 
 
 def subtract_background(image, region):
-    masked_image = _mask_image(image, region)
+    masked_image = _mask_image_cv2(image, region)
     means, stds = _compute_masked_image_stats(masked_image)
     subtraction_value = _compute_subtraction_value(means, stds)
     modified_image = image - subtraction_value
@@ -166,12 +166,12 @@ def save_convex_hull_overlay(image_name, overlay, insulin, glucagon, crop_region
 
 def save_mask_cd4_cd8(image_name, cd4, cd8, crop_region, hull, ins_gluc_points):
     masked_cd4 = _convert_to_mask(cd4, lower_threshold_cd4, upper_threshold_cd4)
-    masked_cd4 = _mask_image(masked_cd4, crop_region)
+    masked_cd4 = _mask_image_cv2(masked_cd4, crop_region)
     color_cd4 = np.zeros((masked_cd4.shape[0], masked_cd4.shape[1], 3), dtype=np.uint8)
     color_cd4[masked_cd4] = [0, 0, 255]
 
     masked_cd8 = _convert_to_mask(cd8, lower_threshold_cd8, upper_threshold_cd8)
-    masked_cd8 = _mask_image(masked_cd8, crop_region)
+    masked_cd8 = _mask_image_cv2(masked_cd8, crop_region)
     color_cd8 = np.zeros((masked_cd4.shape[0], masked_cd4.shape[1], 3), dtype=np.uint8)
     color_cd8[masked_cd8] = [255, 0, 0]
     combined_mask = color_cd8 + color_cd4
