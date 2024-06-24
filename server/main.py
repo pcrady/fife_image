@@ -40,6 +40,7 @@ def _scale_region(image, region):
     polygon[:, 1] = polygon[:, 1] * image.shape[1]
     return polygon
 
+
 def _polygon_containing_region(image, polygon, indicator_value=1):
     mask = np.zeros_like(image, dtype=np.uint8)
     int_polygon = np.int32([np.round(polygon, 0)])
@@ -54,15 +55,19 @@ def _mask_image(image, region):
     mask[rr, cc] = 255
     masked_image = image.copy()
     masked_image[mask == 0] = 0
+    print('mask image')
+    print(masked_image.shape)
     return masked_image
 
+
 def _mask_image_cv2(image, region):
-   
     polygon = _scale_region(image, region)
     mask = _polygon_containing_region(image, polygon, indicator_value=255)
 
     masked_image = image.copy()
     masked_image[mask == 0] = 0
+    print('mask image cv2')
+    print(masked_image.shape)
     return masked_image
 
 
@@ -77,7 +82,7 @@ def _compute_subtraction_value(means, stds):
 
 
 def subtract_background(image, region):
-    masked_image = _mask_image_cv2(image, region)
+    masked_image = _mask_image(image, region) # <------------- this changes the colors
     means, stds = _compute_masked_image_stats(masked_image)
     subtraction_value = _compute_subtraction_value(means, stds)
     modified_image = image - subtraction_value
