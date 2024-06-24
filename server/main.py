@@ -41,11 +41,18 @@ def _scale_region(image, region):
     return polygon
 
 
+
 def _polygon_containing_region(image, polygon, indicator_value=1):
-    mask = np.zeros_like(image, dtype=np.uint8)
+
+    mask = np.zeros(image.shape[:2], dtype=np.uint8)
     int_polygon = np.int32([np.round(polygon, 0)])
     cv2.fillPoly(mask, int_polygon, (indicator_value))
-    return mask
+
+    full_mask = mask.copy()
+    if image.ndim == 3:
+        full_mask = np.stack([mask for _ in range(image.shape[2])]).T
+
+    return full_mask
 
 
 def _mask_image(image, region):
@@ -66,8 +73,7 @@ def _mask_image_cv2(image, region):
 
     masked_image = image.copy()
     masked_image[mask == 0] = 0
-    print('mask image cv2')
-    print(masked_image.shape)
+
     return masked_image
 
 
@@ -82,7 +88,7 @@ def _compute_subtraction_value(means, stds):
 
 
 def subtract_background(image, region):
-    masked_image = _mask_image(image, region) # <------------- this changes the colors
+    masked_image = _mask_image_cv2(image, region) # <------------- this changes the colors
     means, stds = _compute_masked_image_stats(masked_image)
     subtraction_value = _compute_subtraction_value(means, stds)
     modified_image = image - subtraction_value
@@ -140,16 +146,12 @@ def _save_simplex_plot(image_name, image, ins_gluc_points, hull):
     width_inch = width_px / dpi
     height_inch = height_px / dpi
 
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
     hull_polygon = ins_gluc_points[hull.vertices]
     hull_polygon = np.concatenate([hull_polygon, np.array([hull_polygon[0]])])
-    mask = _polygon_containing_region(gray, hull_polygon, indicator_value=255)
-
-    full_mask = np.stack([mask, mask, mask]).T
+    mask = _polygon_containing_region(image, hull_polygon, indicator_value=255)
 
     dimmed_image = image.copy()
-    dimmed_image[full_mask == 0] = (dimmed_image[full_mask == 0] * 0.5).astype(image.dtype)
+    dimmed_image[mask == 0] = (dimmed_image[mask == 0] * 0.5).astype(image.dtype)
 
     plt.figure(figsize=(width_inch, height_inch), dpi=dpi)
     plt.imshow(dimmed_image)
@@ -187,10 +189,9 @@ def save_mask_cd4_cd8(image_name, cd4, cd8, crop_region, hull, ins_gluc_points):
     width_inch = width_px / dpi
     height_inch = height_px / dpi
 
-    mask = np.zeros_like(combined_mask, dtype=np.uint8)
-    rr, cc = polygon(ins_gluc_points[hull.vertices, 0],
-                     ins_gluc_points[hull.vertices, 1], mask.shape)
-    mask[rr, cc] = 1
+    hull_polygon = ins_gluc_points[hull.vertices]
+    hull_polygon = np.concatenate([hull_polygon, np.array([hull_polygon[0]])])
+    mask = _polygon_containing_region(combined_mask, hull_polygon, indicator_value=255)
 
     dimmed_image = combined_mask.copy()
     dimmed_image[mask == 0] = (dimmed_image[mask == 0] * 0.5).astype(combined_mask.dtype)
