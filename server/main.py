@@ -7,7 +7,6 @@ from skimage import io, draw, color, morphology
 import hashlib
 import matplotlib.pyplot as plt
 from scipy.spatial import ConvexHull
-from skimage.draw import polygon
 import cv2
 
 plt.switch_backend('Agg')
@@ -41,9 +40,7 @@ def _scale_region(image, region):
     return polygon
 
 
-
 def _polygon_containing_region(image, polygon, indicator_value=1):
-
     mask = np.zeros(image.shape[:2], dtype=np.uint8)
     int_polygon = np.int32([np.round(polygon, 0)])
     cv2.fillPoly(mask, int_polygon, (indicator_value))
@@ -88,7 +85,7 @@ def _compute_subtraction_value(means, stds):
 
 
 def subtract_background(image, region):
-    masked_image = _mask_image_cv2(image, region) # <------------- this changes the colors
+    masked_image = _mask_image_cv2(image, region)
     means, stds = _compute_masked_image_stats(masked_image)
     subtraction_value = _compute_subtraction_value(means, stds)
     modified_image = image - subtraction_value
@@ -205,6 +202,36 @@ def save_mask_cd4_cd8(image_name, cd4, cd8, crop_region, hull, ins_gluc_points):
     plt.savefig(file_path, bbox_inches='tight', pad_inches=0, dpi=dpi)
 
 
+def calculate_md5(file_path):
+    hash_md5 = hashlib.md5()
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+
+def convert_to_png(filepath):
+    img = Image.open(filepath)
+    png_filename = os.path.splitext(os.path.basename(filepath))[0] + '.png'
+    output_path = os.path.join(app.config['OUTPUT_FOLDER'], png_filename)
+    img.save(output_path, 'PNG')
+
+
+@app.route('/', methods=['GET'])
+def converted_paths():
+    converted_files = os.listdir(app.config['OUTPUT_FOLDER'])
+    converted_paths_with_hashes = []
+
+    for filename in converted_files:
+        file_path = os.path.join(app.config['OUTPUT_FOLDER'], filename)
+        md5_hash = calculate_md5(file_path)
+        converted_paths_with_hashes.append({
+            'image_path': file_path,
+            'md5_hash': md5_hash
+        })
+    return jsonify(converted_paths_with_hashes)
+
+
 @app.route('/', methods=['POST'])
 def upload_files():
     if 'file' not in request.files:
@@ -254,39 +281,9 @@ def delete_image():
         return jsonify({"error": "File not found"}), 404
 
 
-def convert_to_png(filepath):
-    img = Image.open(filepath)
-    png_filename = os.path.splitext(os.path.basename(filepath))[0] + '.png'
-    output_path = os.path.join(app.config['OUTPUT_FOLDER'], png_filename)
-    img.save(output_path, 'PNG')
-
-
 @app.route('/converted/<filename>')
 def download_file(filename):
     return send_from_directory(app.config['OUTPUT_FOLDER'], filename)
-
-
-@app.route('/', methods=['GET'])
-def converted_paths():
-    converted_files = os.listdir(app.config['OUTPUT_FOLDER'])
-    converted_paths_with_hashes = []
-
-    for filename in converted_files:
-        file_path = os.path.join(app.config['OUTPUT_FOLDER'], filename)
-        md5_hash = calculate_md5(file_path)
-        converted_paths_with_hashes.append({
-            'image_path': file_path,
-            'md5_hash': md5_hash
-        })
-    return jsonify(converted_paths_with_hashes)
-
-
-def calculate_md5(file_path):
-    hash_md5 = hashlib.md5()
-    with open(file_path, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
 
 
 @app.route('/background_correction', methods=['POST'])
