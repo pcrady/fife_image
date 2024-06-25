@@ -14,12 +14,12 @@ plt.switch_backend('Agg')
 app = Flask(__name__)
 CORS(app)
 
-app.config['UPLOAD_FOLDER'] = 'uploads/'
-app.config['OUTPUT_FOLDER'] = 'converted/'
+UPLOAD_FOLDER = 'uploads/'
+OUTPUT_FOLDER = 'converted/'
 
 # Ensure the upload and output folders exist
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-os.makedirs(app.config['OUTPUT_FOLDER'], exist_ok=True)
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 
 lower_threshold_cd4 = 10
@@ -155,7 +155,7 @@ def _save_simplex_plot(image_name, image, ins_gluc_points, hull):
     for simplex in hull.simplices:
         plt.plot(ins_gluc_points[simplex, 1], ins_gluc_points[simplex, 0], 'w-')
     plt.axis('off')
-    file_path = os.path.join(app.config['OUTPUT_FOLDER'], image_name) + '_simplex.png'
+    file_path = os.path.join(OUTPUT_FOLDER, image_name) + '_simplex.png'
     plt.savefig(file_path, bbox_inches='tight', pad_inches=0, dpi=dpi)
 
 
@@ -198,7 +198,7 @@ def save_mask_cd4_cd8(image_name, cd4, cd8, crop_region, hull, ins_gluc_points):
     for simplex in hull.simplices:
         plt.plot(ins_gluc_points[simplex, 1], ins_gluc_points[simplex, 0], 'w-')
     plt.axis('off')
-    file_path = os.path.join(app.config['OUTPUT_FOLDER'], image_name) + '_inflammation.png'
+    file_path = os.path.join(OUTPUT_FOLDER, image_name) + '_inflammation.png'
     plt.savefig(file_path, bbox_inches='tight', pad_inches=0, dpi=dpi)
 
 
@@ -213,17 +213,17 @@ def calculate_md5(file_path):
 def convert_to_png(filepath):
     img = Image.open(filepath)
     png_filename = os.path.splitext(os.path.basename(filepath))[0] + '.png'
-    output_path = os.path.join(app.config['OUTPUT_FOLDER'], png_filename)
+    output_path = os.path.join(OUTPUT_FOLDER, png_filename)
     img.save(output_path, 'PNG')
 
 
 @app.route('/', methods=['GET'])
 def converted_paths():
-    converted_files = os.listdir(app.config['OUTPUT_FOLDER'])
+    converted_files = os.listdir(OUTPUT_FOLDER)
     converted_paths_with_hashes = []
 
     for filename in converted_files:
-        file_path = os.path.join(app.config['OUTPUT_FOLDER'], filename)
+        file_path = os.path.join(OUTPUT_FOLDER, filename)
         md5_hash = calculate_md5(file_path)
         converted_paths_with_hashes.append({
             'image_path': file_path,
@@ -242,7 +242,7 @@ def upload_files():
         return jsonify({"error": "No selected file"}), 400
 
     if file and file.filename.lower().endswith('.tif'):
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        filepath = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(filepath)
         convert_to_png(filepath)
         return redirect('/')
@@ -258,9 +258,9 @@ def delete_image():
 
     filename = data['filename']
     tif_filename = os.path.splitext(filename)[0] + '.tif'
-    tiff_path = os.path.join(app.config['UPLOAD_FOLDER'], tif_filename)
+    tiff_path = os.path.join(UPLOAD_FOLDER, tif_filename)
     png_filename = os.path.splitext(filename)[0] + '.png'
-    png_path = os.path.join(app.config['OUTPUT_FOLDER'], png_filename)
+    png_path = os.path.join(OUTPUT_FOLDER, png_filename)
 
     tiff_deleted = False
     png_deleted = False
@@ -283,7 +283,7 @@ def delete_image():
 
 @app.route('/converted/<filename>')
 def download_file(filename):
-    return send_from_directory(app.config['OUTPUT_FOLDER'], filename)
+    return send_from_directory(OUTPUT_FOLDER, filename)
 
 
 @app.route('/background_correction', methods=['POST'])
@@ -320,6 +320,7 @@ def convex_hull_calculation():
                                             overlay, insulin, glucagon, crop_region)
     save_mask_cd4_cd8(base_image_name, cd4, cd8, crop_region, hull, points)
     # TODO save a file with all the data in it and pass it to the front end
+
     return converted_paths()
 
 
