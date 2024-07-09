@@ -1,7 +1,10 @@
 import numpy as np
 import cv2
 from scipy.spatial import ConvexHull
-from skimage import io, draw, color, morphology, data
+from skimage import color, morphology
+import matplotlib.pyplot as plt
+import os
+
 
 
 class IsletImageSet:
@@ -228,6 +231,13 @@ class IsletImageSet:
         }
 
         return data
+
+
+    def save_image(self, image, location, image_name):
+        image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        file_path = os.path.join(location, image_name)
+        cv2.imwrite(file_path, image_bgr)
+
 
         
 
