@@ -147,7 +147,8 @@ class IsletImageSet:
         mask = np.zeros(self.overlay_image.shape, dtype=np.uint8)
         rounded_region = np.round(points, 0)
         int_region = rounded_region.astype(np.int32)
-        cv2.fillPoly(mask, pts=[int_region], color=self.WHITE)
+        swapped_int_region = int_region[:, ::-1]
+        cv2.fillPoly(mask, pts=[swapped_int_region], color=self.WHITE)
         boolean_mask = np.all(mask == self.WHITE, axis=-1)
         return boolean_mask
  
@@ -162,7 +163,8 @@ class IsletImageSet:
         dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(combined_cd4_cd8.dtype)
         points = self.hull.points[self.hull.vertices]
         int_region = points.astype(np.int32)
-        cv2.polylines(dimmed_image, [int_region], True, color=self.WHITE, thickness=5)
+        swapped_int_region = int_region[:, ::-1]
+        cv2.polylines(dimmed_image, [swapped_int_region], True, color=self.WHITE, thickness=5)
         return dimmed_image
 
 
@@ -171,7 +173,8 @@ class IsletImageSet:
         dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(self.overlay_image.dtype)
         points = self.hull.points[self.hull.vertices]
         int_region = points.astype(np.int32)
-        cv2.polylines(dimmed_image, [int_region], True, color=self.WHITE, thickness=5)
+        swapped_int_region = int_region[:, ::-1]
+        cv2.polylines(dimmed_image, [swapped_int_region], True, color=self.WHITE, thickness=5)
         return dimmed_image
 
 
