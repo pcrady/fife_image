@@ -2,8 +2,8 @@ import numpy as np
 import cv2
 from scipy.spatial import ConvexHull
 from skimage import color, morphology
-import matplotlib.pyplot as plt
 import os
+from PIL import Image
 
 
 
@@ -233,13 +233,51 @@ class IsletImageSet:
         return data
 
 
-    def save_image(self, image, location, image_name):
+    @staticmethod
+    def save_image(image, location, image_name):
         image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         file_path = os.path.join(location, image_name)
         cv2.imwrite(file_path, image_bgr)
 
 
+    @staticmethod
+    def convert_to_png(filepath, output_folder):
+        img = Image.open(filepath)
+        png_filename = os.path.splitext(os.path.basename(filepath))[0] + '.png'
+        output_path = os.path.join(output_folder, png_filename)
+        img.save(output_path, 'PNG')
+
+
+    @staticmethod
+    def _compute_masked_image_stats(masked_image):
+        pixels = masked_image.reshape(masked_image.shape[0] * masked_image.shape[1], 3)
+        ix = np.nonzero(np.any(pixels, axis=1))[0]
+        return pixels[ix].mean(axis=0), pixels[ix].std(axis=0)
+
+
+    @staticmethod
+    def _compute_subtraction_value(means, stds):
+        return means + 3 * stds
+
+
+    @staticmethod
+    def subtract_background(image: np.ndarray, region: np.ndarray):
+        scaled_region = IsletImageSet._scale_region(image, region)
+        mask = np.zeros(image.shape, dtype=np.uint8)
+        rounded_region = np.round(scaled_region, 0)
+        int_region = rounded_region.astype(np.int32)
+        cv2.fillPoly(mask, pts=[int_region], color=IsletImageSet.WHITE)
+        boolean_mask = np.all(mask == IsletImageSet.WHITE, axis=-1)
+
+        subtraction_value = np.mean(image[boolean_mask], axis=0) + 3 * np.std(image[boolean_mask], axis=0) 
         
+
+        
+        print(boolean_mask.shape)
+        print(image.shape)
+        print(image[boolean_mask])
+        print(subtraction_value)
+ 
 
 
 
