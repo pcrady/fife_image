@@ -24,6 +24,8 @@ class IsletImageSet:
 
     # all these images have already been background corrected
     def __init__(self,
+                 image_height: float,
+                 image_width: float,
                  overlay_image: np.ndarray,
                  cd4_image: np.ndarray,
                  cd8_image: np.ndarray,
@@ -32,6 +34,8 @@ class IsletImageSet:
                  pdl1_image: np.ndarray,
                  unscaled_crop_region: np.ndarray):
 
+        self.image_height = image_height
+        self.image_width = image_width
         self.overlay_image = overlay_image
         self.cd4_image = cd4_image
         self.cd8_image = cd8_image
@@ -78,6 +82,8 @@ class IsletImageSet:
 
         # a dimmed overlay image with the convex hull superimposed
         self.dimmed_hull = self._create_dimmed_hull_image()
+
+        self.areas = self._compute_areas()
 
 
     @staticmethod
@@ -129,12 +135,13 @@ class IsletImageSet:
         return cleaned_insulin_glucagon_mask
 
 
-    def _mask_to_points(self, mask):
+    def _mask_to_points(self, 
+                        mask: np.ndarray,) -> np.ndarray:
         points = np.argwhere(mask).astype(np.float32)
         return points
 
 
-    def _compute_convex_hull(self):
+    def _compute_convex_hull(self) -> ConvexHull:
         points = self._mask_to_points(self.cleaned_insulin_glucagon_mask)
         if points.shape[0] < 3:
             raise ValueError("Not enough points to form a convex hull.")
@@ -142,7 +149,7 @@ class IsletImageSet:
         return hull
 
 
-    def _create_convex_hull_mask(self):
+    def _create_convex_hull_mask(self) -> np.ndarray:
         points = self.hull.points[self.hull.vertices]
         mask = np.zeros(self.overlay_image.shape, dtype=np.uint8)
         rounded_region = np.round(points, 0)
@@ -153,7 +160,7 @@ class IsletImageSet:
         return boolean_mask
  
 
-    def _create_color_cd4_cd8_convex_hull(self):
+    def _create_color_cd4_cd8_convex_hull(self) -> np.ndarray:
         color_cd4 = np.zeros((self.cd4_mask.shape[0], self.cd4_mask.shape[1], 3), dtype=np.uint8)
         color_cd4[self.cd4_mask] = self.BLUE
         color_cd8 = np.zeros((self.cd8_mask.shape[0], self.cd8_mask.shape[1], 3), dtype=np.uint8)
@@ -168,7 +175,7 @@ class IsletImageSet:
         return dimmed_image
 
 
-    def _create_dimmed_hull_image(self):
+    def _create_dimmed_hull_image(self) -> np.ndarray:
         dimmed_image = self.overlay_image.copy()
         dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(self.overlay_image.dtype)
         points = self.hull.points[self.hull.vertices]
@@ -176,6 +183,54 @@ class IsletImageSet:
         swapped_int_region = int_region[:, ::-1]
         cv2.polylines(dimmed_image, [swapped_int_region], True, color=self.WHITE, thickness=5)
         return dimmed_image
+
+
+    def _compute_areas(self):
+        total_image_area = self.image_height * self.image_width
+        total_islet_area = (self.hull_mask.sum()/ self.hull_mask.size) * total_image_area
+
+        total_cd4_area = (self.cd4_mask.sum() / self.cd4_mask.size) * total_image_area
+        total_cd8_area = (self.cd8_mask.sum() / self.cd8_mask.size) * total_image_area
+        total_insulin_area = (self.insulin_mask.sum() / self.insulin_mask.size) * total_image_area
+        total_glucagon_area = (self.glucagon_mask.sum() / self.glucagon_mask.size) * total_image_area
+        total_pdl1_area = (self.pdl1_mask.sum() / self.pdl1_mask.size) * total_image_area
+
+        islet_cd4_area = (np.logical_and(self.cd4_mask, self.hull_mask).sum() / self.cd4_mask.size) * total_image_area
+        islet_cd8_area = (np.logical_and(self.cd8_mask, self.hull_mask).sum() / self.cd8_mask.size) * total_image_area
+        islet_insulin_area = (np.logical_and(self.insulin_mask, self.hull_mask).sum() / self.insulin_mask.size) * total_image_area
+        islet_glucagon_area = (np.logical_and(self.glucagon_mask, self.hull_mask).sum() / self.glucagon_mask.size) * total_image_area
+        islet_pdl1_area = (np.logical_and(self.pdl1_mask, self.hull_mask).sum() / self.pdl1_mask.size) * total_image_area
+
+        cd4_percent_islet_area = islet_cd4_area / total_islet_area
+        cd8_percent_islet_area = islet_cd8_area / total_islet_area
+        insulin_percent_islet_area = islet_insulin_area / total_islet_area
+        glucagon_percent_islet_area = islet_glucagon_area / total_islet_area
+        pdl1_percent_islet_area = islet_pdl1_area / total_islet_area
+
+        data = {
+            'total_image_area': total_image_area,
+            'total_islet_area': total_islet_area,
+            'total_cd4_area': total_cd4_area,
+            'total_cd8_area': total_cd8_area,
+            'total_insulin_area': total_insulin_area,
+            'total_glucagon_area': total_glucagon_area,
+            'total_pdl1_area': total_pdl1_area,
+            'islet_cd4_area': islet_cd4_area,
+            'islet_cd8_area': islet_cd8_area,
+            'islet_insulin_area': islet_insulin_area,
+            'islet_glucagon_area': islet_glucagon_area,
+            'islet_pdl1_area': islet_pdl1_area,
+            'cd4_percent_islet_area': cd4_percent_islet_area,
+            'cd8_percent_islet_area': cd8_percent_islet_area,
+            'insulin_percent_islet_area': insulin_percent_islet_area,
+            'glucagon_percent_islet_area': glucagon_percent_islet_area,
+            'pdl1_percent_islet_area': pdl1_percent_islet_area
+        }
+
+        return data
+
+        
+
 
 
 
