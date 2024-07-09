@@ -3,7 +3,6 @@ import cv2
 from scipy.spatial import ConvexHull
 from skimage import color, morphology
 import os
-from PIL import Image
 
 
 
@@ -234,30 +233,29 @@ class IsletImageSet:
 
 
     @staticmethod
-    def save_image(image, location, image_name):
+    def save_bgr_image(
+            image: np.ndarray,
+            location: str,
+            image_name: str):
         image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         file_path = os.path.join(location, image_name)
         cv2.imwrite(file_path, image_bgr)
 
 
     @staticmethod
+    def save_rgb_image(image: np.ndarray,
+                       location: str,
+                       image_name: str):
+        file_path = os.path.join(location, image_name)
+        cv2.imwrite(file_path, image)
+
+
+
+    @staticmethod
     def convert_to_png(filepath, output_folder):
-        img = Image.open(filepath)
+        image = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
         png_filename = os.path.splitext(os.path.basename(filepath))[0] + '.png'
-        output_path = os.path.join(output_folder, png_filename)
-        img.save(output_path, 'PNG')
-
-
-    @staticmethod
-    def _compute_masked_image_stats(masked_image):
-        pixels = masked_image.reshape(masked_image.shape[0] * masked_image.shape[1], 3)
-        ix = np.nonzero(np.any(pixels, axis=1))[0]
-        return pixels[ix].mean(axis=0), pixels[ix].std(axis=0)
-
-
-    @staticmethod
-    def _compute_subtraction_value(means, stds):
-        return means + 3 * stds
+        IsletImageSet.save_rgb_image(image, output_folder, png_filename)
 
 
     @staticmethod
@@ -268,15 +266,9 @@ class IsletImageSet:
         int_region = rounded_region.astype(np.int32)
         cv2.fillPoly(mask, pts=[int_region], color=IsletImageSet.WHITE)
         boolean_mask = np.all(mask == IsletImageSet.WHITE, axis=-1)
-
         subtraction_value = np.mean(image[boolean_mask], axis=0) + 3 * np.std(image[boolean_mask], axis=0) 
-        
-
-        
-        print(boolean_mask.shape)
-        print(image.shape)
-        print(image[boolean_mask])
-        print(subtraction_value)
+        modified_image = image - subtraction_value
+        return np.clip(modified_image, 0, 255).astype(np.uint8)
  
 
 
