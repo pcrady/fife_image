@@ -74,9 +74,10 @@ class IsletImageSet:
         self.hull_mask = self._create_convex_hull_mask()
 
         # color image of cropped cd4 and cd8 with convex hull superimposed on top
-        self.combined_cd4_cd8 = self._create_color_cd4_cd8_convex_hull()
+        self.combined_cd4_cd8_hull = self._create_color_cd4_cd8_convex_hull()
 
-
+        # a dimmed overlay image with the convex hull superimposed
+        self.dimmed_hull = self._create_dimmed_hull_image()
 
 
     @staticmethod
@@ -89,29 +90,9 @@ class IsletImageSet:
         return polygon
 
 
-
     def _crop_image(
             self,
             image: np.ndarray) -> np.ndarray:
-        """
-        Crops an image based on a predefined region and sets the region outside the crop to a specific color.
-
-        Parameters:
-        -----------
-        image : np.ndarray
-            The input image array to be cropped.
-
-        Returns:
-        --------
-        np.ndarray
-            The cropped image array with regions outside the crop set to BLACK.
-        
-        Notes:
-        ------
-        - The input image is expected to be a numpy array.
-        - `self.scaled_crop_region` should be a predefined array of coordinates defining the crop region.
-        - The cropped region is filled with the color specified by `self.BLACK`.
-        """
         mask = np.zeros(image.shape, dtype=np.uint8)
         rounded_region = np.round(self.scaled_crop_region, 0)
         int_region = rounded_region.astype(np.int32)
@@ -127,28 +108,6 @@ class IsletImageSet:
             image: np.ndarray, 
             lower_threshold: int,
             upper_threshold: int) -> np.ndarray:
-        """
-        Converts an image to a binary mask based on provided threshold values.
-
-        Parameters:
-        -----------
-        image : np.ndarray
-            The input image array.
-        lower_threshold : int
-            The threshold value below which the pixel values in the image will be set to 0.
-        upper_threshold : int
-            The threshold value above which the pixel values in the image will be set to the upper_threshold value.
-
-        Returns:
-        --------
-        np.ndarray
-            A binary mask where pixels with values above the lower_threshold and less than upper_threshold are set to True, and others are set to False.
-        
-        Notes:
-        ------
-        - The input image is expected to be a numpy array.
-        - The function modifies the input image array in place.
-        """
         image[image < lower_threshold] = 0
         image[image >= upper_threshold] = upper_threshold
         mask = color.rgb2gray(image)
@@ -199,18 +158,22 @@ class IsletImageSet:
         color_cd8 = np.zeros((self.cd8_mask.shape[0], self.cd8_mask.shape[1], 3), dtype=np.uint8)
         color_cd8[self.cd8_mask] = self.RED
         combined_cd4_cd8 = color_cd4 + color_cd8
-
         dimmed_image = combined_cd4_cd8.copy()
         dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(combined_cd4_cd8.dtype)
-
         points = self.hull.points[self.hull.vertices]
-        #cv2.polylines(dimmed_image, [points], True, self.WHITE)
-
         int_region = points.astype(np.int32)
         cv2.polylines(dimmed_image, [int_region], True, color=self.WHITE, thickness=5)
- 
-
         return dimmed_image
+
+
+    def _create_dimmed_hull_image(self):
+        dimmed_image = self.overlay_image.copy()
+        dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(self.overlay_image.dtype)
+        points = self.hull.points[self.hull.vertices]
+        int_region = points.astype(np.int32)
+        cv2.polylines(dimmed_image, [int_region], True, color=self.WHITE, thickness=5)
+        return dimmed_image
+
 
 
 
