@@ -37,7 +37,8 @@ mixin _$ConvexHullConfigModel {
   String get channel3ProteinName => throw _privateConstructorUsedError;
   String get channel4ProteinName => throw _privateConstructorUsedError;
   double get imageWidth => throw _privateConstructorUsedError;
-  dynamic get imageHeight => throw _privateConstructorUsedError;
+  double get imageHeight => throw _privateConstructorUsedError;
+  String get units => throw _privateConstructorUsedError;
 
   /// Serializes this ConvexHullConfigModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -72,7 +73,8 @@ abstract class $ConvexHullConfigModelCopyWith<$Res> {
       String channel3ProteinName,
       String channel4ProteinName,
       double imageWidth,
-      dynamic imageHeight});
+      double imageHeight,
+      String units});
 
   $AbstractImageCopyWith<$Res>? get activeImage;
   $ConvexHullResultsCopyWith<$Res>? get activeResults;
@@ -110,7 +112,8 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
     Object? channel3ProteinName = null,
     Object? channel4ProteinName = null,
     Object? imageWidth = null,
-    Object? imageHeight = freezed,
+    Object? imageHeight = null,
+    Object? units = null,
   }) {
     return _then(_value.copyWith(
       activeImageSetBaseName: freezed == activeImageSetBaseName
@@ -177,10 +180,14 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
           ? _value.imageWidth
           : imageWidth // ignore: cast_nullable_to_non_nullable
               as double,
-      imageHeight: freezed == imageHeight
+      imageHeight: null == imageHeight
           ? _value.imageHeight
           : imageHeight // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as double,
+      units: null == units
+          ? _value.units
+          : units // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -239,7 +246,8 @@ abstract class _$$ConvexHullConfigModelImplCopyWith<$Res>
       String channel3ProteinName,
       String channel4ProteinName,
       double imageWidth,
-      dynamic imageHeight});
+      double imageHeight,
+      String units});
 
   @override
   $AbstractImageCopyWith<$Res>? get activeImage;
@@ -277,7 +285,8 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
     Object? channel3ProteinName = null,
     Object? channel4ProteinName = null,
     Object? imageWidth = null,
-    Object? imageHeight = freezed,
+    Object? imageHeight = null,
+    Object? units = null,
   }) {
     return _then(_$ConvexHullConfigModelImpl(
       activeImageSetBaseName: freezed == activeImageSetBaseName
@@ -344,7 +353,14 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
           ? _value.imageWidth
           : imageWidth // ignore: cast_nullable_to_non_nullable
               as double,
-      imageHeight: freezed == imageHeight ? _value.imageHeight! : imageHeight,
+      imageHeight: null == imageHeight
+          ? _value.imageHeight
+          : imageHeight // ignore: cast_nullable_to_non_nullable
+              as double,
+      units: null == units
+          ? _value.units
+          : units // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -371,7 +387,8 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       this.channel3ProteinName = cd8,
       this.channel4ProteinName = pdl1,
       this.imageWidth = 10.0,
-      this.imageHeight = 10.0});
+      this.imageHeight = 10.0,
+      this.units = 'um'});
 
   factory _$ConvexHullConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullConfigModelImplFromJson(json);
@@ -423,11 +440,14 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   final double imageWidth;
   @override
   @JsonKey()
-  final dynamic imageHeight;
+  final double imageHeight;
+  @override
+  @JsonKey()
+  final String units;
 
   @override
   String toString() {
-    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, channel0SearchPattern: $channel0SearchPattern, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel0ProteinName: $channel0ProteinName, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName, imageWidth: $imageWidth, imageHeight: $imageHeight)';
+    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, channel0SearchPattern: $channel0SearchPattern, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel0ProteinName: $channel0ProteinName, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName, imageWidth: $imageWidth, imageHeight: $imageHeight, units: $units)';
   }
 
   @override
@@ -467,8 +487,9 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
                 other.channel4ProteinName == channel4ProteinName) &&
             (identical(other.imageWidth, imageWidth) ||
                 other.imageWidth == imageWidth) &&
-            const DeepCollectionEquality()
-                .equals(other.imageHeight, imageHeight));
+            (identical(other.imageHeight, imageHeight) ||
+                other.imageHeight == imageHeight) &&
+            (identical(other.units, units) || other.units == units));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -491,7 +512,8 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       channel3ProteinName,
       channel4ProteinName,
       imageWidth,
-      const DeepCollectionEquality().hash(imageHeight));
+      imageHeight,
+      units);
 
   /// Create a copy of ConvexHullConfigModel
   /// with the given fields replaced by the non-null parameter values.
@@ -528,7 +550,8 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
       final String channel3ProteinName,
       final String channel4ProteinName,
       final double imageWidth,
-      final dynamic imageHeight}) = _$ConvexHullConfigModelImpl;
+      final double imageHeight,
+      final String units}) = _$ConvexHullConfigModelImpl;
 
   factory _ConvexHullConfigModel.fromJson(Map<String, dynamic> json) =
       _$ConvexHullConfigModelImpl.fromJson;
@@ -566,7 +589,9 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   @override
   double get imageWidth;
   @override
-  dynamic get imageHeight;
+  double get imageHeight;
+  @override
+  String get units;
 
   /// Create a copy of ConvexHullConfigModel
   /// with the given fields replaced by the non-null parameter values.

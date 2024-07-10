@@ -22,6 +22,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   late TextEditingController overlayController;
   late TextEditingController widthController;
   late TextEditingController heightController;
+  late TextEditingController unitsController;
   late String channel0Name;
   late String channel1Name;
   late String channel2Name;
@@ -46,6 +47,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     overlayController = TextEditingController(text: convexHullConfig.overlaySearchPattern);
     widthController = TextEditingController(text: convexHullConfig.imageWidth.toString());
     heightController = TextEditingController(text: convexHullConfig.imageHeight.toString());
+    unitsController = TextEditingController(text: convexHullConfig.units.toString());
     channel0Name = convexHullConfig.channel0ProteinName;
     channel1Name = convexHullConfig.channel1ProteinName;
     channel2Name = convexHullConfig.channel2ProteinName;
@@ -64,6 +66,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     overlayController.dispose();
     widthController.dispose();
     heightController.dispose();
+    unitsController.dispose();
     super.dispose();
   }
 
@@ -73,6 +76,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final halfWidth = constraints.maxWidth / 2.0 - 4.0;
+          final thirdWidth = constraints.maxWidth / 3.0 - 4.0;
 
           return Form(
             key: _formKey,
@@ -313,7 +317,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: halfWidth,
+                      width: thirdWidth,
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
@@ -331,7 +335,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                       ),
                     ),
                     SizedBox(
-                      width: halfWidth,
+                      width: thirdWidth,
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
@@ -344,6 +348,23 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                           hintText: 'Image Height',
                           border: OutlineInputBorder(),
                           labelText: 'Image Height',
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: thirdWidth,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a value';
+                          }
+                          return null;
+                        },
+                        controller: unitsController,
+                        decoration: const InputDecoration(
+                          hintText: 'Length Units',
+                          border: OutlineInputBorder(),
+                          labelText: 'Length Units',
                         ),
                       ),
                     ),
@@ -373,7 +394,6 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            final appData = ref.read(appDataProvider.notifier);
                             final oldConfig = ref.read(convexHullConfigProvider);
                             final newConfig = oldConfig.copyWith(
                               channel0SearchPattern: channel0Controller.text,
@@ -389,6 +409,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               channel2ProteinName: channel2Name,
                               channel3ProteinName: channel3Name,
                               channel4ProteinName: channel4Name,
+                              units: unitsController.text,
                             );
                             final config = ref.read(convexHullConfigProvider.notifier);
                             config.setConvexHullConfig(convexHullConfigModel: newConfig);

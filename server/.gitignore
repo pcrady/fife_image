@@ -1,5 +1,6 @@
 uploads/
 converted/
+computed_data/
 
 .ipynb_checkpoints/scratch-checkpoint.ipynb
 .virtual_documents/

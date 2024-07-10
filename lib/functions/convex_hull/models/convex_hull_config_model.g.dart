@@ -39,7 +39,8 @@ _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
       channel3ProteinName: json['channel3_protein_name'] as String? ?? cd8,
       channel4ProteinName: json['channel4_protein_name'] as String? ?? pdl1,
       imageWidth: (json['image_width'] as num?)?.toDouble() ?? 10.0,
-      imageHeight: json['image_height'] ?? 10.0,
+      imageHeight: (json['image_height'] as num?)?.toDouble() ?? 10.0,
+      units: json['units'] as String? ?? 'um',
     );
 
 Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
@@ -68,7 +69,8 @@ Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
   val['channel3_protein_name'] = instance.channel3ProteinName;
   val['channel4_protein_name'] = instance.channel4ProteinName;
   val['image_width'] = instance.imageWidth;
-  writeNotNull('image_height', instance.imageHeight);
+  val['image_height'] = instance.imageHeight;
+  val['units'] = instance.units;
   return val;
 }
 

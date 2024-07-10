@@ -46,18 +46,14 @@ def converted_paths():
 
 @app.route('/data', methods=['get'])
 def computed_data():
-    converted_files = os.listdir(OUTPUT_FOLDER)
-    converted_paths_with_hashes = []
+    data = {}
+    data_file_path = os.path.join(DATA_DIR, DATA_FILE)
 
-    for filename in converted_files:
-        file_path = os.path.join(OUTPUT_FOLDER, filename)
-        md5_hash = calculate_md5(file_path)
-        converted_paths_with_hashes.append({
-            'file_path': file_path,
-            'md5_hash': md5_hash,
-        })
-    return jsonify(converted_paths_with_hashes)
+    if os.path.exists(data_file_path):
+        with open(data_file_path, 'r') as json_file:
+            data = json.load(json_file)
 
+    return jsonify(data)
 
 
 @app.route('/', methods=['POST'])
@@ -146,6 +142,7 @@ def convex_hull_calculation():
     overlay = io.imread(data['Overlay']['image_path'])
     crop_region = data['Overlay']['relative_selection_coordinates']
 
+    # TODO fix these hardcoded 10s
     image_set = IsletImageSet(
             image_height=10,
             image_width=10,

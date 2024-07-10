@@ -15,5 +15,6 @@ class ConvexHullResults with _$ConvexHullResults {
     Map<String, String>? data,
   }) = _ConvexHullResults;
 
+
   factory ConvexHullResults.fromJson(Map<String, dynamic> json) => _$ConvexHullResultsFromJson(json);
 }

@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'convex_hull_config_provider.dart';
+part of 'convex_hull_data_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$convexHullConfigHash() => r'633a380fa515f14a429250900d89bbd9749e3b4e';
+String _$convexHullDataHash() => r'0b900607c3d8ab3558c5853542b109f55a1383d8';
 
-/// See also [ConvexHullConfig].
-@ProviderFor(ConvexHullConfig)
-final convexHullConfigProvider =
-    NotifierProvider<ConvexHullConfig, ConvexHullConfigModel>.internal(
-  ConvexHullConfig.new,
-  name: r'convexHullConfigProvider',
+/// See also [ConvexHullData].
+@ProviderFor(ConvexHullData)
+final convexHullDataProvider = AutoDisposeAsyncNotifierProvider<ConvexHullData,
+    Map<String, ConvexHullDataModel>>.internal(
+  ConvexHullData.new,
+  name: r'convexHullDataProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$convexHullConfigHash,
+      : _$convexHullDataHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ConvexHullConfig = Notifier<ConvexHullConfigModel>;
+typedef _$ConvexHullData
+    = AutoDisposeAsyncNotifier<Map<String, ConvexHullDataModel>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

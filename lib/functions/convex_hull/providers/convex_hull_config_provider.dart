@@ -27,6 +27,7 @@ class ConvexHullConfig extends _$ConvexHullConfig {
     state = state.copyWith(
       activeImage: activeImage,
       activeResults: null,
+      activeImageSetBaseName: activeImage?.baseName,
     );
   }
 
@@ -34,6 +35,7 @@ class ConvexHullConfig extends _$ConvexHullConfig {
     state = state.copyWith(
       activeImage: null,
       activeResults: results,
+      activeImageSetBaseName: results?.inflammation?.baseName,
     );
     ref.read(appDataProvider.notifier).selectImage(image: null);
   }

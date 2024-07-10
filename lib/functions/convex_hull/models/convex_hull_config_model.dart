@@ -28,7 +28,8 @@ class ConvexHullConfigModel with _$ConvexHullConfigModel {
     @Default(cd8) String channel3ProteinName,
     @Default(pdl1) String channel4ProteinName,
     @Default(10.0) double imageWidth,
-    @Default(10.0) imageHeight
+    @Default(10.0) double imageHeight,
+    @Default('um') String units,
   }) = _ConvexHullConfigModel;
 
   factory ConvexHullConfigModel.fromJson(Map<String, dynamic> json) => _$ConvexHullConfigModelFromJson(json);
