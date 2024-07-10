@@ -18,7 +18,13 @@ class MyApp extends StatelessWidget with FifeImageRouter {
     return MaterialApp.router(
       title: 'Fife Image',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurple,
+            foregroundColor: Colors.white,
+          ),
+        ),
         appBarTheme: const AppBarTheme(
           color: Colors.deepPurpleAccent,
         ),

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
-import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_data_provider.dart';
@@ -63,7 +62,21 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onTap: () {
-                      //TODO popup modal
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            child: CachedNetworkImage(
+                              imageUrl: results.simplex!.url,
+                              cacheKey: results.simplex!.md5Hash,
+                              placeholder: (context, url) => const CircularProgressIndicator(),
+                              errorListener: (error) {
+                                logger.e(error);
+                              },
+                            ),
+                          );
+                        },
+                      );
                     },
                     child: CachedNetworkImage(
                       imageUrl: results.simplex!.url,
@@ -84,7 +97,21 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onTap: () {
-                      //TODO popup modal
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            child: CachedNetworkImage(
+                              imageUrl: results.inflammation!.url,
+                              cacheKey: results.inflammation!.md5Hash,
+                              placeholder: (context, url) => const CircularProgressIndicator(),
+                              errorListener: (error) {
+                                logger.e(error);
+                              },
+                            ),
+                          );
+                        },
+                      );
                     },
                     child: CachedNetworkImage(
                       imageUrl: results.inflammation!.url,
@@ -300,6 +327,19 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                           units: '%',
                         ),
                       ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        child: const Text('Download Results'),
+                        onPressed: () async {
+                          ref.read(convexHullDataProvider.notifier).downloadData();
+                        },
+                      ),
                     ),
                   ],
                 ),

@@ -5,6 +5,7 @@ import hashlib
 from islet_image_set import IsletImageSet
 from skimage import io
 import json
+import pandas as pd
 
 
 app = Flask(__name__)
@@ -14,6 +15,9 @@ UPLOAD_FOLDER = 'uploads/'
 OUTPUT_FOLDER = 'converted/'
 DATA_DIR = 'computed_data/'
 DATA_FILE = 'convex_hull_data.json'
+DATA_FILE_CSV = 'convex_hull_data.csv'
+
+
 
 # Ensure the upload and output folders exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -54,6 +58,19 @@ def computed_data():
             data = json.load(json_file)
 
     return jsonify(data)
+
+
+@app.route('/download', methods=['get'])
+def download_data():
+    data_file_path = os.path.join(DATA_DIR, DATA_FILE)
+ 
+    if os.path.exists(data_file_path):
+        with open(data_file_path, 'r') as json_file:
+            json_data = json.load(json_file)
+            df = pd.DataFrame.from_dict(json_data, orient='index')
+            df.to_csv(DATA_DIR + DATA_FILE_CSV)
+
+    return send_from_directory(DATA_DIR, DATA_FILE_CSV)
 
 
 @app.route('/', methods=['POST'])
@@ -141,11 +158,12 @@ def convex_hull_calculation():
     pdl1 = io.imread(data['PD-L1']['image_path'])
     overlay = io.imread(data['Overlay']['image_path'])
     crop_region = data['Overlay']['relative_selection_coordinates']
+    image_width = data['width']
+    image_height = data['height']
 
-    # TODO fix these hardcoded 10s
     image_set = IsletImageSet(
-            image_height=10,
-            image_width=10,
+            image_height=image_width,
+            image_width=image_height,
             overlay_image=overlay,
             cd4_image=cd4,
             cd8_image=cd8,

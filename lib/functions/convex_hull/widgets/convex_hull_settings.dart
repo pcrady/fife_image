@@ -385,13 +385,6 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Clear'),
-                      ),
-                    ),
-                    const SizedBox(width: 8.0),
-                    Expanded(
-                      child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             final oldConfig = ref.read(convexHullConfigProvider);
