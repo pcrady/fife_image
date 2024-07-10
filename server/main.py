@@ -94,6 +94,7 @@ def upload_files():
 @app.route('/delete', methods=['POST'])
 def delete_image():
     data = request.get_json()
+    print(data)
     if 'filename' not in data:
         return jsonify({"error": "No filename provided"}), 400
 
@@ -102,6 +103,7 @@ def delete_image():
     tiff_path = os.path.join(UPLOAD_FOLDER, tif_filename)
     png_filename = os.path.splitext(filename)[0] + '.png'
     png_path = os.path.join(OUTPUT_FOLDER, png_filename)
+    base_image_name = png_filename.split('_')[0]
 
     tiff_deleted = False
     png_deleted = False
@@ -113,6 +115,16 @@ def delete_image():
     if os.path.exists(png_path):
         os.remove(png_path)
         png_deleted = True
+
+    data_file_path = os.path.join(DATA_DIR, DATA_FILE)
+    if os.path.exists(data_file_path):
+        json_data = {}
+        with open(data_file_path, 'r') as json_file:
+            json_data = json.load(json_file)
+            if base_image_name in json_data and (('inflammation' in filename) or ('simplex' in filename)):
+                del json_data[base_image_name]
+                with open(data_file_path, 'w') as json_file:
+                    json.dump(json_data, json_file, indent=4)
 
     if tiff_deleted or png_deleted:
         return jsonify({"message": "Files deleted successfully",
@@ -185,7 +197,6 @@ def convex_hull_calculation():
 
     data[base_image_name] = area_data
     with open(data_file_path, 'w') as json_file:
-        print(data_file_path)
         json.dump(data, json_file, indent=4)
         
     return converted_paths()

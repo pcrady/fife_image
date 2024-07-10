@@ -443,6 +443,14 @@ class _BackgroundSelect extends ConsumerWidget {
                       await ref.read(convexHullImageSetsProvider.notifier).backgroundSelect();
                     } catch (err, stack) {
                       logger.e(err, stackTrace: stack);
+                      final snackBar = SnackBar(
+                        content: Text(err.toString()),
+                        action: SnackBarAction(
+                          label: 'Close',
+                          onPressed: () {},
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
                   child: const Text('Perform Background Correction'),
@@ -483,6 +491,14 @@ class _BackgroundSelect extends ConsumerWidget {
                       await ref.read(convexHullImageSetsProvider.notifier).performCalculation();
                     } catch (err, stack) {
                       logger.e(err, stackTrace: stack);
+                      final snackBar = SnackBar(
+                        content: Text(err.toString()),
+                        action: SnackBarAction(
+                          label: 'Close',
+                          onPressed: () {},
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
                   child: const Text('Perform Calculations'),
