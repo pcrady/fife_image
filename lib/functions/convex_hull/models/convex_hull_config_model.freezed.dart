@@ -36,9 +36,15 @@ mixin _$ConvexHullConfigModel {
   String get channel2ProteinName => throw _privateConstructorUsedError;
   String get channel3ProteinName => throw _privateConstructorUsedError;
   String get channel4ProteinName => throw _privateConstructorUsedError;
+  double get imageWidth => throw _privateConstructorUsedError;
+  dynamic get imageHeight => throw _privateConstructorUsedError;
 
+  /// Serializes this ConvexHullConfigModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ConvexHullConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ConvexHullConfigModelCopyWith<ConvexHullConfigModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -64,7 +70,9 @@ abstract class $ConvexHullConfigModelCopyWith<$Res> {
       String channel1ProteinName,
       String channel2ProteinName,
       String channel3ProteinName,
-      String channel4ProteinName});
+      String channel4ProteinName,
+      double imageWidth,
+      dynamic imageHeight});
 
   $AbstractImageCopyWith<$Res>? get activeImage;
   $ConvexHullResultsCopyWith<$Res>? get activeResults;
@@ -81,6 +89,8 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ConvexHullConfigModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -99,6 +109,8 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
     Object? channel2ProteinName = null,
     Object? channel3ProteinName = null,
     Object? channel4ProteinName = null,
+    Object? imageWidth = null,
+    Object? imageHeight = freezed,
   }) {
     return _then(_value.copyWith(
       activeImageSetBaseName: freezed == activeImageSetBaseName
@@ -161,9 +173,19 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
           ? _value.channel4ProteinName
           : channel4ProteinName // ignore: cast_nullable_to_non_nullable
               as String,
+      imageWidth: null == imageWidth
+          ? _value.imageWidth
+          : imageWidth // ignore: cast_nullable_to_non_nullable
+              as double,
+      imageHeight: freezed == imageHeight
+          ? _value.imageHeight
+          : imageHeight // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ) as $Val);
   }
 
+  /// Create a copy of ConvexHullConfigModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get activeImage {
@@ -176,6 +198,8 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
     });
   }
 
+  /// Create a copy of ConvexHullConfigModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ConvexHullResultsCopyWith<$Res>? get activeResults {
@@ -213,7 +237,9 @@ abstract class _$$ConvexHullConfigModelImplCopyWith<$Res>
       String channel1ProteinName,
       String channel2ProteinName,
       String channel3ProteinName,
-      String channel4ProteinName});
+      String channel4ProteinName,
+      double imageWidth,
+      dynamic imageHeight});
 
   @override
   $AbstractImageCopyWith<$Res>? get activeImage;
@@ -230,6 +256,8 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
       $Res Function(_$ConvexHullConfigModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConvexHullConfigModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -248,6 +276,8 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
     Object? channel2ProteinName = null,
     Object? channel3ProteinName = null,
     Object? channel4ProteinName = null,
+    Object? imageWidth = null,
+    Object? imageHeight = freezed,
   }) {
     return _then(_$ConvexHullConfigModelImpl(
       activeImageSetBaseName: freezed == activeImageSetBaseName
@@ -310,6 +340,11 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
           ? _value.channel4ProteinName
           : channel4ProteinName // ignore: cast_nullable_to_non_nullable
               as String,
+      imageWidth: null == imageWidth
+          ? _value.imageWidth
+          : imageWidth // ignore: cast_nullable_to_non_nullable
+              as double,
+      imageHeight: freezed == imageHeight ? _value.imageHeight! : imageHeight,
     ));
   }
 }
@@ -334,7 +369,9 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       this.channel1ProteinName = glucagon,
       this.channel2ProteinName = insulin,
       this.channel3ProteinName = cd8,
-      this.channel4ProteinName = pdl1});
+      this.channel4ProteinName = pdl1,
+      this.imageWidth = 10.0,
+      this.imageHeight = 10.0});
 
   factory _$ConvexHullConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullConfigModelImplFromJson(json);
@@ -381,10 +418,16 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   @override
   @JsonKey()
   final String channel4ProteinName;
+  @override
+  @JsonKey()
+  final double imageWidth;
+  @override
+  @JsonKey()
+  final dynamic imageHeight;
 
   @override
   String toString() {
-    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, channel0SearchPattern: $channel0SearchPattern, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel0ProteinName: $channel0ProteinName, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName)';
+    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, channel0SearchPattern: $channel0SearchPattern, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel0ProteinName: $channel0ProteinName, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName, imageWidth: $imageWidth, imageHeight: $imageHeight)';
   }
 
   @override
@@ -421,10 +464,14 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
             (identical(other.channel3ProteinName, channel3ProteinName) ||
                 other.channel3ProteinName == channel3ProteinName) &&
             (identical(other.channel4ProteinName, channel4ProteinName) ||
-                other.channel4ProteinName == channel4ProteinName));
+                other.channel4ProteinName == channel4ProteinName) &&
+            (identical(other.imageWidth, imageWidth) ||
+                other.imageWidth == imageWidth) &&
+            const DeepCollectionEquality()
+                .equals(other.imageHeight, imageHeight));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -442,9 +489,13 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       channel1ProteinName,
       channel2ProteinName,
       channel3ProteinName,
-      channel4ProteinName);
+      channel4ProteinName,
+      imageWidth,
+      const DeepCollectionEquality().hash(imageHeight));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ConvexHullConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConvexHullConfigModelImplCopyWith<_$ConvexHullConfigModelImpl>
@@ -475,7 +526,9 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
       final String channel1ProteinName,
       final String channel2ProteinName,
       final String channel3ProteinName,
-      final String channel4ProteinName}) = _$ConvexHullConfigModelImpl;
+      final String channel4ProteinName,
+      final double imageWidth,
+      final dynamic imageHeight}) = _$ConvexHullConfigModelImpl;
 
   factory _ConvexHullConfigModel.fromJson(Map<String, dynamic> json) =
       _$ConvexHullConfigModelImpl.fromJson;
@@ -511,7 +564,14 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   @override
   String get channel4ProteinName;
   @override
-  @JsonKey(ignore: true)
+  double get imageWidth;
+  @override
+  dynamic get imageHeight;
+
+  /// Create a copy of ConvexHullConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConvexHullConfigModelImplCopyWith<_$ConvexHullConfigModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

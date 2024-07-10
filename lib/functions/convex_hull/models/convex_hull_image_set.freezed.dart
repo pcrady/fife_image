@@ -39,8 +39,12 @@ mixin _$ConvexHullImageSet {
   AbstractImage? get overlay => throw _privateConstructorUsedError;
   ConvexHullResults get results => throw _privateConstructorUsedError;
 
+  /// Serializes this ConvexHullImageSet to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ConvexHullImageSetCopyWith<ConvexHullImageSet> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -90,6 +94,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -163,6 +169,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     ) as $Val);
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get channel0 {
@@ -175,6 +183,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get channel0BackgroundCorrect {
@@ -188,6 +198,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get channel1 {
@@ -200,6 +212,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get channel1BackgroundCorrect {
@@ -213,6 +227,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get channel2 {
@@ -225,6 +241,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get channel2BackgroundCorrect {
@@ -238,6 +256,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get channel3 {
@@ -250,6 +270,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get channel3BackgroundCorrect {
@@ -263,6 +285,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get channel4 {
@@ -275,6 +299,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get channel4BackgroundCorrect {
@@ -288,6 +314,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get overlay {
@@ -300,6 +328,8 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
     });
   }
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ConvexHullResultsCopyWith<$Res> get results {
@@ -366,6 +396,8 @@ class __$$ConvexHullImageSetImplCopyWithImpl<$Res>
       $Res Function(_$ConvexHullImageSetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -533,7 +565,7 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
             (identical(other.results, results) || other.results == results));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -551,7 +583,9 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
       overlay,
       results);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConvexHullImageSetImplCopyWith<_$ConvexHullImageSetImpl> get copyWith =>
@@ -612,8 +646,11 @@ abstract class _ConvexHullImageSet extends ConvexHullImageSet {
   AbstractImage? get overlay;
   @override
   ConvexHullResults get results;
+
+  /// Create a copy of ConvexHullImageSet
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConvexHullImageSetImplCopyWith<_$ConvexHullImageSetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

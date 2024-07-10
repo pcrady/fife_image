@@ -16,7 +16,7 @@ dependencies:
   image: ^4.2.0
   file_picker: ^8.0.5
   logger: ^2.3.0
-  freezed_annotation: ^2.4.1
+  freezed_annotation: ^2.4.3
   json_annotation: ^4.9.0
   cross_file: ^0.3.4+1
   dio: ^5.4.3+1

@@ -23,8 +23,12 @@ mixin _$AppDataStore {
   AbstractImage? get selectedImage => throw _privateConstructorUsedError;
   FunctionsEnum get function => throw _privateConstructorUsedError;
 
+  /// Serializes this AppDataStore to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AppDataStore
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AppDataStoreCopyWith<AppDataStore> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +54,8 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AppDataStore
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -68,6 +74,8 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
     ) as $Val);
   }
 
+  /// Create a copy of AppDataStore
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get selectedImage {
@@ -103,6 +111,8 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
       _$AppDataStoreImpl _value, $Res Function(_$AppDataStoreImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AppDataStore
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -155,11 +165,13 @@ class _$AppDataStoreImpl implements _AppDataStore {
                 other.function == function));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, selectedImage, function);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AppDataStore
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AppDataStoreImplCopyWith<_$AppDataStoreImpl> get copyWith =>
@@ -185,8 +197,11 @@ abstract class _AppDataStore implements AppDataStore {
   AbstractImage? get selectedImage;
   @override
   FunctionsEnum get function;
+
+  /// Create a copy of AppDataStore
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AppDataStoreImplCopyWith<_$AppDataStoreImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

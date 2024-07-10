@@ -28,8 +28,12 @@ mixin _$AbstractImage {
   List<Offset>? get relativeSelectionCoordinates =>
       throw _privateConstructorUsedError;
 
+  /// Serializes this AbstractImage to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AbstractImage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AbstractImageCopyWith<AbstractImage> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -57,6 +61,8 @@ class _$AbstractImageCopyWithImpl<$Res, $Val extends AbstractImage>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AbstractImage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -109,6 +115,8 @@ class __$$AbstractImageImplCopyWithImpl<$Res>
       _$AbstractImageImpl _value, $Res Function(_$AbstractImageImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AbstractImage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -192,7 +200,7 @@ class _$AbstractImageImpl extends _AbstractImage {
                 _relativeSelectionCoordinates));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -201,7 +209,9 @@ class _$AbstractImageImpl extends _AbstractImage {
       const DeepCollectionEquality().hash(file),
       const DeepCollectionEquality().hash(_relativeSelectionCoordinates));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AbstractImage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AbstractImageImplCopyWith<_$AbstractImageImpl> get copyWith =>
@@ -237,8 +247,11 @@ abstract class _AbstractImage extends AbstractImage {
   @override
   @OffsetListConverter()
   List<Offset>? get relativeSelectionCoordinates;
+
+  /// Create a copy of AbstractImage
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AbstractImageImplCopyWith<_$AbstractImageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

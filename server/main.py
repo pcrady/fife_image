@@ -4,6 +4,7 @@ import os
 import hashlib
 from islet_image_set import IsletImageSet
 from skimage import io
+import json
 
 
 app = Flask(__name__)
@@ -11,10 +12,13 @@ CORS(app)
 
 UPLOAD_FOLDER = 'uploads/'
 OUTPUT_FOLDER = 'converted/'
+DATA_DIR = 'computed_data/'
+DATA_FILE = 'convex_hull_data.json'
 
 # Ensure the upload and output folders exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+os.makedirs(DATA_DIR, exist_ok=True)
 
 
 def calculate_md5(file_path):
@@ -35,9 +39,25 @@ def converted_paths():
         md5_hash = calculate_md5(file_path)
         converted_paths_with_hashes.append({
             'image_path': file_path,
-            'md5_hash': md5_hash
+            'md5_hash': md5_hash,
         })
     return jsonify(converted_paths_with_hashes)
+
+
+@app.route('/data', methods=['get'])
+def computed_data():
+    converted_files = os.listdir(OUTPUT_FOLDER)
+    converted_paths_with_hashes = []
+
+    for filename in converted_files:
+        file_path = os.path.join(OUTPUT_FOLDER, filename)
+        md5_hash = calculate_md5(file_path)
+        converted_paths_with_hashes.append({
+            'file_path': file_path,
+            'md5_hash': md5_hash,
+        })
+    return jsonify(converted_paths_with_hashes)
+
 
 
 @app.route('/', methods=['POST'])
@@ -140,7 +160,19 @@ def convex_hull_calculation():
 
     IsletImageSet.save_bgr_image(image_set.combined_cd4_cd8_hull, OUTPUT_FOLDER, base_image_name + '_inflammation.png')
     IsletImageSet.save_bgr_image(image_set.dimmed_hull, OUTPUT_FOLDER, base_image_name + '_simplex.png')
+    area_data = image_set.areas
+    data_file_path = os.path.join(DATA_DIR, DATA_FILE)
+    data = {}
 
+    if os.path.exists(data_file_path):
+        with open(data_file_path, 'r') as json_file:
+            data = json.load(json_file)
+
+    data[base_image_name] = area_data
+    with open(data_file_path, 'w') as json_file:
+        print(data_file_path)
+        json.dump(data, json_file, indent=4)
+        
     return converted_paths()
 
 

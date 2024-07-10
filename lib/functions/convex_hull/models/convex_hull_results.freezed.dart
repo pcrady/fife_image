@@ -24,8 +24,12 @@ mixin _$ConvexHullResults {
   AbstractImage? get simplex => throw _privateConstructorUsedError;
   Map<String, String>? get data => throw _privateConstructorUsedError;
 
+  /// Serializes this ConvexHullResults to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ConvexHullResults
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ConvexHullResultsCopyWith<ConvexHullResults> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,6 +59,8 @@ class _$ConvexHullResultsCopyWithImpl<$Res, $Val extends ConvexHullResults>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ConvexHullResults
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -78,6 +84,8 @@ class _$ConvexHullResultsCopyWithImpl<$Res, $Val extends ConvexHullResults>
     ) as $Val);
   }
 
+  /// Create a copy of ConvexHullResults
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get inflammation {
@@ -90,6 +98,8 @@ class _$ConvexHullResultsCopyWithImpl<$Res, $Val extends ConvexHullResults>
     });
   }
 
+  /// Create a copy of ConvexHullResults
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AbstractImageCopyWith<$Res>? get simplex {
@@ -130,6 +140,8 @@ class __$$ConvexHullResultsImplCopyWithImpl<$Res>
       $Res Function(_$ConvexHullResultsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConvexHullResults
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -197,12 +209,14 @@ class _$ConvexHullResultsImpl extends _ConvexHullResults {
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, inflammation, simplex,
       const DeepCollectionEquality().hash(_data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ConvexHullResults
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConvexHullResultsImplCopyWith<_$ConvexHullResultsImpl> get copyWith =>
@@ -233,8 +247,11 @@ abstract class _ConvexHullResults extends ConvexHullResults {
   AbstractImage? get simplex;
   @override
   Map<String, String>? get data;
+
+  /// Create a copy of ConvexHullResults
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConvexHullResultsImplCopyWith<_$ConvexHullResultsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

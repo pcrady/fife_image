@@ -161,7 +161,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     final channel3Name = config.channel3ProteinName;
     final channel4Name = config.channel4ProteinName;
 
-    await _dio.post(
+    final response = await _dio.post(
       '${server}convex_hull_calculation',
       data: {
         'base_image': imageSet.overlay?.baseName ?? '',
@@ -173,6 +173,8 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
         'Overlay': selectedImage.toJson(),
       },
     );
+
+    logger.i(response);
 
     ref.invalidate(imagesProvider);
   }

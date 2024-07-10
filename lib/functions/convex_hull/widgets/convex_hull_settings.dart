@@ -20,6 +20,8 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   late TextEditingController channel3Controller;
   late TextEditingController channel4Controller;
   late TextEditingController overlayController;
+  late TextEditingController widthController;
+  late TextEditingController heightController;
   late String channel0Name;
   late String channel1Name;
   late String channel2Name;
@@ -42,6 +44,8 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     channel3Controller = TextEditingController(text: convexHullConfig.channel3SearchPattern);
     channel4Controller = TextEditingController(text: convexHullConfig.channel4SearchPattern);
     overlayController = TextEditingController(text: convexHullConfig.overlaySearchPattern);
+    widthController = TextEditingController(text: convexHullConfig.imageWidth.toString());
+    heightController = TextEditingController(text: convexHullConfig.imageHeight.toString());
     channel0Name = convexHullConfig.channel0ProteinName;
     channel1Name = convexHullConfig.channel1ProteinName;
     channel2Name = convexHullConfig.channel2ProteinName;
@@ -58,6 +62,8 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     channel3Controller.dispose();
     channel4Controller.dispose();
     overlayController.dispose();
+    widthController.dispose();
+    heightController.dispose();
     super.dispose();
   }
 
@@ -303,6 +309,47 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                   ],
                 ),
                 const SizedBox(height: 8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: halfWidth,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
+                            return 'Please enter a numerical value';
+                          }
+                          return null;
+
+                        },
+                        controller: widthController,
+                        decoration: const InputDecoration(
+                          hintText: 'Image Width',
+                          border: OutlineInputBorder(),
+                          labelText: 'Image Width',
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: halfWidth,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
+                            return 'Please enter a numerical value';
+                          }
+                          return null;
+                        },
+                        controller: heightController,
+                        decoration: const InputDecoration(
+                          hintText: 'Image Height',
+                          border: OutlineInputBorder(),
+                          labelText: 'Image Height',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8.0),
                 TextFormField(
                   validator: validator,
                   controller: overlayController,
@@ -335,6 +382,8 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               channel3SearchPattern: channel3Controller.text,
                               channel4SearchPattern: channel4Controller.text,
                               overlaySearchPattern: overlayController.text,
+                              imageWidth: double.tryParse(widthController.text) ?? 0.0,
+                              imageHeight: double.tryParse(heightController.text) ?? 0.0,
                               channel0ProteinName: channel0Name,
                               channel1ProteinName: channel1Name,
                               channel2ProteinName: channel2Name,
