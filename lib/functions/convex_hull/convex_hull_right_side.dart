@@ -1,5 +1,4 @@
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
-import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/functions/convex_hull/widgets/convex_hull_controls.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:flutter/material.dart';

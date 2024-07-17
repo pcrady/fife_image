@@ -368,7 +368,6 @@ class _TableEntry extends StatelessWidget {
     required this.text,
     this.units,
     this.superscript,
-    super.key,
   });
 
   @override

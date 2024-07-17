@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_data_model.dart';
-import 'package:fife_image/lib/app_logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:html' as html;
 

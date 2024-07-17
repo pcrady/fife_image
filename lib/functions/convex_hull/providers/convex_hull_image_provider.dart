@@ -178,8 +178,6 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       },
     );
 
-    logger.i(response);
-
     ref.invalidate(imagesProvider);
   }
 }
