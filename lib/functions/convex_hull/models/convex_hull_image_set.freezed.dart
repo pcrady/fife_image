@@ -21,22 +21,7 @@ ConvexHullImageSet _$ConvexHullImageSetFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ConvexHullImageSet {
   String? get baseName => throw _privateConstructorUsedError;
-  AbstractImage? get channel0 => throw _privateConstructorUsedError;
-  AbstractImage? get channel0BackgroundCorrect =>
-      throw _privateConstructorUsedError;
-  AbstractImage? get channel1 => throw _privateConstructorUsedError;
-  AbstractImage? get channel1BackgroundCorrect =>
-      throw _privateConstructorUsedError;
-  AbstractImage? get channel2 => throw _privateConstructorUsedError;
-  AbstractImage? get channel2BackgroundCorrect =>
-      throw _privateConstructorUsedError;
-  AbstractImage? get channel3 => throw _privateConstructorUsedError;
-  AbstractImage? get channel3BackgroundCorrect =>
-      throw _privateConstructorUsedError;
-  AbstractImage? get channel4 => throw _privateConstructorUsedError;
-  AbstractImage? get channel4BackgroundCorrect =>
-      throw _privateConstructorUsedError;
-  AbstractImage? get overlay => throw _privateConstructorUsedError;
+  List<AbstractImage>? get images => throw _privateConstructorUsedError;
   ConvexHullResults get results => throw _privateConstructorUsedError;
 
   /// Serializes this ConvexHullImageSet to a JSON map.
@@ -57,30 +42,9 @@ abstract class $ConvexHullImageSetCopyWith<$Res> {
   @useResult
   $Res call(
       {String? baseName,
-      AbstractImage? channel0,
-      AbstractImage? channel0BackgroundCorrect,
-      AbstractImage? channel1,
-      AbstractImage? channel1BackgroundCorrect,
-      AbstractImage? channel2,
-      AbstractImage? channel2BackgroundCorrect,
-      AbstractImage? channel3,
-      AbstractImage? channel3BackgroundCorrect,
-      AbstractImage? channel4,
-      AbstractImage? channel4BackgroundCorrect,
-      AbstractImage? overlay,
+      List<AbstractImage>? images,
       ConvexHullResults results});
 
-  $AbstractImageCopyWith<$Res>? get channel0;
-  $AbstractImageCopyWith<$Res>? get channel0BackgroundCorrect;
-  $AbstractImageCopyWith<$Res>? get channel1;
-  $AbstractImageCopyWith<$Res>? get channel1BackgroundCorrect;
-  $AbstractImageCopyWith<$Res>? get channel2;
-  $AbstractImageCopyWith<$Res>? get channel2BackgroundCorrect;
-  $AbstractImageCopyWith<$Res>? get channel3;
-  $AbstractImageCopyWith<$Res>? get channel3BackgroundCorrect;
-  $AbstractImageCopyWith<$Res>? get channel4;
-  $AbstractImageCopyWith<$Res>? get channel4BackgroundCorrect;
-  $AbstractImageCopyWith<$Res>? get overlay;
   $ConvexHullResultsCopyWith<$Res> get results;
 }
 
@@ -100,17 +64,7 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
   @override
   $Res call({
     Object? baseName = freezed,
-    Object? channel0 = freezed,
-    Object? channel0BackgroundCorrect = freezed,
-    Object? channel1 = freezed,
-    Object? channel1BackgroundCorrect = freezed,
-    Object? channel2 = freezed,
-    Object? channel2BackgroundCorrect = freezed,
-    Object? channel3 = freezed,
-    Object? channel3BackgroundCorrect = freezed,
-    Object? channel4 = freezed,
-    Object? channel4BackgroundCorrect = freezed,
-    Object? overlay = freezed,
+    Object? images = freezed,
     Object? results = null,
   }) {
     return _then(_value.copyWith(
@@ -118,214 +72,15 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
           ? _value.baseName
           : baseName // ignore: cast_nullable_to_non_nullable
               as String?,
-      channel0: freezed == channel0
-          ? _value.channel0
-          : channel0 // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel0BackgroundCorrect: freezed == channel0BackgroundCorrect
-          ? _value.channel0BackgroundCorrect
-          : channel0BackgroundCorrect // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel1: freezed == channel1
-          ? _value.channel1
-          : channel1 // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel1BackgroundCorrect: freezed == channel1BackgroundCorrect
-          ? _value.channel1BackgroundCorrect
-          : channel1BackgroundCorrect // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel2: freezed == channel2
-          ? _value.channel2
-          : channel2 // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel2BackgroundCorrect: freezed == channel2BackgroundCorrect
-          ? _value.channel2BackgroundCorrect
-          : channel2BackgroundCorrect // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel3: freezed == channel3
-          ? _value.channel3
-          : channel3 // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel3BackgroundCorrect: freezed == channel3BackgroundCorrect
-          ? _value.channel3BackgroundCorrect
-          : channel3BackgroundCorrect // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel4: freezed == channel4
-          ? _value.channel4
-          : channel4 // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel4BackgroundCorrect: freezed == channel4BackgroundCorrect
-          ? _value.channel4BackgroundCorrect
-          : channel4BackgroundCorrect // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      overlay: freezed == overlay
-          ? _value.overlay
-          : overlay // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
+      images: freezed == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<AbstractImage>?,
       results: null == results
           ? _value.results
           : results // ignore: cast_nullable_to_non_nullable
               as ConvexHullResults,
     ) as $Val);
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get channel0 {
-    if (_value.channel0 == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.channel0!, (value) {
-      return _then(_value.copyWith(channel0: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get channel0BackgroundCorrect {
-    if (_value.channel0BackgroundCorrect == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.channel0BackgroundCorrect!,
-        (value) {
-      return _then(_value.copyWith(channel0BackgroundCorrect: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get channel1 {
-    if (_value.channel1 == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.channel1!, (value) {
-      return _then(_value.copyWith(channel1: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get channel1BackgroundCorrect {
-    if (_value.channel1BackgroundCorrect == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.channel1BackgroundCorrect!,
-        (value) {
-      return _then(_value.copyWith(channel1BackgroundCorrect: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get channel2 {
-    if (_value.channel2 == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.channel2!, (value) {
-      return _then(_value.copyWith(channel2: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get channel2BackgroundCorrect {
-    if (_value.channel2BackgroundCorrect == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.channel2BackgroundCorrect!,
-        (value) {
-      return _then(_value.copyWith(channel2BackgroundCorrect: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get channel3 {
-    if (_value.channel3 == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.channel3!, (value) {
-      return _then(_value.copyWith(channel3: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get channel3BackgroundCorrect {
-    if (_value.channel3BackgroundCorrect == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.channel3BackgroundCorrect!,
-        (value) {
-      return _then(_value.copyWith(channel3BackgroundCorrect: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get channel4 {
-    if (_value.channel4 == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.channel4!, (value) {
-      return _then(_value.copyWith(channel4: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get channel4BackgroundCorrect {
-    if (_value.channel4BackgroundCorrect == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.channel4BackgroundCorrect!,
-        (value) {
-      return _then(_value.copyWith(channel4BackgroundCorrect: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullImageSet
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get overlay {
-    if (_value.overlay == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.overlay!, (value) {
-      return _then(_value.copyWith(overlay: value) as $Val);
-    });
   }
 
   /// Create a copy of ConvexHullImageSet
@@ -349,41 +104,9 @@ abstract class _$$ConvexHullImageSetImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? baseName,
-      AbstractImage? channel0,
-      AbstractImage? channel0BackgroundCorrect,
-      AbstractImage? channel1,
-      AbstractImage? channel1BackgroundCorrect,
-      AbstractImage? channel2,
-      AbstractImage? channel2BackgroundCorrect,
-      AbstractImage? channel3,
-      AbstractImage? channel3BackgroundCorrect,
-      AbstractImage? channel4,
-      AbstractImage? channel4BackgroundCorrect,
-      AbstractImage? overlay,
+      List<AbstractImage>? images,
       ConvexHullResults results});
 
-  @override
-  $AbstractImageCopyWith<$Res>? get channel0;
-  @override
-  $AbstractImageCopyWith<$Res>? get channel0BackgroundCorrect;
-  @override
-  $AbstractImageCopyWith<$Res>? get channel1;
-  @override
-  $AbstractImageCopyWith<$Res>? get channel1BackgroundCorrect;
-  @override
-  $AbstractImageCopyWith<$Res>? get channel2;
-  @override
-  $AbstractImageCopyWith<$Res>? get channel2BackgroundCorrect;
-  @override
-  $AbstractImageCopyWith<$Res>? get channel3;
-  @override
-  $AbstractImageCopyWith<$Res>? get channel3BackgroundCorrect;
-  @override
-  $AbstractImageCopyWith<$Res>? get channel4;
-  @override
-  $AbstractImageCopyWith<$Res>? get channel4BackgroundCorrect;
-  @override
-  $AbstractImageCopyWith<$Res>? get overlay;
   @override
   $ConvexHullResultsCopyWith<$Res> get results;
 }
@@ -402,17 +125,7 @@ class __$$ConvexHullImageSetImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? baseName = freezed,
-    Object? channel0 = freezed,
-    Object? channel0BackgroundCorrect = freezed,
-    Object? channel1 = freezed,
-    Object? channel1BackgroundCorrect = freezed,
-    Object? channel2 = freezed,
-    Object? channel2BackgroundCorrect = freezed,
-    Object? channel3 = freezed,
-    Object? channel3BackgroundCorrect = freezed,
-    Object? channel4 = freezed,
-    Object? channel4BackgroundCorrect = freezed,
-    Object? overlay = freezed,
+    Object? images = freezed,
     Object? results = null,
   }) {
     return _then(_$ConvexHullImageSetImpl(
@@ -420,50 +133,10 @@ class __$$ConvexHullImageSetImplCopyWithImpl<$Res>
           ? _value.baseName
           : baseName // ignore: cast_nullable_to_non_nullable
               as String?,
-      channel0: freezed == channel0
-          ? _value.channel0
-          : channel0 // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel0BackgroundCorrect: freezed == channel0BackgroundCorrect
-          ? _value.channel0BackgroundCorrect
-          : channel0BackgroundCorrect // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel1: freezed == channel1
-          ? _value.channel1
-          : channel1 // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel1BackgroundCorrect: freezed == channel1BackgroundCorrect
-          ? _value.channel1BackgroundCorrect
-          : channel1BackgroundCorrect // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel2: freezed == channel2
-          ? _value.channel2
-          : channel2 // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel2BackgroundCorrect: freezed == channel2BackgroundCorrect
-          ? _value.channel2BackgroundCorrect
-          : channel2BackgroundCorrect // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel3: freezed == channel3
-          ? _value.channel3
-          : channel3 // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel3BackgroundCorrect: freezed == channel3BackgroundCorrect
-          ? _value.channel3BackgroundCorrect
-          : channel3BackgroundCorrect // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel4: freezed == channel4
-          ? _value.channel4
-          : channel4 // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      channel4BackgroundCorrect: freezed == channel4BackgroundCorrect
-          ? _value.channel4BackgroundCorrect
-          : channel4BackgroundCorrect // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
-      overlay: freezed == overlay
-          ? _value.overlay
-          : overlay // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
+      images: freezed == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<AbstractImage>?,
       results: null == results
           ? _value.results
           : results // ignore: cast_nullable_to_non_nullable
@@ -479,54 +152,33 @@ class __$$ConvexHullImageSetImplCopyWithImpl<$Res>
 class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
   _$ConvexHullImageSetImpl(
       {this.baseName,
-      this.channel0,
-      this.channel0BackgroundCorrect,
-      this.channel1,
-      this.channel1BackgroundCorrect,
-      this.channel2,
-      this.channel2BackgroundCorrect,
-      this.channel3,
-      this.channel3BackgroundCorrect,
-      this.channel4,
-      this.channel4BackgroundCorrect,
-      this.overlay,
+      final List<AbstractImage>? images,
       this.results = const ConvexHullResults()})
-      : super._();
+      : _images = images,
+        super._();
 
   factory _$ConvexHullImageSetImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullImageSetImplFromJson(json);
 
   @override
   final String? baseName;
+  final List<AbstractImage>? _images;
   @override
-  final AbstractImage? channel0;
-  @override
-  final AbstractImage? channel0BackgroundCorrect;
-  @override
-  final AbstractImage? channel1;
-  @override
-  final AbstractImage? channel1BackgroundCorrect;
-  @override
-  final AbstractImage? channel2;
-  @override
-  final AbstractImage? channel2BackgroundCorrect;
-  @override
-  final AbstractImage? channel3;
-  @override
-  final AbstractImage? channel3BackgroundCorrect;
-  @override
-  final AbstractImage? channel4;
-  @override
-  final AbstractImage? channel4BackgroundCorrect;
-  @override
-  final AbstractImage? overlay;
+  List<AbstractImage>? get images {
+    final value = _images;
+    if (value == null) return null;
+    if (_images is EqualUnmodifiableListView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey()
   final ConvexHullResults results;
 
   @override
   String toString() {
-    return 'ConvexHullImageSet(baseName: $baseName, channel0: $channel0, channel0BackgroundCorrect: $channel0BackgroundCorrect, channel1: $channel1, channel1BackgroundCorrect: $channel1BackgroundCorrect, channel2: $channel2, channel2BackgroundCorrect: $channel2BackgroundCorrect, channel3: $channel3, channel3BackgroundCorrect: $channel3BackgroundCorrect, channel4: $channel4, channel4BackgroundCorrect: $channel4BackgroundCorrect, overlay: $overlay, results: $results)';
+    return 'ConvexHullImageSet(baseName: $baseName, images: $images, results: $results)';
   }
 
   @override
@@ -536,52 +188,14 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
             other is _$ConvexHullImageSetImpl &&
             (identical(other.baseName, baseName) ||
                 other.baseName == baseName) &&
-            (identical(other.channel0, channel0) ||
-                other.channel0 == channel0) &&
-            (identical(other.channel0BackgroundCorrect,
-                    channel0BackgroundCorrect) ||
-                other.channel0BackgroundCorrect == channel0BackgroundCorrect) &&
-            (identical(other.channel1, channel1) ||
-                other.channel1 == channel1) &&
-            (identical(other.channel1BackgroundCorrect,
-                    channel1BackgroundCorrect) ||
-                other.channel1BackgroundCorrect == channel1BackgroundCorrect) &&
-            (identical(other.channel2, channel2) ||
-                other.channel2 == channel2) &&
-            (identical(other.channel2BackgroundCorrect,
-                    channel2BackgroundCorrect) ||
-                other.channel2BackgroundCorrect == channel2BackgroundCorrect) &&
-            (identical(other.channel3, channel3) ||
-                other.channel3 == channel3) &&
-            (identical(other.channel3BackgroundCorrect,
-                    channel3BackgroundCorrect) ||
-                other.channel3BackgroundCorrect == channel3BackgroundCorrect) &&
-            (identical(other.channel4, channel4) ||
-                other.channel4 == channel4) &&
-            (identical(other.channel4BackgroundCorrect,
-                    channel4BackgroundCorrect) ||
-                other.channel4BackgroundCorrect == channel4BackgroundCorrect) &&
-            (identical(other.overlay, overlay) || other.overlay == overlay) &&
+            const DeepCollectionEquality().equals(other._images, _images) &&
             (identical(other.results, results) || other.results == results));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      baseName,
-      channel0,
-      channel0BackgroundCorrect,
-      channel1,
-      channel1BackgroundCorrect,
-      channel2,
-      channel2BackgroundCorrect,
-      channel3,
-      channel3BackgroundCorrect,
-      channel4,
-      channel4BackgroundCorrect,
-      overlay,
-      results);
+  int get hashCode => Object.hash(runtimeType, baseName,
+      const DeepCollectionEquality().hash(_images), results);
 
   /// Create a copy of ConvexHullImageSet
   /// with the given fields replaced by the non-null parameter values.
@@ -603,17 +217,7 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
 abstract class _ConvexHullImageSet extends ConvexHullImageSet {
   factory _ConvexHullImageSet(
       {final String? baseName,
-      final AbstractImage? channel0,
-      final AbstractImage? channel0BackgroundCorrect,
-      final AbstractImage? channel1,
-      final AbstractImage? channel1BackgroundCorrect,
-      final AbstractImage? channel2,
-      final AbstractImage? channel2BackgroundCorrect,
-      final AbstractImage? channel3,
-      final AbstractImage? channel3BackgroundCorrect,
-      final AbstractImage? channel4,
-      final AbstractImage? channel4BackgroundCorrect,
-      final AbstractImage? overlay,
+      final List<AbstractImage>? images,
       final ConvexHullResults results}) = _$ConvexHullImageSetImpl;
   _ConvexHullImageSet._() : super._();
 
@@ -623,27 +227,7 @@ abstract class _ConvexHullImageSet extends ConvexHullImageSet {
   @override
   String? get baseName;
   @override
-  AbstractImage? get channel0;
-  @override
-  AbstractImage? get channel0BackgroundCorrect;
-  @override
-  AbstractImage? get channel1;
-  @override
-  AbstractImage? get channel1BackgroundCorrect;
-  @override
-  AbstractImage? get channel2;
-  @override
-  AbstractImage? get channel2BackgroundCorrect;
-  @override
-  AbstractImage? get channel3;
-  @override
-  AbstractImage? get channel3BackgroundCorrect;
-  @override
-  AbstractImage? get channel4;
-  @override
-  AbstractImage? get channel4BackgroundCorrect;
-  @override
-  AbstractImage? get overlay;
+  List<AbstractImage>? get images;
   @override
   ConvexHullResults get results;
 

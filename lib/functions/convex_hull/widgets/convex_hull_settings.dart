@@ -1,5 +1,6 @@
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,21 +14,14 @@ class ConvexHullSettings extends ConsumerStatefulWidget {
 
 class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController channel0Controller;
-  late TextEditingController channel1Controller;
-  late TextEditingController channel2Controller;
-  late TextEditingController channel3Controller;
-  late TextEditingController channel4Controller;
-  late TextEditingController overlayController;
+  late TextEditingController channelNumberController;
   late TextEditingController widthController;
   late TextEditingController heightController;
   late TextEditingController unitsController;
-  late String channel0Name;
-  late String channel1Name;
-  late String channel2Name;
-  late String channel3Name;
-  late String channel4Name;
-
+  late TextEditingController overlayController;
+  List<TextEditingController> searchPatternControllers = [];
+  List<TextEditingController> proteinNameControllers = [];
+  bool insulinAndGlucagon = true;
   String? validator(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter some text';
@@ -35,37 +29,77 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     return null;
   }
 
+  String generateDefaultSearchString(int i) {
+    if (i < 10) {
+      return 'ch0$i';
+    } else {
+      return 'ch$i';
+    }
+  }
+
+  void listener() {
+    final value = channelNumberController.text;
+    if (value.isNotEmpty || (int.tryParse(value) != null)) {
+      var intValue = int.tryParse(value) ?? 1;
+      if (intValue > 30) {
+        intValue = 30;
+        channelNumberController.text = '30';
+      } else if (intValue < 1) {
+        intValue = 1;
+        channelNumberController.text = '1';
+      }
+      setState(() {
+        if (intValue > searchPatternControllers.length) {
+          for (int i = searchPatternControllers.length; i < intValue; i++) {
+            searchPatternControllers.add(TextEditingController(text: generateDefaultSearchString(i)));
+            proteinNameControllers.add(TextEditingController());
+          }
+        } else if (intValue < searchPatternControllers.length) {
+          for (int i = searchPatternControllers.length; i > intValue; i--) {
+            searchPatternControllers.removeLast();
+            proteinNameControllers.removeLast();
+          }
+        }
+      });
+    }
+  }
+
   @override
   void initState() {
     final convexHullConfig = ref.read(convexHullConfigProvider);
-    channel0Controller = TextEditingController(text: convexHullConfig.channel0SearchPattern);
-    channel1Controller = TextEditingController(text: convexHullConfig.channel1SearchPattern);
-    channel2Controller = TextEditingController(text: convexHullConfig.channel2SearchPattern);
-    channel3Controller = TextEditingController(text: convexHullConfig.channel3SearchPattern);
-    channel4Controller = TextEditingController(text: convexHullConfig.channel4SearchPattern);
-    overlayController = TextEditingController(text: convexHullConfig.overlaySearchPattern);
+    channelNumberController = TextEditingController(text: convexHullConfig.channelNumber.toString());
+    channelNumberController.addListener(listener);
+    if (convexHullConfig.searchPatternProteinConfig.isEmpty) {
+      for (int i = 0; i < convexHullConfig.channelNumber; i++) {
+        searchPatternControllers.add(TextEditingController(text: generateDefaultSearchString(i)));
+        proteinNameControllers.add(TextEditingController(text: proteins[i]));
+      }
+    } else {
+      final config = convexHullConfig.searchPatternProteinConfig;
+      config.forEach((searchPattern, proteinName) {
+        searchPatternControllers.add(TextEditingController(text: searchPattern));
+        proteinNameControllers.add(TextEditingController(text: proteinName));
+      });
+    }
     widthController = TextEditingController(text: convexHullConfig.imageWidth.toString());
     heightController = TextEditingController(text: convexHullConfig.imageHeight.toString());
     unitsController = TextEditingController(text: convexHullConfig.units.toString());
-    channel0Name = convexHullConfig.channel0ProteinName;
-    channel1Name = convexHullConfig.channel1ProteinName;
-    channel2Name = convexHullConfig.channel2ProteinName;
-    channel3Name = convexHullConfig.channel3ProteinName;
-    channel4Name = convexHullConfig.channel4ProteinName;
+    overlayController = TextEditingController(text: convexHullConfig.overlaySearchPattern.toString());
     super.initState();
   }
 
   @override
   void dispose() {
-    channel0Controller.dispose();
-    channel1Controller.dispose();
-    channel2Controller.dispose();
-    channel3Controller.dispose();
-    channel4Controller.dispose();
-    overlayController.dispose();
+    final controllerNumber = searchPatternControllers.length;
+    for (int i = 0; i < controllerNumber; i++) {
+      searchPatternControllers[i].dispose();
+      proteinNameControllers[i].dispose();
+    }
+    channelNumberController.dispose();
     widthController.dispose();
     heightController.dispose();
     unitsController.dispose();
+    overlayController.dispose();
     super.dispose();
   }
 
@@ -75,255 +109,39 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final halfWidth = constraints.maxWidth / 2.0 - 4.0;
-          final thirdWidth = constraints.maxWidth / 3.0 - 4.0;
-
+          final fourthWidth = constraints.maxWidth / 4.0 - 4.0;
           return Form(
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(height: 8.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: halfWidth,
+                      width: fourthWidth,
                       child: TextFormField(
-                        validator: validator,
-                        controller: channel0Controller,
+                        validator: (value) {
+                          if (value == null || value.isEmpty || (int.tryParse(value) == null)) {
+                            return 'Please enter an integer value';
+                          }
+                          return null;
+                        },
+                        controller: channelNumberController,
                         decoration: const InputDecoration(
-                          hintText: 'Set Channel 0 Search Pattern',
+                          hintText: 'Total Number of Channels',
                           border: OutlineInputBorder(),
-                          labelText: 'Channel 0 Search Pattern',
+                          labelText: 'Total Channels',
                         ),
                       ),
                     ),
                     SizedBox(
-                      width: halfWidth,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54),
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: channel0Name,
-                            onChanged: (String? value) {
-                              setState(() {
-                                channel0Name = value!;
-                              });
-                            },
-                            items: proteins.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(value),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: halfWidth,
-                      child: TextFormField(
-                        validator: validator,
-                        controller: channel1Controller,
-                        decoration: const InputDecoration(
-                          hintText: 'Set Channel 1 Search Pattern',
-                          border: OutlineInputBorder(),
-                          labelText: 'Channel 1 Search Pattern',
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: halfWidth,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54),
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: channel1Name,
-                            onChanged: (String? value) {
-                              setState(() {
-                                channel1Name = value!;
-                              });
-                            },
-                            items: proteins.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(value),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: halfWidth,
-                      child: TextFormField(
-                        validator: validator,
-                        controller: channel2Controller,
-                        decoration: const InputDecoration(
-                          hintText: 'Set Channel 2 Search Pattern',
-                          border: OutlineInputBorder(),
-                          labelText: 'Channel 2 Search Pattern',
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: halfWidth,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54),
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: channel2Name,
-                            onChanged: (String? value) {
-                              setState(() {
-                                channel2Name = value!;
-                              });
-                            },
-                            items: proteins.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(value),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: halfWidth,
-                      child: TextFormField(
-                        validator: validator,
-                        controller: channel3Controller,
-                        decoration: const InputDecoration(
-                          hintText: 'Set Channel 3 Search Pattern',
-                          border: OutlineInputBorder(),
-                          labelText: 'Channel 3 Search Pattern',
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: halfWidth,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54),
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: channel3Name,
-                            onChanged: (String? value) {
-                              setState(() {
-                                channel3Name = value!;
-                              });
-                            },
-                            items: proteins.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(value),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: halfWidth,
-                      child: TextFormField(
-                        validator: validator,
-                        controller: channel4Controller,
-                        decoration: const InputDecoration(
-                          hintText: 'Set Channel 4 Search Pattern',
-                          border: OutlineInputBorder(),
-                          labelText: 'Channel 4 Search Pattern',
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: halfWidth,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54),
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: channel4Name,
-                            onChanged: (String? value) {
-                              setState(() {
-                                channel4Name = value!;
-                              });
-                            },
-                            items: proteins.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(value),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: thirdWidth,
+                      width: fourthWidth,
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
                             return 'Please enter a numerical value';
                           }
                           return null;
-
                         },
                         controller: widthController,
                         decoration: const InputDecoration(
@@ -334,7 +152,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                       ),
                     ),
                     SizedBox(
-                      width: thirdWidth,
+                      width: fourthWidth,
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
@@ -351,7 +169,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                       ),
                     ),
                     SizedBox(
-                      width: thirdWidth,
+                      width: fourthWidth,
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -370,6 +188,43 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                   ],
                 ),
                 const SizedBox(height: 8.0),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: searchPatternControllers.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: halfWidth,
+                              child: TextFormField(
+                                validator: validator,
+                                controller: searchPatternControllers[index],
+                                decoration: InputDecoration(
+                                  hintText: 'Set Channel $index Search Pattern',
+                                  border: const OutlineInputBorder(),
+                                  labelText: 'Channel $index Search Pattern',
+                                ),
+                              ),
+                            ),
+                            DropdownMenu<String>(
+                              width: halfWidth,
+                              hintText: 'Protein',
+                              controller: proteinNameControllers[index],
+                              dropdownMenuEntries: proteins.map<DropdownMenuEntry<String>>((String value) {
+                                return DropdownMenuEntry<String>(value: value, label: value);
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8.0),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 8.0),
                 TextFormField(
                   validator: validator,
                   controller: overlayController,
@@ -379,6 +234,21 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     labelText: 'Overlay Search Pattern',
                   ),
                 ),
+                insulinAndGlucagon
+                    ? Container()
+                    : const Column(
+                        children: [
+                          SizedBox(height: 8.0),
+                          Text(
+                            'You must have Insulin and Glucagon',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.red,
+                              fontSize: 24.0,
+                            ),
+                          ),
+                        ],
+                      ),
                 const SizedBox(height: 8.0),
                 Row(
                   children: [
@@ -386,26 +256,30 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            final oldConfig = ref.read(convexHullConfigProvider);
-                            final newConfig = oldConfig.copyWith(
-                              channel0SearchPattern: channel0Controller.text,
-                              channel1SearchPattern: channel1Controller.text,
-                              channel2SearchPattern: channel2Controller.text,
-                              channel3SearchPattern: channel3Controller.text,
-                              channel4SearchPattern: channel4Controller.text,
+                            final proteins = proteinNameControllers.map((controller) => controller.text).toList();
+                            if (!proteins.contains(insulin) || !proteins.contains(glucagon)) {
+                              setState(() => insulinAndGlucagon = false);
+                              return;
+                            } else {
+                              setState(() => insulinAndGlucagon = true);
+                            }
+                            Map<String, String> searchPatternProteinConfig = {};
+                            for (var i = 0; i < searchPatternControllers.length; i++) {
+                              searchPatternProteinConfig[searchPatternControllers[i].text] = proteinNameControllers[i].text;
+                            }
+
+                            final oldConvexHullConfig = ref.watch(convexHullConfigProvider);
+                            final newConvexHullConfig = oldConvexHullConfig.copyWith(
                               overlaySearchPattern: overlayController.text,
-                              imageWidth: double.tryParse(widthController.text) ?? 0.0,
                               imageHeight: double.tryParse(heightController.text) ?? 0.0,
-                              channel0ProteinName: channel0Name,
-                              channel1ProteinName: channel1Name,
-                              channel2ProteinName: channel2Name,
-                              channel3ProteinName: channel3Name,
-                              channel4ProteinName: channel4Name,
+                              imageWidth: double.tryParse(widthController.text) ?? 0.0,
                               units: unitsController.text,
+                              channelNumber: int.tryParse(channelNumberController.text) ?? 0,
+                              searchPatternProteinConfig: searchPatternProteinConfig,
+                              leftMenuEnum: LeftMenuEnum.functionResults,
                             );
-                            final config = ref.read(convexHullConfigProvider.notifier);
-                            config.setConvexHullConfig(convexHullConfigModel: newConfig);
-                            config.setLeftMenu(leftMenu: LeftMenuEnum.functionResults);
+
+                            ref.read(convexHullConfigProvider.notifier).setConvexHullConfig(convexHullConfigModel: newConvexHullConfig);
                           }
                         },
                         child: const Text('Start'),

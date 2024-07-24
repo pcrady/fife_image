@@ -21,26 +21,18 @@ _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
       leftMenuEnum:
           $enumDecodeNullable(_$LeftMenuEnumEnumMap, json['left_menu_enum']) ??
               LeftMenuEnum.functionSettings,
-      channel0SearchPattern:
-          json['channel0_search_pattern'] as String? ?? 'ch00',
-      channel1SearchPattern:
-          json['channel1_search_pattern'] as String? ?? 'ch01',
-      channel2SearchPattern:
-          json['channel2_search_pattern'] as String? ?? 'ch02',
-      channel3SearchPattern:
-          json['channel3_search_pattern'] as String? ?? 'ch03',
-      channel4SearchPattern:
-          json['channel4_search_pattern'] as String? ?? 'ch04',
       overlaySearchPattern:
-          json['overlay_search_pattern'] as String? ?? 'overlay',
-      channel0ProteinName: json['channel0_protein_name'] as String? ?? cd4,
-      channel1ProteinName: json['channel1_protein_name'] as String? ?? glucagon,
-      channel2ProteinName: json['channel2_protein_name'] as String? ?? insulin,
-      channel3ProteinName: json['channel3_protein_name'] as String? ?? cd8,
-      channel4ProteinName: json['channel4_protein_name'] as String? ?? pdl1,
-      imageWidth: (json['image_width'] as num?)?.toDouble() ?? 10.0,
-      imageHeight: (json['image_height'] as num?)?.toDouble() ?? 10.0,
-      units: json['units'] as String? ?? 'um',
+          json['overlay_search_pattern'] as String? ?? overlay,
+      searchPatternProteinConfig:
+          (json['search_pattern_protein_config'] as Map<String, dynamic>?)?.map(
+                (k, e) => MapEntry(k, e as String),
+              ) ??
+              const {},
+      imageWidth: (json['image_width'] as num?)?.toDouble() ?? width,
+      imageHeight: (json['image_height'] as num?)?.toDouble() ?? length,
+      units: json['units'] as String? ?? lengthScale,
+      channelNumber:
+          (json['channel_number'] as num?)?.toInt() ?? totalChannelNumber,
     );
 
 Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
@@ -57,20 +49,12 @@ Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
   writeNotNull('active_image', instance.activeImage?.toJson());
   writeNotNull('active_results', instance.activeResults?.toJson());
   val['left_menu_enum'] = _$LeftMenuEnumEnumMap[instance.leftMenuEnum]!;
-  val['channel0_search_pattern'] = instance.channel0SearchPattern;
-  val['channel1_search_pattern'] = instance.channel1SearchPattern;
-  val['channel2_search_pattern'] = instance.channel2SearchPattern;
-  val['channel3_search_pattern'] = instance.channel3SearchPattern;
-  val['channel4_search_pattern'] = instance.channel4SearchPattern;
   val['overlay_search_pattern'] = instance.overlaySearchPattern;
-  val['channel0_protein_name'] = instance.channel0ProteinName;
-  val['channel1_protein_name'] = instance.channel1ProteinName;
-  val['channel2_protein_name'] = instance.channel2ProteinName;
-  val['channel3_protein_name'] = instance.channel3ProteinName;
-  val['channel4_protein_name'] = instance.channel4ProteinName;
+  val['search_pattern_protein_config'] = instance.searchPatternProteinConfig;
   val['image_width'] = instance.imageWidth;
   val['image_height'] = instance.imageHeight;
   val['units'] = instance.units;
+  val['channel_number'] = instance.channelNumber;
   return val;
 }
 

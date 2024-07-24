@@ -162,27 +162,18 @@ def background_correction():
 @app.route('/convex_hull_calculation', methods=['POST'])
 def convex_hull_calculation():
     data = request.get_json()
-    base_image_name = data['base_image']
-    cd4 = io.imread(data['CD4']['image_path'])
-    cd8 = io.imread(data['CD8']['image_path'])
-    glucagon = io.imread(data['Glucagon']['image_path'])
-    insulin = io.imread(data['Insulin']['image_path'])
-    pdl1 = io.imread(data['PD-L1']['image_path'])
-    overlay = io.imread(data['Overlay']['image_path'])
-    crop_region = data['Overlay']['relative_selection_coordinates']
+    base_image_name = data['base_image_name']
     image_width = data['width']
     image_height = data['height']
+    images = data['images']
+    unscaled_crop_region = images['Overlay']['relative_selection_coordinates']
+
 
     image_set = IsletImageSet(
             image_height=image_width,
             image_width=image_height,
-            overlay_image=overlay,
-            cd4_image=cd4,
-            cd8_image=cd8,
-            insulin_image=insulin,
-            glucagon_image=glucagon,
-            pdl1_image=pdl1,
-            unscaled_crop_region=crop_region,
+            image_data=images,
+            unscaled_crop_region=unscaled_crop_region,
             )
 
     IsletImageSet.save_bgr_image(image_set.combined_cd4_cd8_hull, OUTPUT_FOLDER, base_image_name + '_inflammation.png')

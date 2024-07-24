@@ -22,21 +22,7 @@ ConvexHullDataModel _$ConvexHullDataModelFromJson(Map<String, dynamic> json) {
 mixin _$ConvexHullDataModel {
   double? get totalImageArea => throw _privateConstructorUsedError;
   double? get totalIsletArea => throw _privateConstructorUsedError;
-  double? get totalCd4Area => throw _privateConstructorUsedError;
-  double? get totalCd8Area => throw _privateConstructorUsedError;
-  double? get totalInsulinArea => throw _privateConstructorUsedError;
-  double? get totalGlucagonArea => throw _privateConstructorUsedError;
-  double? get totalPdl1Area => throw _privateConstructorUsedError;
-  double? get isletCd4Area => throw _privateConstructorUsedError;
-  double? get isletCd8Area => throw _privateConstructorUsedError;
-  double? get isletInsulinArea => throw _privateConstructorUsedError;
-  double? get isletGlucagonArea => throw _privateConstructorUsedError;
-  double? get isletPdl1Area => throw _privateConstructorUsedError;
-  double? get cd4PercentIsletArea => throw _privateConstructorUsedError;
-  double? get cd8PercentIsletArea => throw _privateConstructorUsedError;
-  double? get insulinPercentIsletArea => throw _privateConstructorUsedError;
-  double? get glucagonPercentIsletArea => throw _privateConstructorUsedError;
-  double? get pdl1PercentIsletArea => throw _privateConstructorUsedError;
+  Map<String, double>? get data => throw _privateConstructorUsedError;
 
   /// Serializes this ConvexHullDataModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -57,21 +43,7 @@ abstract class $ConvexHullDataModelCopyWith<$Res> {
   $Res call(
       {double? totalImageArea,
       double? totalIsletArea,
-      double? totalCd4Area,
-      double? totalCd8Area,
-      double? totalInsulinArea,
-      double? totalGlucagonArea,
-      double? totalPdl1Area,
-      double? isletCd4Area,
-      double? isletCd8Area,
-      double? isletInsulinArea,
-      double? isletGlucagonArea,
-      double? isletPdl1Area,
-      double? cd4PercentIsletArea,
-      double? cd8PercentIsletArea,
-      double? insulinPercentIsletArea,
-      double? glucagonPercentIsletArea,
-      double? pdl1PercentIsletArea});
+      Map<String, double>? data});
 }
 
 /// @nodoc
@@ -91,21 +63,7 @@ class _$ConvexHullDataModelCopyWithImpl<$Res, $Val extends ConvexHullDataModel>
   $Res call({
     Object? totalImageArea = freezed,
     Object? totalIsletArea = freezed,
-    Object? totalCd4Area = freezed,
-    Object? totalCd8Area = freezed,
-    Object? totalInsulinArea = freezed,
-    Object? totalGlucagonArea = freezed,
-    Object? totalPdl1Area = freezed,
-    Object? isletCd4Area = freezed,
-    Object? isletCd8Area = freezed,
-    Object? isletInsulinArea = freezed,
-    Object? isletGlucagonArea = freezed,
-    Object? isletPdl1Area = freezed,
-    Object? cd4PercentIsletArea = freezed,
-    Object? cd8PercentIsletArea = freezed,
-    Object? insulinPercentIsletArea = freezed,
-    Object? glucagonPercentIsletArea = freezed,
-    Object? pdl1PercentIsletArea = freezed,
+    Object? data = freezed,
   }) {
     return _then(_value.copyWith(
       totalImageArea: freezed == totalImageArea
@@ -116,66 +74,10 @@ class _$ConvexHullDataModelCopyWithImpl<$Res, $Val extends ConvexHullDataModel>
           ? _value.totalIsletArea
           : totalIsletArea // ignore: cast_nullable_to_non_nullable
               as double?,
-      totalCd4Area: freezed == totalCd4Area
-          ? _value.totalCd4Area
-          : totalCd4Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      totalCd8Area: freezed == totalCd8Area
-          ? _value.totalCd8Area
-          : totalCd8Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      totalInsulinArea: freezed == totalInsulinArea
-          ? _value.totalInsulinArea
-          : totalInsulinArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      totalGlucagonArea: freezed == totalGlucagonArea
-          ? _value.totalGlucagonArea
-          : totalGlucagonArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      totalPdl1Area: freezed == totalPdl1Area
-          ? _value.totalPdl1Area
-          : totalPdl1Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isletCd4Area: freezed == isletCd4Area
-          ? _value.isletCd4Area
-          : isletCd4Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isletCd8Area: freezed == isletCd8Area
-          ? _value.isletCd8Area
-          : isletCd8Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isletInsulinArea: freezed == isletInsulinArea
-          ? _value.isletInsulinArea
-          : isletInsulinArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isletGlucagonArea: freezed == isletGlucagonArea
-          ? _value.isletGlucagonArea
-          : isletGlucagonArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isletPdl1Area: freezed == isletPdl1Area
-          ? _value.isletPdl1Area
-          : isletPdl1Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      cd4PercentIsletArea: freezed == cd4PercentIsletArea
-          ? _value.cd4PercentIsletArea
-          : cd4PercentIsletArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      cd8PercentIsletArea: freezed == cd8PercentIsletArea
-          ? _value.cd8PercentIsletArea
-          : cd8PercentIsletArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      insulinPercentIsletArea: freezed == insulinPercentIsletArea
-          ? _value.insulinPercentIsletArea
-          : insulinPercentIsletArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      glucagonPercentIsletArea: freezed == glucagonPercentIsletArea
-          ? _value.glucagonPercentIsletArea
-          : glucagonPercentIsletArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      pdl1PercentIsletArea: freezed == pdl1PercentIsletArea
-          ? _value.pdl1PercentIsletArea
-          : pdl1PercentIsletArea // ignore: cast_nullable_to_non_nullable
-              as double?,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, double>?,
     ) as $Val);
   }
 }
@@ -191,21 +93,7 @@ abstract class _$$ConvexHullDataModelImplCopyWith<$Res>
   $Res call(
       {double? totalImageArea,
       double? totalIsletArea,
-      double? totalCd4Area,
-      double? totalCd8Area,
-      double? totalInsulinArea,
-      double? totalGlucagonArea,
-      double? totalPdl1Area,
-      double? isletCd4Area,
-      double? isletCd8Area,
-      double? isletInsulinArea,
-      double? isletGlucagonArea,
-      double? isletPdl1Area,
-      double? cd4PercentIsletArea,
-      double? cd8PercentIsletArea,
-      double? insulinPercentIsletArea,
-      double? glucagonPercentIsletArea,
-      double? pdl1PercentIsletArea});
+      Map<String, double>? data});
 }
 
 /// @nodoc
@@ -223,21 +111,7 @@ class __$$ConvexHullDataModelImplCopyWithImpl<$Res>
   $Res call({
     Object? totalImageArea = freezed,
     Object? totalIsletArea = freezed,
-    Object? totalCd4Area = freezed,
-    Object? totalCd8Area = freezed,
-    Object? totalInsulinArea = freezed,
-    Object? totalGlucagonArea = freezed,
-    Object? totalPdl1Area = freezed,
-    Object? isletCd4Area = freezed,
-    Object? isletCd8Area = freezed,
-    Object? isletInsulinArea = freezed,
-    Object? isletGlucagonArea = freezed,
-    Object? isletPdl1Area = freezed,
-    Object? cd4PercentIsletArea = freezed,
-    Object? cd8PercentIsletArea = freezed,
-    Object? insulinPercentIsletArea = freezed,
-    Object? glucagonPercentIsletArea = freezed,
-    Object? pdl1PercentIsletArea = freezed,
+    Object? data = freezed,
   }) {
     return _then(_$ConvexHullDataModelImpl(
       totalImageArea: freezed == totalImageArea
@@ -248,66 +122,10 @@ class __$$ConvexHullDataModelImplCopyWithImpl<$Res>
           ? _value.totalIsletArea
           : totalIsletArea // ignore: cast_nullable_to_non_nullable
               as double?,
-      totalCd4Area: freezed == totalCd4Area
-          ? _value.totalCd4Area
-          : totalCd4Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      totalCd8Area: freezed == totalCd8Area
-          ? _value.totalCd8Area
-          : totalCd8Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      totalInsulinArea: freezed == totalInsulinArea
-          ? _value.totalInsulinArea
-          : totalInsulinArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      totalGlucagonArea: freezed == totalGlucagonArea
-          ? _value.totalGlucagonArea
-          : totalGlucagonArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      totalPdl1Area: freezed == totalPdl1Area
-          ? _value.totalPdl1Area
-          : totalPdl1Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isletCd4Area: freezed == isletCd4Area
-          ? _value.isletCd4Area
-          : isletCd4Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isletCd8Area: freezed == isletCd8Area
-          ? _value.isletCd8Area
-          : isletCd8Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isletInsulinArea: freezed == isletInsulinArea
-          ? _value.isletInsulinArea
-          : isletInsulinArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isletGlucagonArea: freezed == isletGlucagonArea
-          ? _value.isletGlucagonArea
-          : isletGlucagonArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isletPdl1Area: freezed == isletPdl1Area
-          ? _value.isletPdl1Area
-          : isletPdl1Area // ignore: cast_nullable_to_non_nullable
-              as double?,
-      cd4PercentIsletArea: freezed == cd4PercentIsletArea
-          ? _value.cd4PercentIsletArea
-          : cd4PercentIsletArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      cd8PercentIsletArea: freezed == cd8PercentIsletArea
-          ? _value.cd8PercentIsletArea
-          : cd8PercentIsletArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      insulinPercentIsletArea: freezed == insulinPercentIsletArea
-          ? _value.insulinPercentIsletArea
-          : insulinPercentIsletArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      glucagonPercentIsletArea: freezed == glucagonPercentIsletArea
-          ? _value.glucagonPercentIsletArea
-          : glucagonPercentIsletArea // ignore: cast_nullable_to_non_nullable
-              as double?,
-      pdl1PercentIsletArea: freezed == pdl1PercentIsletArea
-          ? _value.pdl1PercentIsletArea
-          : pdl1PercentIsletArea // ignore: cast_nullable_to_non_nullable
-              as double?,
+      data: freezed == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, double>?,
     ));
   }
 }
@@ -320,21 +138,8 @@ class _$ConvexHullDataModelImpl implements _ConvexHullDataModel {
   const _$ConvexHullDataModelImpl(
       {this.totalImageArea,
       this.totalIsletArea,
-      this.totalCd4Area,
-      this.totalCd8Area,
-      this.totalInsulinArea,
-      this.totalGlucagonArea,
-      this.totalPdl1Area,
-      this.isletCd4Area,
-      this.isletCd8Area,
-      this.isletInsulinArea,
-      this.isletGlucagonArea,
-      this.isletPdl1Area,
-      this.cd4PercentIsletArea,
-      this.cd8PercentIsletArea,
-      this.insulinPercentIsletArea,
-      this.glucagonPercentIsletArea,
-      this.pdl1PercentIsletArea});
+      final Map<String, double>? data})
+      : _data = data;
 
   factory _$ConvexHullDataModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullDataModelImplFromJson(json);
@@ -343,40 +148,19 @@ class _$ConvexHullDataModelImpl implements _ConvexHullDataModel {
   final double? totalImageArea;
   @override
   final double? totalIsletArea;
+  final Map<String, double>? _data;
   @override
-  final double? totalCd4Area;
-  @override
-  final double? totalCd8Area;
-  @override
-  final double? totalInsulinArea;
-  @override
-  final double? totalGlucagonArea;
-  @override
-  final double? totalPdl1Area;
-  @override
-  final double? isletCd4Area;
-  @override
-  final double? isletCd8Area;
-  @override
-  final double? isletInsulinArea;
-  @override
-  final double? isletGlucagonArea;
-  @override
-  final double? isletPdl1Area;
-  @override
-  final double? cd4PercentIsletArea;
-  @override
-  final double? cd8PercentIsletArea;
-  @override
-  final double? insulinPercentIsletArea;
-  @override
-  final double? glucagonPercentIsletArea;
-  @override
-  final double? pdl1PercentIsletArea;
+  Map<String, double>? get data {
+    final value = _data;
+    if (value == null) return null;
+    if (_data is EqualUnmodifiableMapView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
 
   @override
   String toString() {
-    return 'ConvexHullDataModel(totalImageArea: $totalImageArea, totalIsletArea: $totalIsletArea, totalCd4Area: $totalCd4Area, totalCd8Area: $totalCd8Area, totalInsulinArea: $totalInsulinArea, totalGlucagonArea: $totalGlucagonArea, totalPdl1Area: $totalPdl1Area, isletCd4Area: $isletCd4Area, isletCd8Area: $isletCd8Area, isletInsulinArea: $isletInsulinArea, isletGlucagonArea: $isletGlucagonArea, isletPdl1Area: $isletPdl1Area, cd4PercentIsletArea: $cd4PercentIsletArea, cd8PercentIsletArea: $cd8PercentIsletArea, insulinPercentIsletArea: $insulinPercentIsletArea, glucagonPercentIsletArea: $glucagonPercentIsletArea, pdl1PercentIsletArea: $pdl1PercentIsletArea)';
+    return 'ConvexHullDataModel(totalImageArea: $totalImageArea, totalIsletArea: $totalIsletArea, data: $data)';
   }
 
   @override
@@ -388,61 +172,13 @@ class _$ConvexHullDataModelImpl implements _ConvexHullDataModel {
                 other.totalImageArea == totalImageArea) &&
             (identical(other.totalIsletArea, totalIsletArea) ||
                 other.totalIsletArea == totalIsletArea) &&
-            (identical(other.totalCd4Area, totalCd4Area) ||
-                other.totalCd4Area == totalCd4Area) &&
-            (identical(other.totalCd8Area, totalCd8Area) ||
-                other.totalCd8Area == totalCd8Area) &&
-            (identical(other.totalInsulinArea, totalInsulinArea) ||
-                other.totalInsulinArea == totalInsulinArea) &&
-            (identical(other.totalGlucagonArea, totalGlucagonArea) ||
-                other.totalGlucagonArea == totalGlucagonArea) &&
-            (identical(other.totalPdl1Area, totalPdl1Area) ||
-                other.totalPdl1Area == totalPdl1Area) &&
-            (identical(other.isletCd4Area, isletCd4Area) ||
-                other.isletCd4Area == isletCd4Area) &&
-            (identical(other.isletCd8Area, isletCd8Area) ||
-                other.isletCd8Area == isletCd8Area) &&
-            (identical(other.isletInsulinArea, isletInsulinArea) ||
-                other.isletInsulinArea == isletInsulinArea) &&
-            (identical(other.isletGlucagonArea, isletGlucagonArea) ||
-                other.isletGlucagonArea == isletGlucagonArea) &&
-            (identical(other.isletPdl1Area, isletPdl1Area) ||
-                other.isletPdl1Area == isletPdl1Area) &&
-            (identical(other.cd4PercentIsletArea, cd4PercentIsletArea) ||
-                other.cd4PercentIsletArea == cd4PercentIsletArea) &&
-            (identical(other.cd8PercentIsletArea, cd8PercentIsletArea) ||
-                other.cd8PercentIsletArea == cd8PercentIsletArea) &&
-            (identical(
-                    other.insulinPercentIsletArea, insulinPercentIsletArea) ||
-                other.insulinPercentIsletArea == insulinPercentIsletArea) &&
-            (identical(
-                    other.glucagonPercentIsletArea, glucagonPercentIsletArea) ||
-                other.glucagonPercentIsletArea == glucagonPercentIsletArea) &&
-            (identical(other.pdl1PercentIsletArea, pdl1PercentIsletArea) ||
-                other.pdl1PercentIsletArea == pdl1PercentIsletArea));
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      totalImageArea,
-      totalIsletArea,
-      totalCd4Area,
-      totalCd8Area,
-      totalInsulinArea,
-      totalGlucagonArea,
-      totalPdl1Area,
-      isletCd4Area,
-      isletCd8Area,
-      isletInsulinArea,
-      isletGlucagonArea,
-      isletPdl1Area,
-      cd4PercentIsletArea,
-      cd8PercentIsletArea,
-      insulinPercentIsletArea,
-      glucagonPercentIsletArea,
-      pdl1PercentIsletArea);
+  int get hashCode => Object.hash(runtimeType, totalImageArea, totalIsletArea,
+      const DeepCollectionEquality().hash(_data));
 
   /// Create a copy of ConvexHullDataModel
   /// with the given fields replaced by the non-null parameter values.
@@ -465,21 +201,7 @@ abstract class _ConvexHullDataModel implements ConvexHullDataModel {
   const factory _ConvexHullDataModel(
       {final double? totalImageArea,
       final double? totalIsletArea,
-      final double? totalCd4Area,
-      final double? totalCd8Area,
-      final double? totalInsulinArea,
-      final double? totalGlucagonArea,
-      final double? totalPdl1Area,
-      final double? isletCd4Area,
-      final double? isletCd8Area,
-      final double? isletInsulinArea,
-      final double? isletGlucagonArea,
-      final double? isletPdl1Area,
-      final double? cd4PercentIsletArea,
-      final double? cd8PercentIsletArea,
-      final double? insulinPercentIsletArea,
-      final double? glucagonPercentIsletArea,
-      final double? pdl1PercentIsletArea}) = _$ConvexHullDataModelImpl;
+      final Map<String, double>? data}) = _$ConvexHullDataModelImpl;
 
   factory _ConvexHullDataModel.fromJson(Map<String, dynamic> json) =
       _$ConvexHullDataModelImpl.fromJson;
@@ -489,35 +211,7 @@ abstract class _ConvexHullDataModel implements ConvexHullDataModel {
   @override
   double? get totalIsletArea;
   @override
-  double? get totalCd4Area;
-  @override
-  double? get totalCd8Area;
-  @override
-  double? get totalInsulinArea;
-  @override
-  double? get totalGlucagonArea;
-  @override
-  double? get totalPdl1Area;
-  @override
-  double? get isletCd4Area;
-  @override
-  double? get isletCd8Area;
-  @override
-  double? get isletInsulinArea;
-  @override
-  double? get isletGlucagonArea;
-  @override
-  double? get isletPdl1Area;
-  @override
-  double? get cd4PercentIsletArea;
-  @override
-  double? get cd8PercentIsletArea;
-  @override
-  double? get insulinPercentIsletArea;
-  @override
-  double? get glucagonPercentIsletArea;
-  @override
-  double? get pdl1PercentIsletArea;
+  Map<String, double>? get data;
 
   /// Create a copy of ConvexHullDataModel
   /// with the given fields replaced by the non-null parameter values.

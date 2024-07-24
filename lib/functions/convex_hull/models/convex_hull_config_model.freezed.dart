@@ -25,20 +25,13 @@ mixin _$ConvexHullConfigModel {
   AbstractImage? get activeImage => throw _privateConstructorUsedError;
   ConvexHullResults? get activeResults => throw _privateConstructorUsedError;
   LeftMenuEnum get leftMenuEnum => throw _privateConstructorUsedError;
-  String get channel0SearchPattern => throw _privateConstructorUsedError;
-  String get channel1SearchPattern => throw _privateConstructorUsedError;
-  String get channel2SearchPattern => throw _privateConstructorUsedError;
-  String get channel3SearchPattern => throw _privateConstructorUsedError;
-  String get channel4SearchPattern => throw _privateConstructorUsedError;
   String get overlaySearchPattern => throw _privateConstructorUsedError;
-  String get channel0ProteinName => throw _privateConstructorUsedError;
-  String get channel1ProteinName => throw _privateConstructorUsedError;
-  String get channel2ProteinName => throw _privateConstructorUsedError;
-  String get channel3ProteinName => throw _privateConstructorUsedError;
-  String get channel4ProteinName => throw _privateConstructorUsedError;
+  Map<String, String> get searchPatternProteinConfig =>
+      throw _privateConstructorUsedError;
   double get imageWidth => throw _privateConstructorUsedError;
   double get imageHeight => throw _privateConstructorUsedError;
   String get units => throw _privateConstructorUsedError;
+  int get channelNumber => throw _privateConstructorUsedError;
 
   /// Serializes this ConvexHullConfigModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -61,20 +54,12 @@ abstract class $ConvexHullConfigModelCopyWith<$Res> {
       AbstractImage? activeImage,
       ConvexHullResults? activeResults,
       LeftMenuEnum leftMenuEnum,
-      String channel0SearchPattern,
-      String channel1SearchPattern,
-      String channel2SearchPattern,
-      String channel3SearchPattern,
-      String channel4SearchPattern,
       String overlaySearchPattern,
-      String channel0ProteinName,
-      String channel1ProteinName,
-      String channel2ProteinName,
-      String channel3ProteinName,
-      String channel4ProteinName,
+      Map<String, String> searchPatternProteinConfig,
       double imageWidth,
       double imageHeight,
-      String units});
+      String units,
+      int channelNumber});
 
   $AbstractImageCopyWith<$Res>? get activeImage;
   $ConvexHullResultsCopyWith<$Res>? get activeResults;
@@ -100,20 +85,12 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
     Object? activeImage = freezed,
     Object? activeResults = freezed,
     Object? leftMenuEnum = null,
-    Object? channel0SearchPattern = null,
-    Object? channel1SearchPattern = null,
-    Object? channel2SearchPattern = null,
-    Object? channel3SearchPattern = null,
-    Object? channel4SearchPattern = null,
     Object? overlaySearchPattern = null,
-    Object? channel0ProteinName = null,
-    Object? channel1ProteinName = null,
-    Object? channel2ProteinName = null,
-    Object? channel3ProteinName = null,
-    Object? channel4ProteinName = null,
+    Object? searchPatternProteinConfig = null,
     Object? imageWidth = null,
     Object? imageHeight = null,
     Object? units = null,
+    Object? channelNumber = null,
   }) {
     return _then(_value.copyWith(
       activeImageSetBaseName: freezed == activeImageSetBaseName
@@ -132,50 +109,14 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
           ? _value.leftMenuEnum
           : leftMenuEnum // ignore: cast_nullable_to_non_nullable
               as LeftMenuEnum,
-      channel0SearchPattern: null == channel0SearchPattern
-          ? _value.channel0SearchPattern
-          : channel0SearchPattern // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel1SearchPattern: null == channel1SearchPattern
-          ? _value.channel1SearchPattern
-          : channel1SearchPattern // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel2SearchPattern: null == channel2SearchPattern
-          ? _value.channel2SearchPattern
-          : channel2SearchPattern // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel3SearchPattern: null == channel3SearchPattern
-          ? _value.channel3SearchPattern
-          : channel3SearchPattern // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel4SearchPattern: null == channel4SearchPattern
-          ? _value.channel4SearchPattern
-          : channel4SearchPattern // ignore: cast_nullable_to_non_nullable
-              as String,
       overlaySearchPattern: null == overlaySearchPattern
           ? _value.overlaySearchPattern
           : overlaySearchPattern // ignore: cast_nullable_to_non_nullable
               as String,
-      channel0ProteinName: null == channel0ProteinName
-          ? _value.channel0ProteinName
-          : channel0ProteinName // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel1ProteinName: null == channel1ProteinName
-          ? _value.channel1ProteinName
-          : channel1ProteinName // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel2ProteinName: null == channel2ProteinName
-          ? _value.channel2ProteinName
-          : channel2ProteinName // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel3ProteinName: null == channel3ProteinName
-          ? _value.channel3ProteinName
-          : channel3ProteinName // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel4ProteinName: null == channel4ProteinName
-          ? _value.channel4ProteinName
-          : channel4ProteinName // ignore: cast_nullable_to_non_nullable
-              as String,
+      searchPatternProteinConfig: null == searchPatternProteinConfig
+          ? _value.searchPatternProteinConfig
+          : searchPatternProteinConfig // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>,
       imageWidth: null == imageWidth
           ? _value.imageWidth
           : imageWidth // ignore: cast_nullable_to_non_nullable
@@ -188,6 +129,10 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
           ? _value.units
           : units // ignore: cast_nullable_to_non_nullable
               as String,
+      channelNumber: null == channelNumber
+          ? _value.channelNumber
+          : channelNumber // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 
@@ -234,20 +179,12 @@ abstract class _$$ConvexHullConfigModelImplCopyWith<$Res>
       AbstractImage? activeImage,
       ConvexHullResults? activeResults,
       LeftMenuEnum leftMenuEnum,
-      String channel0SearchPattern,
-      String channel1SearchPattern,
-      String channel2SearchPattern,
-      String channel3SearchPattern,
-      String channel4SearchPattern,
       String overlaySearchPattern,
-      String channel0ProteinName,
-      String channel1ProteinName,
-      String channel2ProteinName,
-      String channel3ProteinName,
-      String channel4ProteinName,
+      Map<String, String> searchPatternProteinConfig,
       double imageWidth,
       double imageHeight,
-      String units});
+      String units,
+      int channelNumber});
 
   @override
   $AbstractImageCopyWith<$Res>? get activeImage;
@@ -273,20 +210,12 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
     Object? activeImage = freezed,
     Object? activeResults = freezed,
     Object? leftMenuEnum = null,
-    Object? channel0SearchPattern = null,
-    Object? channel1SearchPattern = null,
-    Object? channel2SearchPattern = null,
-    Object? channel3SearchPattern = null,
-    Object? channel4SearchPattern = null,
     Object? overlaySearchPattern = null,
-    Object? channel0ProteinName = null,
-    Object? channel1ProteinName = null,
-    Object? channel2ProteinName = null,
-    Object? channel3ProteinName = null,
-    Object? channel4ProteinName = null,
+    Object? searchPatternProteinConfig = null,
     Object? imageWidth = null,
     Object? imageHeight = null,
     Object? units = null,
+    Object? channelNumber = null,
   }) {
     return _then(_$ConvexHullConfigModelImpl(
       activeImageSetBaseName: freezed == activeImageSetBaseName
@@ -305,50 +234,14 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
           ? _value.leftMenuEnum
           : leftMenuEnum // ignore: cast_nullable_to_non_nullable
               as LeftMenuEnum,
-      channel0SearchPattern: null == channel0SearchPattern
-          ? _value.channel0SearchPattern
-          : channel0SearchPattern // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel1SearchPattern: null == channel1SearchPattern
-          ? _value.channel1SearchPattern
-          : channel1SearchPattern // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel2SearchPattern: null == channel2SearchPattern
-          ? _value.channel2SearchPattern
-          : channel2SearchPattern // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel3SearchPattern: null == channel3SearchPattern
-          ? _value.channel3SearchPattern
-          : channel3SearchPattern // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel4SearchPattern: null == channel4SearchPattern
-          ? _value.channel4SearchPattern
-          : channel4SearchPattern // ignore: cast_nullable_to_non_nullable
-              as String,
       overlaySearchPattern: null == overlaySearchPattern
           ? _value.overlaySearchPattern
           : overlaySearchPattern // ignore: cast_nullable_to_non_nullable
               as String,
-      channel0ProteinName: null == channel0ProteinName
-          ? _value.channel0ProteinName
-          : channel0ProteinName // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel1ProteinName: null == channel1ProteinName
-          ? _value.channel1ProteinName
-          : channel1ProteinName // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel2ProteinName: null == channel2ProteinName
-          ? _value.channel2ProteinName
-          : channel2ProteinName // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel3ProteinName: null == channel3ProteinName
-          ? _value.channel3ProteinName
-          : channel3ProteinName // ignore: cast_nullable_to_non_nullable
-              as String,
-      channel4ProteinName: null == channel4ProteinName
-          ? _value.channel4ProteinName
-          : channel4ProteinName // ignore: cast_nullable_to_non_nullable
-              as String,
+      searchPatternProteinConfig: null == searchPatternProteinConfig
+          ? _value._searchPatternProteinConfig
+          : searchPatternProteinConfig // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>,
       imageWidth: null == imageWidth
           ? _value.imageWidth
           : imageWidth // ignore: cast_nullable_to_non_nullable
@@ -361,6 +254,10 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
           ? _value.units
           : units // ignore: cast_nullable_to_non_nullable
               as String,
+      channelNumber: null == channelNumber
+          ? _value.channelNumber
+          : channelNumber // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -375,20 +272,13 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       this.activeImage,
       this.activeResults,
       this.leftMenuEnum = LeftMenuEnum.functionSettings,
-      this.channel0SearchPattern = 'ch00',
-      this.channel1SearchPattern = 'ch01',
-      this.channel2SearchPattern = 'ch02',
-      this.channel3SearchPattern = 'ch03',
-      this.channel4SearchPattern = 'ch04',
-      this.overlaySearchPattern = 'overlay',
-      this.channel0ProteinName = cd4,
-      this.channel1ProteinName = glucagon,
-      this.channel2ProteinName = insulin,
-      this.channel3ProteinName = cd8,
-      this.channel4ProteinName = pdl1,
-      this.imageWidth = 10.0,
-      this.imageHeight = 10.0,
-      this.units = 'um'});
+      this.overlaySearchPattern = overlay,
+      final Map<String, String> searchPatternProteinConfig = const {},
+      this.imageWidth = width,
+      this.imageHeight = length,
+      this.units = lengthScale,
+      this.channelNumber = totalChannelNumber})
+      : _searchPatternProteinConfig = searchPatternProteinConfig;
 
   factory _$ConvexHullConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullConfigModelImplFromJson(json);
@@ -404,37 +294,17 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   final LeftMenuEnum leftMenuEnum;
   @override
   @JsonKey()
-  final String channel0SearchPattern;
-  @override
-  @JsonKey()
-  final String channel1SearchPattern;
-  @override
-  @JsonKey()
-  final String channel2SearchPattern;
-  @override
-  @JsonKey()
-  final String channel3SearchPattern;
-  @override
-  @JsonKey()
-  final String channel4SearchPattern;
-  @override
-  @JsonKey()
   final String overlaySearchPattern;
+  final Map<String, String> _searchPatternProteinConfig;
   @override
   @JsonKey()
-  final String channel0ProteinName;
-  @override
-  @JsonKey()
-  final String channel1ProteinName;
-  @override
-  @JsonKey()
-  final String channel2ProteinName;
-  @override
-  @JsonKey()
-  final String channel3ProteinName;
-  @override
-  @JsonKey()
-  final String channel4ProteinName;
+  Map<String, String> get searchPatternProteinConfig {
+    if (_searchPatternProteinConfig is EqualUnmodifiableMapView)
+      return _searchPatternProteinConfig;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_searchPatternProteinConfig);
+  }
+
   @override
   @JsonKey()
   final double imageWidth;
@@ -444,10 +314,13 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   @override
   @JsonKey()
   final String units;
+  @override
+  @JsonKey()
+  final int channelNumber;
 
   @override
   String toString() {
-    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, channel0SearchPattern: $channel0SearchPattern, channel1SearchPattern: $channel1SearchPattern, channel2SearchPattern: $channel2SearchPattern, channel3SearchPattern: $channel3SearchPattern, channel4SearchPattern: $channel4SearchPattern, overlaySearchPattern: $overlaySearchPattern, channel0ProteinName: $channel0ProteinName, channel1ProteinName: $channel1ProteinName, channel2ProteinName: $channel2ProteinName, channel3ProteinName: $channel3ProteinName, channel4ProteinName: $channel4ProteinName, imageWidth: $imageWidth, imageHeight: $imageHeight, units: $units)';
+    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, overlaySearchPattern: $overlaySearchPattern, searchPatternProteinConfig: $searchPatternProteinConfig, imageWidth: $imageWidth, imageHeight: $imageHeight, units: $units, channelNumber: $channelNumber)';
   }
 
   @override
@@ -463,33 +336,18 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
                 other.activeResults == activeResults) &&
             (identical(other.leftMenuEnum, leftMenuEnum) ||
                 other.leftMenuEnum == leftMenuEnum) &&
-            (identical(other.channel0SearchPattern, channel0SearchPattern) ||
-                other.channel0SearchPattern == channel0SearchPattern) &&
-            (identical(other.channel1SearchPattern, channel1SearchPattern) ||
-                other.channel1SearchPattern == channel1SearchPattern) &&
-            (identical(other.channel2SearchPattern, channel2SearchPattern) ||
-                other.channel2SearchPattern == channel2SearchPattern) &&
-            (identical(other.channel3SearchPattern, channel3SearchPattern) ||
-                other.channel3SearchPattern == channel3SearchPattern) &&
-            (identical(other.channel4SearchPattern, channel4SearchPattern) ||
-                other.channel4SearchPattern == channel4SearchPattern) &&
             (identical(other.overlaySearchPattern, overlaySearchPattern) ||
                 other.overlaySearchPattern == overlaySearchPattern) &&
-            (identical(other.channel0ProteinName, channel0ProteinName) ||
-                other.channel0ProteinName == channel0ProteinName) &&
-            (identical(other.channel1ProteinName, channel1ProteinName) ||
-                other.channel1ProteinName == channel1ProteinName) &&
-            (identical(other.channel2ProteinName, channel2ProteinName) ||
-                other.channel2ProteinName == channel2ProteinName) &&
-            (identical(other.channel3ProteinName, channel3ProteinName) ||
-                other.channel3ProteinName == channel3ProteinName) &&
-            (identical(other.channel4ProteinName, channel4ProteinName) ||
-                other.channel4ProteinName == channel4ProteinName) &&
+            const DeepCollectionEquality().equals(
+                other._searchPatternProteinConfig,
+                _searchPatternProteinConfig) &&
             (identical(other.imageWidth, imageWidth) ||
                 other.imageWidth == imageWidth) &&
             (identical(other.imageHeight, imageHeight) ||
                 other.imageHeight == imageHeight) &&
-            (identical(other.units, units) || other.units == units));
+            (identical(other.units, units) || other.units == units) &&
+            (identical(other.channelNumber, channelNumber) ||
+                other.channelNumber == channelNumber));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -500,20 +358,12 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       activeImage,
       activeResults,
       leftMenuEnum,
-      channel0SearchPattern,
-      channel1SearchPattern,
-      channel2SearchPattern,
-      channel3SearchPattern,
-      channel4SearchPattern,
       overlaySearchPattern,
-      channel0ProteinName,
-      channel1ProteinName,
-      channel2ProteinName,
-      channel3ProteinName,
-      channel4ProteinName,
+      const DeepCollectionEquality().hash(_searchPatternProteinConfig),
       imageWidth,
       imageHeight,
-      units);
+      units,
+      channelNumber);
 
   /// Create a copy of ConvexHullConfigModel
   /// with the given fields replaced by the non-null parameter values.
@@ -538,20 +388,12 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
       final AbstractImage? activeImage,
       final ConvexHullResults? activeResults,
       final LeftMenuEnum leftMenuEnum,
-      final String channel0SearchPattern,
-      final String channel1SearchPattern,
-      final String channel2SearchPattern,
-      final String channel3SearchPattern,
-      final String channel4SearchPattern,
       final String overlaySearchPattern,
-      final String channel0ProteinName,
-      final String channel1ProteinName,
-      final String channel2ProteinName,
-      final String channel3ProteinName,
-      final String channel4ProteinName,
+      final Map<String, String> searchPatternProteinConfig,
       final double imageWidth,
       final double imageHeight,
-      final String units}) = _$ConvexHullConfigModelImpl;
+      final String units,
+      final int channelNumber}) = _$ConvexHullConfigModelImpl;
 
   factory _ConvexHullConfigModel.fromJson(Map<String, dynamic> json) =
       _$ConvexHullConfigModelImpl.fromJson;
@@ -565,33 +407,17 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   @override
   LeftMenuEnum get leftMenuEnum;
   @override
-  String get channel0SearchPattern;
-  @override
-  String get channel1SearchPattern;
-  @override
-  String get channel2SearchPattern;
-  @override
-  String get channel3SearchPattern;
-  @override
-  String get channel4SearchPattern;
-  @override
   String get overlaySearchPattern;
   @override
-  String get channel0ProteinName;
-  @override
-  String get channel1ProteinName;
-  @override
-  String get channel2ProteinName;
-  @override
-  String get channel3ProteinName;
-  @override
-  String get channel4ProteinName;
+  Map<String, String> get searchPatternProteinConfig;
   @override
   double get imageWidth;
   @override
   double get imageHeight;
   @override
   String get units;
+  @override
+  int get channelNumber;
 
   /// Create a copy of ConvexHullConfigModel
   /// with the given fields replaced by the non-null parameter values.

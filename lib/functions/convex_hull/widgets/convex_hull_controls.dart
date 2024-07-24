@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
@@ -135,216 +136,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
             if (areaData == null) {
               return Container();
             }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  imageSetBaseName ?? '',
-                  style: const TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text('CD4 is displayed as blue and CD8 is deplayed as red.\nNote: For the calculations below small'
-                    ' objects were not filtered out as they were for the convex hull calculation.'),
-                Table(
-                  border: TableBorder.all(
-                    color: Colors.black, // Border color
-                    width: 1.0, // Border width
-                  ),
-                  children: [
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Total Image Area'),
-                        _TableEntry(
-                          text: areaData.totalImageArea!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Total islet Area'),
-                        _TableEntry(
-                          text: areaData.totalIsletArea!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Total CD4 Area'),
-                        _TableEntry(
-                          text: areaData.totalCd4Area!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Total CD8 Area'),
-                        _TableEntry(
-                          text: areaData.totalCd8Area!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Total Glucagon Area'),
-                        _TableEntry(
-                          text: areaData.totalGlucagonArea!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Total Insulin Area'),
-                        _TableEntry(
-                          text: areaData.totalInsulinArea!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Total PD-L1 Area'),
-                        _TableEntry(
-                          text: areaData.totalPdl1Area!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Total islet Area'),
-                        _TableEntry(
-                          text: areaData.totalIsletArea!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Islet CD4 Area'),
-                        _TableEntry(
-                          text: areaData.isletCd4Area!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Islet CD8 Area'),
-                        _TableEntry(
-                          text: areaData.isletCd8Area!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Islet Glucagon Area'),
-                        _TableEntry(
-                          text: areaData.isletGlucagonArea!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Islet Insulin Area'),
-                        _TableEntry(
-                          text: areaData.isletInsulinArea!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: 'Islet PD-L1 Area'),
-                        _TableEntry(
-                          text: areaData.isletPdl1Area!.toStringAsFixed(2),
-                          units: units,
-                          superscript: '2',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: '% of Islet CD4'),
-                        _TableEntry(
-                          text: (areaData.cd4PercentIsletArea! * 100).toStringAsFixed(2),
-                          units: '%',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: '% of Islet CD8'),
-                        _TableEntry(
-                          text: (areaData.cd8PercentIsletArea! * 100).toStringAsFixed(2),
-                          units: '%',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: '% of Islet Glucagon'),
-                        _TableEntry(
-                          text: (areaData.glucagonPercentIsletArea! * 100).toStringAsFixed(2),
-                          units: '%',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: '% of Islet Insulin'),
-                        _TableEntry(
-                          text: (areaData.insulinPercentIsletArea! * 100).toStringAsFixed(2),
-                          units: '%',
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const _TableEntry(text: '% of Islet PD-L1'),
-                        _TableEntry(
-                          text: (areaData.pdl1PercentIsletArea! * 100).toStringAsFixed(2),
-                          units: '%',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        child: const Text('Download Results'),
-                        onPressed: () async {
-                          ref.read(convexHullDataProvider.notifier).downloadData();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
+            return Container();
           },
           error: (err, stack) {
             logger.e(err, stackTrace: stack);
@@ -401,17 +193,64 @@ class _BackgroundSelect extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final convexHullConfig = ref.watch(convexHullConfigProvider);
-    final correctedImages = ref.read(convexHullImageSetsProvider.notifier).backgroundCorrectionImages();
-    final unmodifiedImages = ref.read(convexHullImageSetsProvider.notifier).unmodifiedImages();
     final image = convexHullConfig.activeImage;
+    final name = image?.name ?? '';
 
-    if (correctedImages.contains(image)) {
+    if (name.contains(bgTag)) {
       return Column(
         children: [
           image != null ? SelectedImage(image: image) : Container(),
         ],
       );
-    } else if (unmodifiedImages.contains(image)) {
+    } else if (name.contains(convexHullConfig.overlaySearchPattern)) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          image != null ? SelectedImage(image: image) : Container(),
+          const Text(
+            'Select the outline of the islet.',
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 16.0),
+          ),
+          const SizedBox(height: 8.0),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (image != null) {
+                      ref.read(imagesProvider.notifier).updateSelection(image: image, selection: null);
+                    }
+                  },
+                  child: const Text('Clear Selection'),
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      await ref.read(convexHullImageSetsProvider.notifier).performCalculation();
+                    } catch (err, stack) {
+                      logger.e(err, stackTrace: stack);
+                      final snackBar = SnackBar(
+                        content: Text(err.toString()),
+                        action: SnackBarAction(
+                          label: 'Close',
+                          onPressed: () {},
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  },
+                  child: const Text('Perform Calculations'),
+                ),
+              )
+            ],
+          ),
+        ],
+      );
+    } else if (!name.contains(bgTag)) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -460,53 +299,7 @@ class _BackgroundSelect extends ConsumerWidget {
         ],
       );
     } else {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          image != null ? SelectedImage(image: image) : Container(),
-          const Text(
-            'Select the outline of the islet.',
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 16.0),
-          ),
-          const SizedBox(height: 8.0),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (image != null) {
-                      ref.read(imagesProvider.notifier).updateSelection(image: image, selection: null);
-                    }
-                  },
-                  child: const Text('Clear Selection'),
-                ),
-              ),
-              const SizedBox(width: 8.0),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      await ref.read(convexHullImageSetsProvider.notifier).performCalculation();
-                    } catch (err, stack) {
-                      logger.e(err, stackTrace: stack);
-                      final snackBar = SnackBar(
-                        content: Text(err.toString()),
-                        action: SnackBarAction(
-                          label: 'Close',
-                          onPressed: () {},
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                  },
-                  child: const Text('Perform Calculations'),
-                ),
-              )
-            ],
-          ),
-        ],
-      );
+     return Text('error');
     }
   }
 }

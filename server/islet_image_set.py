@@ -1,22 +1,29 @@
 import numpy as np
 import cv2
+from numpy.core.multiarray import ndarray
 from scipy.spatial import ConvexHull
 from skimage import color, morphology
 import os
+from skimage import io
 
+
+class IsletImageData:
+    def __init__(self, 
+                 protein_name: str,
+                 image: np.ndarray,
+                 cropped_image = np.ndarray([]),
+                 masked_image = np.ndarray([]),
+                 ):
+        self.protein_name = protein_name
+        self.image = image
+        self.cropped_image = cropped_image
+        self.masked_image = masked_image
+    
 
 
 class IsletImageSet:
-    lower_threshold_cd4 = 10
-    upper_threshold_cd4 = 255
-    lower_threshold_cd8 = 10
-    upper_threshold_cd8 = 255
-    lower_threshold_insulin = 10
-    upper_threshold_insulin = 255
-    lower_threshold_glucagon = 10
-    upper_threshold_glucagon = 255
-    lower_threshold_pdl1 = 10
-    upper_threshold_pdl1 = 255
+    lower_threshold = 10
+    upper_threshold = 255
     islet_outlier_size = 5
     RED =   [255, 0, 0]
     BLUE =  [0, 0, 255]
@@ -28,50 +35,22 @@ class IsletImageSet:
     def __init__(self,
                  image_height: float,
                  image_width: float,
-                 overlay_image: np.ndarray,
-                 cd4_image: np.ndarray,
-                 cd8_image: np.ndarray,
-                 insulin_image: np.ndarray,
-                 glucagon_image: np.ndarray,
-                 pdl1_image: np.ndarray,
-                 unscaled_crop_region: np.ndarray):
-
+                 image_data: dict,
+                 unscaled_crop_region: np.ndarray,
+                 ):
         self.image_height = image_height
         self.image_width = image_width
-        self.overlay_image = overlay_image
-        self.cd4_image = cd4_image
-        self.cd8_image = cd8_image
-        self.insulin_image = insulin_image
-        self.glucagon_image = glucagon_image
-        self.pdl1_image = pdl1_image
+        self.image_data = image_data
         self.unscaled_crop_region = unscaled_crop_region
 
-        self.scaled_crop_region = self._scale_region(self.overlay_image, self.unscaled_crop_region)
+        self.images = [IsletImageData(protein_name=protein_name, image=io.imread(image_data['image_path'])) for protein_name, image_data in image_data.items()]
+        self.scaled_crop_region = self._scale_region(self.images[0].image, self.unscaled_crop_region)
 
-        # images cropped by the user defined region
-        self.cropped_overlay_image = self._crop_image(self.overlay_image)
-        self.cropped_cd4_image = self._crop_image(self.cd4_image)
-        self.cropped_cd8_image = self._crop_image(self.cd8_image)
-        self.cropped_insulin_image = self._crop_image(self.insulin_image)
-        self.cropped_glucagon_image = self._crop_image(self.glucagon_image)
-        self.cropped_pdl1_image = self._crop_image(self.pdl1_image)
+        for image in self.images:
+            image.cropped_image = self._crop_image(image.image)
+            # TODO maybe problems for overlay
+            image.masked_image = self._convert_to_mask(image.image, self.lower_threshold, self.upper_threshold)
 
-        # boolean masks of the cropped images
-        self.cd4_mask = self._convert_to_mask(self.cropped_cd4_image, 
-                                              self.lower_threshold_cd4,
-                                              self.upper_threshold_cd4)
-        self.cd8_mask = self._convert_to_mask(self.cropped_cd8_image, 
-                                              self.lower_threshold_cd8,
-                                              self.upper_threshold_cd8)
-        self.insulin_mask = self._convert_to_mask(self.cropped_insulin_image, 
-                                                  self.lower_threshold_insulin, 
-                                                  self.upper_threshold_insulin)
-        self.glucagon_mask = self._convert_to_mask(self.cropped_glucagon_image, 
-                                                   self.lower_threshold_glucagon, 
-                                                   self.upper_threshold_glucagon)
-        self.pdl1_mask = self._convert_to_mask(self.cropped_pdl1_image,
-                                               self.lower_threshold_pdl1,
-                                               self.upper_threshold_pdl1)
 
         self.cleaned_insulin_glucagon_mask = self._combine_insulin_glucagon_mask()
 
@@ -132,7 +111,10 @@ class IsletImageSet:
 
 
     def _combine_insulin_glucagon_mask(self) -> np.ndarray:
-        dirty_inslin_glucagon_mask = np.logical_or(self.insulin_mask, self.glucagon_mask)
+        insulin = next((image for image in self.images if image.protein_name == 'Insulin'))
+        glucagon = next((image for image in self.images if image.protein_name == 'Glucagon'))
+
+        dirty_inslin_glucagon_mask = np.logical_or(insulin.masked_image, glucagon.masked_image)
         cleaned_insulin_glucagon_mask = self._remove_small_objects_and_holes(dirty_inslin_glucagon_mask)
         return cleaned_insulin_glucagon_mask
 
@@ -153,7 +135,9 @@ class IsletImageSet:
 
     def _create_convex_hull_mask(self) -> np.ndarray:
         points = self.hull.points[self.hull.vertices]
-        mask = np.zeros(self.overlay_image.shape, dtype=np.uint8)
+        overlay = next((image for image in self.images if image.protein_name == 'Overlay'))
+ 
+        mask = np.zeros(overlay.image.shape, dtype=np.uint8)
         rounded_region = np.round(points, 0)
         int_region = rounded_region.astype(np.int32)
         swapped_int_region = int_region[:, ::-1]
@@ -162,11 +146,16 @@ class IsletImageSet:
         return boolean_mask
  
 
-    def _create_color_cd4_cd8_convex_hull(self) -> np.ndarray:
-        color_cd4 = np.zeros((self.cd4_mask.shape[0], self.cd4_mask.shape[1], 3), dtype=np.uint8)
-        color_cd4[self.cd4_mask] = self.BLUE
-        color_cd8 = np.zeros((self.cd8_mask.shape[0], self.cd8_mask.shape[1], 3), dtype=np.uint8)
-        color_cd8[self.cd8_mask] = self.RED
+    def _create_color_cd4_cd8_convex_hull(self):
+        cd4 = next((image for image in self.images if image.protein_name == 'CD4'), None)
+        cd8 = next((image for image in self.images if image.protein_name == 'CD8'), None)
+        if cd4 == None or cd8 == None:
+            return None
+
+        color_cd4 = np.zeros((cd4.masked_image.shape[0], cd4.masked_image.shape[1], 3), dtype=np.uint8)
+        color_cd4[cd4.masked_image] = self.BLUE
+        color_cd8 = np.zeros((cd8.masked_image.shape[0], cd8.masked_image.shape[1], 3), dtype=np.uint8)
+        color_cd8[cd8.masked_image] = self.RED
         combined_cd4_cd8 = color_cd4 + color_cd8
         dimmed_image = combined_cd4_cd8.copy()
         dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(combined_cd4_cd8.dtype)
@@ -178,8 +167,9 @@ class IsletImageSet:
 
 
     def _create_dimmed_hull_image(self) -> np.ndarray:
-        dimmed_image = self.overlay_image.copy()
-        dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(self.overlay_image.dtype)
+        overlay = next((image for image in self.images if image.protein_name == 'Overlay'))
+        dimmed_image = overlay.image.copy()
+        dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(overlay.image.dtype)
         points = self.hull.points[self.hull.vertices]
         int_region = points.astype(np.int32)
         swapped_int_region = int_region[:, ::-1]
@@ -190,44 +180,17 @@ class IsletImageSet:
     def _compute_areas(self):
         total_image_area = self.image_height * self.image_width
         total_islet_area = (self.hull_mask.sum()/ self.hull_mask.size) * total_image_area
-
-        total_cd4_area = (self.cd4_mask.sum() / self.cd4_mask.size) * total_image_area
-        total_cd8_area = (self.cd8_mask.sum() / self.cd8_mask.size) * total_image_area
-        total_insulin_area = (self.insulin_mask.sum() / self.insulin_mask.size) * total_image_area
-        total_glucagon_area = (self.glucagon_mask.sum() / self.glucagon_mask.size) * total_image_area
-        total_pdl1_area = (self.pdl1_mask.sum() / self.pdl1_mask.size) * total_image_area
-
-        islet_cd4_area = (np.logical_and(self.cd4_mask, self.hull_mask).sum() / self.cd4_mask.size) * total_image_area
-        islet_cd8_area = (np.logical_and(self.cd8_mask, self.hull_mask).sum() / self.cd8_mask.size) * total_image_area
-        islet_insulin_area = (np.logical_and(self.insulin_mask, self.hull_mask).sum() / self.insulin_mask.size) * total_image_area
-        islet_glucagon_area = (np.logical_and(self.glucagon_mask, self.hull_mask).sum() / self.glucagon_mask.size) * total_image_area
-        islet_pdl1_area = (np.logical_and(self.pdl1_mask, self.hull_mask).sum() / self.pdl1_mask.size) * total_image_area
-
-        cd4_percent_islet_area = islet_cd4_area / total_islet_area
-        cd8_percent_islet_area = islet_cd8_area / total_islet_area
-        insulin_percent_islet_area = islet_insulin_area / total_islet_area
-        glucagon_percent_islet_area = islet_glucagon_area / total_islet_area
-        pdl1_percent_islet_area = islet_pdl1_area / total_islet_area
-
         data = {
             'total_image_area': total_image_area,
             'total_islet_area': total_islet_area,
-            'total_cd4_area': total_cd4_area,
-            'total_cd8_area': total_cd8_area,
-            'total_insulin_area': total_insulin_area,
-            'total_glucagon_area': total_glucagon_area,
-            'total_pdl1_area': total_pdl1_area,
-            'islet_cd4_area': islet_cd4_area,
-            'islet_cd8_area': islet_cd8_area,
-            'islet_insulin_area': islet_insulin_area,
-            'islet_glucagon_area': islet_glucagon_area,
-            'islet_pdl1_area': islet_pdl1_area,
-            'cd4_percent_islet_area': cd4_percent_islet_area,
-            'cd8_percent_islet_area': cd8_percent_islet_area,
-            'insulin_percent_islet_area': insulin_percent_islet_area,
-            'glucagon_percent_islet_area': glucagon_percent_islet_area,
-            'pdl1_percent_islet_area': pdl1_percent_islet_area
         }
+
+        for image in self.images:
+            if image.protein_name != 'Overlay':
+                protein_name = image.protein_name.lower()
+                data[f'total_{protein_name}_area'] = (image.masked_image.sum() / image.masked_image.size) * total_image_area
+                data[f'islet_{protein_name}_area'] = (np.logical_and(image.masked_image, self.hull_mask).sum() / image.masked_image.size) * total_image_area
+                data[f'{protein_name}_percent_islet_area'] = data[f'islet_{protein_name}_area'] / data[f'total_{protein_name}_area']
 
         return data
 
