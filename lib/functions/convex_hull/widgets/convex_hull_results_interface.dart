@@ -1,8 +1,13 @@
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.dart';
+import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
+import 'package:fife_image/functions/convex_hull/providers/convex_hull_data_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
+import 'package:fife_image/functions/convex_hull/widgets/convex_hull_card.dart';
+import 'package:fife_image/lib/app_logger.dart';
+import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/widgets/image_thumbnail_card.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -124,8 +129,10 @@ class _ImageSetWidget extends ConsumerWidget {
   List<Widget> buildResultsRow({
     required List<String> searchPatterns,
     required ConvexHullImageSet imageSet,
+    required Map<String, double>? data,
     required WidgetRef ref,
   }) {
+    logger.i(imageSet.toJson());
     final images = imageSet.images ?? [];
     List<Widget> widgets = [
       SizedBox(
@@ -163,6 +170,33 @@ class _ImageSetWidget extends ConsumerWidget {
         );
       }
     }
+    final simplexIndex = images.indexWhere((image) => image.name.contains('simplex'));
+    final inflammationIndex = images.indexWhere((image) => image.name.contains('inflammation'));
+    AbstractImage? simplex;
+    AbstractImage? inflammation;
+
+    if (simplexIndex != -1) {
+      simplex = images[simplexIndex];
+    }
+    if (inflammationIndex != -1) {
+      inflammation = images[inflammationIndex];
+    }
+    if (simplex != null) {
+      widgets.removeLast();
+      final results = ConvexHullResults(
+        simplex: simplex,
+        inflammation: inflammation,
+        data: data,
+      );
+      widgets.add(
+        SizedBox(
+          height: cardSize,
+          width: cardSize,
+          child: ConvexHullCard(results: results),
+        ),
+      );
+    }
+
     return widgets;
   }
 
@@ -176,39 +210,55 @@ class _ImageSetWidget extends ConsumerWidget {
       columnWidths[i] = const IntrinsicColumnWidth();
     }
 
-    return SizedBox(
-      width: width,
-      child: ScrollConfiguration(
-        behavior: DraggableScrollBehavior(),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            columnWidths: columnWidths,
-            children: [
-              TableRow(
-                children: buildNameRow(
-                  proteinNames: proteinNames,
-                ),
+    final asyncValue = ref.watch(convexHullDataProvider);
+
+    return asyncValue.when(
+      data: (data) {
+        logger.w(data[imageSet.baseName]);
+
+        Map<String, double> imageData = Map<String, double>.from(data[imageSet.baseName] ?? {});
+
+        return SizedBox(
+          width: width,
+          child: ScrollConfiguration(
+            behavior: DraggableScrollBehavior(),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Table(
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                columnWidths: columnWidths,
+                children: [
+                  TableRow(
+                    children: buildNameRow(
+                      proteinNames: proteinNames,
+                    ),
+                  ),
+                  TableRow(
+                    children: buildImageRow(
+                      searchPatterns: searchPatterns,
+                      imageSet: imageSet,
+                      ref: ref,
+                    ),
+                  ),
+                  TableRow(
+                    children: buildResultsRow(
+                      searchPatterns: searchPatterns,
+                      imageSet: imageSet,
+                      data: imageData,
+                      ref: ref,
+                    ),
+                  ),
+                ],
               ),
-              TableRow(
-                children: buildImageRow(
-                  searchPatterns: searchPatterns,
-                  imageSet: imageSet,
-                  ref: ref,
-                ),
-              ),
-              TableRow(
-                children: buildResultsRow(
-                  searchPatterns: searchPatterns,
-                  imageSet: imageSet,
-                  ref: ref,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
+      error: (err, stack) {
+        logger.e(err, stackTrace: stack);
+        return Text('error');
+      },
+      loading: () => Container(),
     );
   }
 }
@@ -216,7 +266,7 @@ class _ImageSetWidget extends ConsumerWidget {
 class DraggableScrollBehavior extends ScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
-    PointerDeviceKind.touch,
-    PointerDeviceKind.mouse,
-  };
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }

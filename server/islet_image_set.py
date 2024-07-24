@@ -49,7 +49,7 @@ class IsletImageSet:
         for image in self.images:
             image.cropped_image = self._crop_image(image.image)
             # TODO maybe problems for overlay
-            image.masked_image = self._convert_to_mask(image.image, self.lower_threshold, self.upper_threshold)
+            image.masked_image = self._convert_to_mask(image.cropped_image, self.lower_threshold, self.upper_threshold)
 
 
         self.cleaned_insulin_glucagon_mask = self._combine_insulin_glucagon_mask()
@@ -135,7 +135,7 @@ class IsletImageSet:
 
     def _create_convex_hull_mask(self) -> np.ndarray:
         points = self.hull.points[self.hull.vertices]
-        overlay = next((image for image in self.images if image.protein_name == 'Overlay'))
+        overlay = next((image for image in self.images if image.protein_name == 'overlay'))
  
         mask = np.zeros(overlay.image.shape, dtype=np.uint8)
         rounded_region = np.round(points, 0)
@@ -149,7 +149,7 @@ class IsletImageSet:
     def _create_color_cd4_cd8_convex_hull(self):
         cd4 = next((image for image in self.images if image.protein_name == 'CD4'), None)
         cd8 = next((image for image in self.images if image.protein_name == 'CD8'), None)
-        if cd4 == None or cd8 == None:
+        if cd4 is None or cd8 is None:
             return None
 
         color_cd4 = np.zeros((cd4.masked_image.shape[0], cd4.masked_image.shape[1], 3), dtype=np.uint8)
@@ -167,7 +167,7 @@ class IsletImageSet:
 
 
     def _create_dimmed_hull_image(self) -> np.ndarray:
-        overlay = next((image for image in self.images if image.protein_name == 'Overlay'))
+        overlay = next((image for image in self.images if image.protein_name == 'overlay'))
         dimmed_image = overlay.image.copy()
         dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(overlay.image.dtype)
         points = self.hull.points[self.hull.vertices]
@@ -186,7 +186,7 @@ class IsletImageSet:
         }
 
         for image in self.images:
-            if image.protein_name != 'Overlay':
+            if image.protein_name != 'overlay':
                 protein_name = image.protein_name.lower()
                 data[f'total_{protein_name}_area'] = (image.masked_image.sum() / image.masked_image.size) * total_image_area
                 data[f'islet_{protein_name}_area'] = (np.logical_and(image.masked_image, self.hull_mask).sum() / image.masked_image.size) * total_image_area

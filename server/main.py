@@ -166,8 +166,7 @@ def convex_hull_calculation():
     image_width = data['width']
     image_height = data['height']
     images = data['images']
-    unscaled_crop_region = images['Overlay']['relative_selection_coordinates']
-
+    unscaled_crop_region = images['overlay']['relative_selection_coordinates']
 
     image_set = IsletImageSet(
             image_height=image_width,
@@ -175,9 +174,11 @@ def convex_hull_calculation():
             image_data=images,
             unscaled_crop_region=unscaled_crop_region,
             )
-
-    IsletImageSet.save_bgr_image(image_set.combined_cd4_cd8_hull, OUTPUT_FOLDER, base_image_name + '_inflammation.png')
+    
+    if image_set.combined_cd4_cd8_hull is not None:
+        IsletImageSet.save_bgr_image(image_set.combined_cd4_cd8_hull, OUTPUT_FOLDER, base_image_name + '_inflammation.png')
     IsletImageSet.save_bgr_image(image_set.dimmed_hull, OUTPUT_FOLDER, base_image_name + '_simplex.png')
+
     area_data = image_set.areas
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
     data = {}

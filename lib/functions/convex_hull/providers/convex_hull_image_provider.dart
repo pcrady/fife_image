@@ -94,14 +94,13 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       imageSet: activeImageSet,
     );
     imageData[overlay] = overlayImage.toJson();
+
     final data = {
       'base_image_name': hullData.activeImageSetBaseName,
       'width': hullData.imageWidth,
       'height': hullData.imageHeight,
       'images': imageData,
     };
-
-    logger.i(data);
 
     await _dio.post(
       '${server}convex_hull_calculation',
