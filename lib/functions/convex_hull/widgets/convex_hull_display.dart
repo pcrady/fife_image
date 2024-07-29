@@ -150,27 +150,66 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
             if (areaData == null) {
               return Container();
             }
-            return Table(
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const TableRow(
+                Table(
+                  border: TableBorder.all(),
                   children: [
-                    Text(''),
-                    Text('Total Protein Area'),
-                    Text('Total Islet Area'),
-                    Text('Percent Islet Area'),
+                    const TableRow(
+                      children: [
+                        _TableEntry(
+                          text: 'Protein Name',
+                          bold: true,
+                        ),
+                        _TableEntry(
+                          text: 'Total Protein Area',
+                          bold: true,
+                        ),
+                        _TableEntry(
+                          text: 'Total Protein Area In Islet',
+                          bold: true,
+                        ),
+                        _TableEntry(
+                          text: 'Percent Islet Area',
+                          bold: true,
+                        ),
+                      ],
+                    ),
+                    ...proteins.entries.map((entry) {
+                      return TableRow(children: [
+                        _TableEntry(
+                          text: entry.key,
+                        ),
+                        _TableEntry(
+                          text: entry.value['total_area'].toStringAsFixed(2),
+                          units: units,
+                          superscript: '2',
+                        ),
+                        _TableEntry(
+                          text: entry.value['islet_area'].toStringAsFixed(2),
+                          units: units,
+                          superscript: '2',
+                        ),
+                        _TableEntry(
+                          text: entry.value['percent_islet_area'].toStringAsFixed(2),
+                          units: '%',
+                        ),
+                      ]);
+                    }),
                   ],
                 ),
-                ...proteins.entries.map((entry) {
-                  // TODO this is causing problem with timing i think
-                  return TableRow(
-                    children: [
-                      Text(entry.key),
-                      Text(entry.value['total_area'].toString()),
-                      Text(entry.value['islet_area'].toString()),
-                      Text(entry.value['percent_islet_area'].toString()),
-                    ]
-                  );
-                }),
+                _TableEntry(
+                  text: 'Total Image Area: ${totalArea.toStringAsFixed(2)}',
+                  units: units,
+                  superscript: '2',
+                ),
+                _TableEntry(
+                  text: 'Total Islet Area: ${totalIsletArea.toStringAsFixed(2)}',
+                  units: units,
+                  superscript: '2',
+                ),
               ],
             );
           },
@@ -191,11 +230,13 @@ class _TableEntry extends StatelessWidget {
   final String text;
   final String? units;
   final String? superscript;
+  final bool bold;
 
   const _TableEntry({
     required this.text,
     this.units,
     this.superscript,
+    this.bold = false,
   });
 
   @override
@@ -205,7 +246,10 @@ class _TableEntry extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           children: [
-            TextSpan(text: text),
+            TextSpan(
+              text: text,
+              style: TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.normal),
+            ),
             TextSpan(text: ' ${units ?? ''}'),
             WidgetSpan(
               child: Transform.translate(
