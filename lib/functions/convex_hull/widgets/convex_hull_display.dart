@@ -12,19 +12,19 @@ import 'package:fife_image/widgets/selected_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ConvexHullControls extends ConsumerStatefulWidget {
-  const ConvexHullControls({super.key});
+class ConvexHullDisplay extends ConsumerStatefulWidget {
+  const ConvexHullDisplay({super.key});
 
   @override
-  ConsumerState<ConvexHullControls> createState() => _ConvexHullControlsState();
+  ConsumerState<ConvexHullDisplay> createState() => _ConvexHullControlsState();
 }
 
-class _ConvexHullControlsState extends ConsumerState<ConvexHullControls> {
+class _ConvexHullControlsState extends ConsumerState<ConvexHullDisplay> {
   @override
   Widget build(BuildContext context) {
     final convexHullConfig = ref.watch(convexHullConfigProvider);
 
-    if (convexHullConfig.leftMenuEnum == LeftMenuEnum.functionResults && convexHullConfig.activeImage != null) {
+    if (convexHullConfig.leftMenuEnum == LeftMenuEnum.functionImageSelection && convexHullConfig.activeImage != null) {
       return const Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: _BackgroundSelect(),

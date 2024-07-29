@@ -1,4 +1,4 @@
 enum LeftMenuEnum {
   functionSettings,
-  functionResults,
+  functionImageSelection,
 }

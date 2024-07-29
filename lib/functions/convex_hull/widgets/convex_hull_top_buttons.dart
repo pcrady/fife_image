@@ -12,7 +12,7 @@ class ConvexHullTopButtons extends ConsumerStatefulWidget {
 
 class _ConvexHullTopButtonsState extends ConsumerState<ConvexHullTopButtons> {
   static const _settingsValue = 'Function Settings';
-  static const _resultsValue = 'Function Results';
+  static const _imageSelector = 'Image Selector';
 
   Set<String> _segmentedButtonSelection = {_settingsValue};
 
@@ -23,8 +23,8 @@ class _ConvexHullTopButtonsState extends ConsumerState<ConvexHullTopButtons> {
     final menuSetting = convexHullConfig.leftMenuEnum;
     if (menuSetting == LeftMenuEnum.functionSettings) {
       _segmentedButtonSelection = {_settingsValue};
-    } else if (menuSetting == LeftMenuEnum.functionResults) {
-      _segmentedButtonSelection = {_resultsValue};
+    } else if (menuSetting == LeftMenuEnum.functionImageSelection) {
+      _segmentedButtonSelection = {_imageSelector};
     }
 
     return Row(
@@ -39,10 +39,10 @@ class _ConvexHullTopButtonsState extends ConsumerState<ConvexHullTopButtons> {
             onSelectionChanged: (Set<String> newSelection) {
               setState(() => _segmentedButtonSelection = newSelection);
               final config = ref.read(convexHullConfigProvider.notifier);
-              if (newSelection.first == 'Function Settings') {
+              if (newSelection.first == _settingsValue) {
                 config.setLeftMenu(leftMenu: LeftMenuEnum.functionSettings);
-              } else if (newSelection.first == 'Function Results') {
-                config.setLeftMenu(leftMenu: LeftMenuEnum.functionResults);
+              } else if (newSelection.first == _imageSelector) {
+                config.setLeftMenu(leftMenu: LeftMenuEnum.functionImageSelection);
               }
             },
             style: ButtonStyle(
@@ -59,15 +59,11 @@ class _ConvexHullTopButtonsState extends ConsumerState<ConvexHullTopButtons> {
             segments: const [
               ButtonSegment(
                 value: _settingsValue,
-                label: Text(
-                  'Convex Hull Settings',
-                ),
+                label: Text('Convex Hull Settings'),
               ),
               ButtonSegment(
-                value: _resultsValue,
-                label: Text(
-                  'Convex Hull Results',
-                ),
+                value: _imageSelector,
+                label: Text('Image Selector'),
               ),
             ],
           ),

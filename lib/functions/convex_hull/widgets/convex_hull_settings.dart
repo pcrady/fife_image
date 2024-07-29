@@ -275,7 +275,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               units: unitsController.text,
                               channelNumber: int.tryParse(channelNumberController.text) ?? 0,
                               searchPatternProteinConfig: searchPatternProteinConfig,
-                              leftMenuEnum: LeftMenuEnum.functionResults,
+                              leftMenuEnum: LeftMenuEnum.functionImageSelection,
                             );
 
                             ref.read(convexHullConfigProvider.notifier).setConvexHullConfig(convexHullConfigModel: newConvexHullConfig);

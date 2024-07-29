@@ -13,14 +13,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ConvexHullResultsInterface extends ConsumerStatefulWidget {
-  const ConvexHullResultsInterface({super.key});
+class ConvexHullImageSelector extends ConsumerStatefulWidget {
+  const ConvexHullImageSelector({super.key});
 
   @override
-  ConsumerState<ConvexHullResultsInterface> createState() => _ConvexHullResultsState();
+  ConsumerState<ConvexHullImageSelector> createState() => _ConvexHullResultsState();
 }
 
-class _ConvexHullResultsState extends ConsumerState<ConvexHullResultsInterface> {
+class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
   @override
   Widget build(BuildContext context) {
     final convexHullImages = ref.watch(convexHullImageSetsProvider);

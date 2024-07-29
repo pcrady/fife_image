@@ -60,5 +60,5 @@ Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
 
 const _$LeftMenuEnumEnumMap = {
   LeftMenuEnum.functionSettings: 'functionSettings',
-  LeftMenuEnum.functionResults: 'functionResults',
+  LeftMenuEnum.functionImageSelection: 'functionImageSelection',
 };
