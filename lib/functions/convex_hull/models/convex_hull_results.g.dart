@@ -16,9 +16,7 @@ _$ConvexHullResultsImpl _$$ConvexHullResultsImplFromJson(
       simplex: json['simplex'] == null
           ? null
           : AbstractImage.fromJson(json['simplex'] as Map<String, dynamic>),
-      data: (json['data'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, (e as num).toDouble()),
-      ),
+      data: json['data'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$$ConvexHullResultsImplToJson(

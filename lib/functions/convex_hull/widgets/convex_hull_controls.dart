@@ -53,6 +53,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
     final imageSetBaseName = config.activeImageSetBaseName;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -91,52 +92,87 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                 ),
               ),
             ),
-            Expanded(
-              child: Card(
-                clipBehavior: Clip.antiAlias,
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            child: CachedNetworkImage(
-                              imageUrl: results.inflammation!.url,
-                              cacheKey: results.inflammation!.md5Hash,
-                              placeholder: (context, url) => const CircularProgressIndicator(),
-                              errorListener: (error) {
-                                logger.e(error);
+            results.inflammation != null
+                ? Expanded(
+                    child: Card(
+                      clipBehavior: Clip.antiAlias,
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  child: CachedNetworkImage(
+                                    imageUrl: results.inflammation!.url,
+                                    cacheKey: results.inflammation!.md5Hash,
+                                    placeholder: (context, url) => const CircularProgressIndicator(),
+                                    errorListener: (error) {
+                                      logger.e(error);
+                                    },
+                                  ),
+                                );
                               },
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: CachedNetworkImage(
-                      imageUrl: results.inflammation!.url,
-                      cacheKey: results.inflammation!.md5Hash,
-                      placeholder: (context, url) => const CircularProgressIndicator(),
-                      errorListener: (error) {
-                        logger.e(error);
-                      },
+                            );
+                          },
+                          child: CachedNetworkImage(
+                            imageUrl: results.inflammation!.url,
+                            cacheKey: results.inflammation!.md5Hash,
+                            placeholder: (context, url) => const CircularProgressIndicator(),
+                            errorListener: (error) {
+                              logger.e(error);
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            ),
+                  )
+                : Container(),
           ],
         ),
+        results.inflammation != null
+            ? const Text(
+                'The image on the left shows the convex hull superimposed on top of the overlay image. The image '
+                'on the right shows CD4 (Blue) and CD8 (Red) in and around the convex hull.',
+                style: TextStyle(fontSize: 18.0),
+              )
+            : Container(),
         asyncData.when(
           data: (data) {
+            // TODO shore this up
             final areaData = data[imageSetBaseName];
+            final totalArea = areaData['total_image_area'];
+            final totalIsletArea = areaData['total_islet_area'];
+            final proteins = areaData['proteins'];
             final units = config.units;
 
             if (areaData == null) {
               return Container();
             }
-            return Container();
+            return Table(
+              children: [
+                const TableRow(
+                  children: [
+                    Text(''),
+                    Text('Total Protein Area'),
+                    Text('Total Islet Area'),
+                    Text('Percent Islet Area'),
+                  ],
+                ),
+                ...proteins.entries.map((entry) {
+                  // TODO this is causing problem with timing i think
+                  return TableRow(
+                    children: [
+                      Text(entry.key),
+                      Text(entry.value['total_area'].toString()),
+                      Text(entry.value['islet_area'].toString()),
+                      Text(entry.value['percent_islet_area'].toString()),
+                    ]
+                  );
+                }),
+              ],
+            );
           },
           error: (err, stack) {
             logger.e(err, stackTrace: stack);
@@ -299,7 +335,7 @@ class _BackgroundSelect extends ConsumerWidget {
         ],
       );
     } else {
-     return Text('error');
+      return const Text('error');
     }
   }
 }

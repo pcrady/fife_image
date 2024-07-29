@@ -22,7 +22,7 @@ ConvexHullResults _$ConvexHullResultsFromJson(Map<String, dynamic> json) {
 mixin _$ConvexHullResults {
   AbstractImage? get inflammation => throw _privateConstructorUsedError;
   AbstractImage? get simplex => throw _privateConstructorUsedError;
-  Map<String, double>? get data => throw _privateConstructorUsedError;
+  Map<String, dynamic>? get data => throw _privateConstructorUsedError;
 
   /// Serializes this ConvexHullResults to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,7 +43,7 @@ abstract class $ConvexHullResultsCopyWith<$Res> {
   $Res call(
       {AbstractImage? inflammation,
       AbstractImage? simplex,
-      Map<String, double>? data});
+      Map<String, dynamic>? data});
 
   $AbstractImageCopyWith<$Res>? get inflammation;
   $AbstractImageCopyWith<$Res>? get simplex;
@@ -80,7 +80,7 @@ class _$ConvexHullResultsCopyWithImpl<$Res, $Val extends ConvexHullResults>
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Map<String, double>?,
+              as Map<String, dynamic>?,
     ) as $Val);
   }
 
@@ -124,7 +124,7 @@ abstract class _$$ConvexHullResultsImplCopyWith<$Res>
   $Res call(
       {AbstractImage? inflammation,
       AbstractImage? simplex,
-      Map<String, double>? data});
+      Map<String, dynamic>? data});
 
   @override
   $AbstractImageCopyWith<$Res>? get inflammation;
@@ -161,7 +161,7 @@ class __$$ConvexHullResultsImplCopyWithImpl<$Res>
       data: freezed == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as Map<String, double>?,
+              as Map<String, dynamic>?,
     ));
   }
 }
@@ -172,7 +172,7 @@ class __$$ConvexHullResultsImplCopyWithImpl<$Res>
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class _$ConvexHullResultsImpl extends _ConvexHullResults {
   const _$ConvexHullResultsImpl(
-      {this.inflammation, this.simplex, final Map<String, double>? data})
+      {this.inflammation, this.simplex, final Map<String, dynamic>? data})
       : _data = data,
         super._();
 
@@ -183,9 +183,9 @@ class _$ConvexHullResultsImpl extends _ConvexHullResults {
   final AbstractImage? inflammation;
   @override
   final AbstractImage? simplex;
-  final Map<String, double>? _data;
+  final Map<String, dynamic>? _data;
   @override
-  Map<String, double>? get data {
+  Map<String, dynamic>? get data {
     final value = _data;
     if (value == null) return null;
     if (_data is EqualUnmodifiableMapView) return _data;
@@ -235,7 +235,7 @@ abstract class _ConvexHullResults extends ConvexHullResults {
   const factory _ConvexHullResults(
       {final AbstractImage? inflammation,
       final AbstractImage? simplex,
-      final Map<String, double>? data}) = _$ConvexHullResultsImpl;
+      final Map<String, dynamic>? data}) = _$ConvexHullResultsImpl;
   const _ConvexHullResults._() : super._();
 
   factory _ConvexHullResults.fromJson(Map<String, dynamic> json) =
@@ -246,7 +246,7 @@ abstract class _ConvexHullResults extends ConvexHullResults {
   @override
   AbstractImage? get simplex;
   @override
-  Map<String, double>? get data;
+  Map<String, dynamic>? get data;
 
   /// Create a copy of ConvexHullResults
   /// with the given fields replaced by the non-null parameter values.

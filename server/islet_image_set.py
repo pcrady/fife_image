@@ -183,15 +183,27 @@ class IsletImageSet:
         data = {
             'total_image_area': total_image_area,
             'total_islet_area': total_islet_area,
+            'proteins': {},
         }
 
         for image in self.images:
             if image.protein_name != 'overlay':
                 protein_name = image.protein_name.lower()
-                data[f'total_{protein_name}_area'] = (image.masked_image.sum() / image.masked_image.size) * total_image_area
-                data[f'islet_{protein_name}_area'] = (np.logical_and(image.masked_image, self.hull_mask).sum() / image.masked_image.size) * total_image_area
-                data[f'{protein_name}_percent_islet_area'] = data[f'islet_{protein_name}_area'] / data[f'total_{protein_name}_area']
+                total_area = (image.masked_image.sum() / image.masked_image.size) * total_image_area
+                islet_area = (np.logical_and(image.masked_image, self.hull_mask).sum() / image.masked_image.size) * total_image_area
+                percent_islet_area = (islet_area / total_area) * 100
 
+                total_area = 0.0 if np.isnan(total_area) else total_area
+                islet_area = 0.0 if np.isnan(islet_area) else islet_area
+                percent_islet_area = 0.0 if np.isnan(percent_islet_area) else percent_islet_area
+
+                protein_data = {
+                        'total_area': total_area,
+                        'islet_area': islet_area,
+                        'percent_islet_area': percent_islet_area,
+                        }
+                data['proteins'][protein_name] = protein_data
+                                
         return data
 
 

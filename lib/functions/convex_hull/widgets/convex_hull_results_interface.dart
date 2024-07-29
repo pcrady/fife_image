@@ -129,10 +129,9 @@ class _ImageSetWidget extends ConsumerWidget {
   List<Widget> buildResultsRow({
     required List<String> searchPatterns,
     required ConvexHullImageSet imageSet,
-    required Map<String, double>? data,
+    required Map<String, dynamic>? data,
     required WidgetRef ref,
   }) {
-    logger.i(imageSet.toJson());
     final images = imageSet.images ?? [];
     List<Widget> widgets = [
       SizedBox(
@@ -214,9 +213,7 @@ class _ImageSetWidget extends ConsumerWidget {
 
     return asyncValue.when(
       data: (data) {
-        logger.w(data[imageSet.baseName]);
-
-        Map<String, double> imageData = Map<String, double>.from(data[imageSet.baseName] ?? {});
+        Map<String, dynamic> imageData = Map<String, dynamic>.from(data[imageSet.baseName] ?? {});
 
         return SizedBox(
           width: width,
@@ -256,7 +253,7 @@ class _ImageSetWidget extends ConsumerWidget {
       },
       error: (err, stack) {
         logger.e(err, stackTrace: stack);
-        return Text('error');
+        return const Text('error');
       },
       loading: () => Container(),
     );
