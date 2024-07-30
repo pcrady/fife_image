@@ -6,7 +6,7 @@ part of 'app_data_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appDataHash() => r'a938a81077318ee43f8b200ab43763bc48069fa0';
+String _$appDataHash() => r'c88106525bdc99a11f51d5f0804546a0f9fabae5';
 
 /// See also [AppData].
 @ProviderFor(AppData)

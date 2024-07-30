@@ -11,6 +11,7 @@ class AppDataStore with _$AppDataStore {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   const factory AppDataStore({
     AbstractImage? selectedImage,
+    @Default(false) bool loading,
     @Default(FunctionsEnum.functions) FunctionsEnum function,
   }) = _AppDataStore;
 

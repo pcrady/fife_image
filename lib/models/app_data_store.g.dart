@@ -12,6 +12,7 @@ _$AppDataStoreImpl _$$AppDataStoreImplFromJson(Map<String, dynamic> json) =>
           ? null
           : AbstractImage.fromJson(
               json['selected_image'] as Map<String, dynamic>),
+      loading: json['loading'] as bool? ?? false,
       function: $enumDecodeNullable(_$FunctionsEnumEnumMap, json['function']) ??
           FunctionsEnum.functions,
     );
@@ -26,6 +27,7 @@ Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) {
   }
 
   writeNotNull('selected_image', instance.selectedImage?.toJson());
+  val['loading'] = instance.loading;
   val['function'] = _$FunctionsEnumEnumMap[instance.function]!;
   return val;
 }

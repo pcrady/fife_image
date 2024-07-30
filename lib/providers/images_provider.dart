@@ -19,6 +19,7 @@ class Images extends _$Images {
     final data = List<Map<String, dynamic>>.from(response.data);
     var images = data.map((fileData) => AbstractImage.fromJson(fileData)).toList();
     images.sort((a, b) => a.imagePath.compareTo(b.imagePath));
+    ref.read(appDataProvider.notifier).setLoadingFalse();
     return images;
   }
 

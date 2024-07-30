@@ -20,4 +20,12 @@ class AppData extends _$AppData {
   void selectImage({required AbstractImage? image}) {
     state = state.copyWith(selectedImage: image);
   }
+
+  void setLoadingTrue() {
+    state = state.copyWith(loading: true);
+  }
+
+  void setLoadingFalse() {
+    state = state.copyWith(loading: false);
+  }
 }

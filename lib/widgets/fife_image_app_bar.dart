@@ -31,19 +31,29 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
 
   @override
   Widget build(BuildContext context) {
+    final loading = ref.watch(appDataProvider).loading;
+
     return AppBar(
-      title: const Text(
-        'Fife Image',
-        style: TextStyle(
-          fontSize: 24.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          loading ? const CircularProgressIndicator() : Container(),
+          const SizedBox(width: 16.0),
+          const Text(
+            'Fife Image',
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       leading: IconButton(
         onPressed: () async {
           try {
             FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+            ref.read(appDataProvider.notifier).setLoadingTrue();
             await ref.read(imagesProvider.notifier).uploadImages(filePickerResult: result);
           } catch (err, stack) {
             logger.e(err, stackTrace: stack);

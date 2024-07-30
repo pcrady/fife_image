@@ -7,6 +7,7 @@ import 'package:fife_image/functions/convex_hull/providers/convex_hull_data_prov
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
+import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
 import 'package:fife_image/widgets/selected_image.dart';
 import 'package:flutter/material.dart';
@@ -343,6 +344,7 @@ class _BackgroundSelect extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     try {
+                      ref.read(appDataProvider.notifier).setLoadingTrue();
                       await ref.read(convexHullImageSetsProvider.notifier).performCalculation();
                     } catch (err, stack) {
                       logger.e(err, stackTrace: stack);
@@ -391,6 +393,7 @@ class _BackgroundSelect extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     try {
+                      ref.read(appDataProvider.notifier).setLoadingTrue();
                       await ref.read(convexHullImageSetsProvider.notifier).backgroundSelect();
                     } catch (err, stack) {
                       logger.e(err, stackTrace: stack);
