@@ -2,6 +2,7 @@ import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_pr
 import 'package:fife_image/models/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ConvexHullTopButtons extends ConsumerStatefulWidget {
   const ConvexHullTopButtons({super.key});
@@ -34,7 +35,7 @@ class _ConvexHullTopButtonsState extends ConsumerState<ConvexHullTopButtons> {
         Expanded(
           flex: 1,
           child: SegmentedButton<String>(
-            showSelectedIcon: true,
+            showSelectedIcon: false,
             selected: _segmentedButtonSelection,
             onSelectionChanged: (Set<String> newSelection) {
               setState(() => _segmentedButtonSelection = newSelection);
@@ -49,21 +50,38 @@ class _ConvexHullTopButtonsState extends ConsumerState<ConvexHullTopButtons> {
               backgroundColor: WidgetStateProperty.resolveWith<Color?>(
                 (Set<WidgetState> states) {
                   if (states.contains(WidgetState.selected)) {
-                    return Colors.lightBlueAccent; // Lighter blue for selected button
+                    return Colors.deepPurpleAccent; // Lighter blue for selected button
                   }
-                  return Colors.blue; // Blue for unselected button
+                  return Colors.deepPurple; // Blue for unselected button
                 },
               ),
-              foregroundColor: WidgetStateProperty.all<Color>(Colors.black), // Text color
             ),
-            segments: const [
+            segments: [
               ButtonSegment(
                 value: _settingsValue,
-                label: Text('Convex Hull Settings'),
+                icon: menuSetting == LeftMenuEnum.functionSettings
+                    ? const Icon(
+                        FontAwesomeIcons.check,
+                        color: Colors.white,
+                      )
+                    : null,
+                label: const Text(
+                  'Convex Hull Settings',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               ButtonSegment(
+                icon: menuSetting == LeftMenuEnum.functionImageSelection
+                    ? const Icon(
+                        FontAwesomeIcons.check,
+                        color: Colors.white,
+                      )
+                    : null,
                 value: _imageSelector,
-                label: Text('Image Selector'),
+                label: const Text(
+                  'Image Selector',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),

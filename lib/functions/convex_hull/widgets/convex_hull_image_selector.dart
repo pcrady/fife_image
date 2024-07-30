@@ -46,7 +46,7 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
                       cardSize: cardSize,
                       width: width,
                     ),
-                    index < convexHullImages.length - 1 ? const Divider(color: Colors.black) : Container(),
+                    index < convexHullImages.length - 1 ? const Divider(color: Colors.white) : Container(),
                   ],
                 );
               },

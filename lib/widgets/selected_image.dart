@@ -20,8 +20,14 @@ class SelectedImage extends ConsumerWidget {
       children: [
         MouseRegion(
           cursor: SystemMouseCursors.precise,
-          child: Card(
+          child: Container(
             clipBehavior: Clip.antiAlias,
+            foregroundDecoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
             child: SelectedImagePaint(image: image),
           ),
         ),

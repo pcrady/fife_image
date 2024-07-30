@@ -1,6 +1,8 @@
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
+import 'package:fife_image/widgets/dropdown_form_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -109,10 +111,12 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
         builder: (context, constraints) {
           final halfWidth = constraints.maxWidth / 2.0 - 4.0;
           final fourthWidth = constraints.maxWidth / 4.0 - 4.0;
+
           return Form(
             key: _formKey,
             child: Column(
               children: [
+                const SizedBox(height: 8.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -195,6 +199,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
                               width: halfWidth,
@@ -208,22 +213,30 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                                 ),
                               ),
                             ),
-                            DropdownMenu<String>(
+                            DropdownFormMenu<String>(
+                              validator: (_) {
+                                final protein = proteinNameControllers[index].text;
+                                final proteins = proteinNameControllers.map((controller) => controller.text).toList();
+                                proteins.removeAt(index);
+                                if (proteins.contains(protein)) {
+                                  return 'You cannot have duplicate protein names.';
+                                }
+                                return validator(protein);
+                              },
                               width: halfWidth,
                               hintText: 'Protein',
                               controller: proteinNameControllers[index],
-                              dropdownMenuEntries: proteins.map<DropdownMenuEntry<String>>((String value) {
-                                return DropdownMenuEntry<String>(value: value, label: value);
+                              entries: proteins.map<DropdownMenuEntry<String>>((String value) {
+                                return DropdownMenuEntry<String>(value: value, label: value, style: ButtonStyle());
                               }).toList(),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8.0),
+                        const SizedBox(height: 16.0),
                       ],
                     );
                   },
                 ),
-                const SizedBox(height: 8.0),
                 TextFormField(
                   validator: validator,
                   controller: overlayController,
@@ -252,6 +265,10 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                 Row(
                   children: [
                     Expanded(
+                      child: Container(),
+                    ),
+                    SizedBox(
+                      width: 200,
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {

@@ -13,6 +13,8 @@ void main() {
 class MyApp extends StatelessWidget with FifeImageRouter {
   MyApp({super.key});
 
+  static const unselectedColor = Colors.white54;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -26,7 +28,28 @@ class MyApp extends StatelessWidget with FifeImageRouter {
           ),
         ),
         appBarTheme: const AppBarTheme(
-          color: Colors.deepPurpleAccent,
+          color: Color(0xff1f004a),
+          foregroundColor: Colors.white,
+        ),
+        textTheme: Theme.of(context).textTheme.apply(
+              bodyColor: Colors.white,
+              displayColor: Colors.white,
+            ),
+        scaffoldBackgroundColor: const Color(0xff101418),
+        buttonTheme: const ButtonThemeData(
+          buttonColor: Colors.deepPurple,
+          textTheme: ButtonTextTheme.primary,
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: unselectedColor),
+          ),
+          labelStyle: TextStyle(color: unselectedColor),
+          hintStyle: TextStyle(color: unselectedColor),
+          focusColor: Colors.blue,
         ),
         useMaterial3: true,
       ),

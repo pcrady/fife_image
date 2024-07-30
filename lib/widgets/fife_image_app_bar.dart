@@ -37,7 +37,7 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
         style: TextStyle(
           fontSize: 24.0,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
       leading: IconButton(
@@ -57,9 +57,10 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
       actions: [
         DropdownButton<FunctionsEnum>(
           value: dropdownValue,
+          dropdownColor: Colors.black54,
           icon: const Icon(
             Icons.keyboard_arrow_down,
-            color: Colors.black,
+            color: Colors.white,
           ),
           style: const TextStyle(color: Colors.black),
           underline: Container(),
@@ -77,7 +78,7 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
                   value,
                   style: const TextStyle(
                     fontSize: 24,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),

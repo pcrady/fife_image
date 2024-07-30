@@ -27,8 +27,13 @@ class ConvexHullData extends _$ConvexHullData {
     });
   }
 
-  void downloadData() {
+  void downloadCSVData() {
     const url = '$server/download';
     _downloadFile(url, 'convex_data_hull.csv');
+  }
+
+  void downloadJSONData() {
+    const url = '$server/download';
+    _downloadFile(url, 'convex_data_hull.json');
   }
 }

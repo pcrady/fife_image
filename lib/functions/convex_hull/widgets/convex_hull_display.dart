@@ -58,8 +58,14 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
         Row(
           children: [
             Expanded(
-              child: Card(
+              child: Container(
                 clipBehavior: Clip.antiAlias,
+                foregroundDecoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
                 child: MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
@@ -140,7 +146,6 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
             : Container(),
         asyncData.when(
           data: (data) {
-            // TODO shore this up
             final areaData = data[imageSetBaseName];
             final totalArea = areaData['total_image_area'];
             final totalIsletArea = areaData['total_islet_area'];
@@ -154,8 +159,9 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 8.0),
                 Table(
-                  border: TableBorder.all(),
+                  border: TableBorder.all(color: Colors.white),
                   children: [
                     const TableRow(
                       children: [
@@ -168,11 +174,11 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                           bold: true,
                         ),
                         _TableEntry(
-                          text: 'Total Protein Area In Islet',
+                          text: 'Total Protein Area in Islet',
                           bold: true,
                         ),
                         _TableEntry(
-                          text: 'Percent Islet Area',
+                          text: '% Protein Inside Islet',
                           bold: true,
                         ),
                       ],
@@ -183,32 +189,53 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                           text: entry.key,
                         ),
                         _TableEntry(
-                          text: entry.value['total_area'].toStringAsFixed(2),
+                          text: entry.value['total_area'].toStringAsFixed(3),
                           units: units,
                           superscript: '2',
                         ),
                         _TableEntry(
-                          text: entry.value['islet_area'].toStringAsFixed(2),
+                          text: entry.value['islet_area'].toStringAsFixed(3),
                           units: units,
                           superscript: '2',
                         ),
                         _TableEntry(
-                          text: entry.value['percent_islet_area'].toStringAsFixed(2),
+                          text: entry.value['percent_islet_area'].toStringAsFixed(3),
                           units: '%',
                         ),
                       ]);
                     }),
                   ],
                 ),
-                _TableEntry(
-                  text: 'Total Image Area: ${totalArea.toStringAsFixed(2)}',
-                  units: units,
-                  superscript: '2',
-                ),
-                _TableEntry(
-                  text: 'Total Islet Area: ${totalIsletArea.toStringAsFixed(2)}',
-                  units: units,
-                  superscript: '2',
+                const SizedBox(height: 8.0),
+                Row(
+                  children: [
+                    _TableEntry(
+                      text: 'Total Image Area: ${totalArea.toStringAsFixed(3)}',
+                      units: units,
+                      superscript: '2',
+                    ),
+                    _TableEntry(
+                      text: 'Total Islet Area: ${totalIsletArea.toStringAsFixed(3)}',
+                      units: units,
+                      superscript: '2',
+                    ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        ref.read(convexHullDataProvider.notifier).downloadJSONData();
+                      },
+                      child: const Text('Download json'),
+                    ),
+                    /*const SizedBox(width: 8.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        ref.read(convexHullDataProvider.notifier).downloadCSVData();
+                      },
+                      child: const Text('Download csv'),
+                    ),*/
+                  ],
                 ),
               ],
             );
@@ -248,9 +275,15 @@ class _TableEntry extends StatelessWidget {
           children: [
             TextSpan(
               text: text,
-              style: TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.normal),
+              style: TextStyle(
+                fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+                color: Colors.white,
+              ),
             ),
-            TextSpan(text: ' ${units ?? ''}'),
+            TextSpan(
+              text: ' ${units ?? ''}',
+              style: const TextStyle(color: Colors.white),
+            ),
             WidgetSpan(
               child: Transform.translate(
                 offset: const Offset(0, -4),

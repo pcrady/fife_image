@@ -61,11 +61,11 @@ class _ConvexHullCardState extends ConsumerState<ConvexHullCard> {
                     borderRadius: BorderRadius.circular(12.0),
                     side: const BorderSide(
                       color: Colors.green,
-                      width: 4.0,
+                      width: 2.0,
                     ),
                   )
                 : null,
-            color: Colors.purpleAccent,
+            color: Colors.deepPurple,
             clipBehavior: Clip.antiAlias,
             child: Stack(
               alignment: Alignment.center,
@@ -73,11 +73,15 @@ class _ConvexHullCardState extends ConsumerState<ConvexHullCard> {
                 const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(FontAwesomeIcons.flaskVial),
+                    Icon(
+                      FontAwesomeIcons.flaskVial,
+                      size: 42.0,
+                    ),
                     Text(
                       'Results',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -100,7 +104,7 @@ class _ConvexHullCardState extends ConsumerState<ConvexHullCard> {
                             if (inflammation != null) futures.add(images.deleteImageFromServer(image: inflammation));
                             if (simplex != null) futures.add(images.deleteImageFromServer(image: simplex));
                             await Future.wait(futures);
-                            
+
                             if (ref.read(convexHullConfigProvider).activeResults == widget.results) {
                               ref.read(convexHullConfigProvider.notifier).setActiveResults(results: null);
                             }
