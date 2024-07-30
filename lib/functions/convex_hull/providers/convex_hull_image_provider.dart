@@ -20,7 +20,6 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
   @override
   List<ConvexHullImageSet> build() {
     final imagesAsyncValue = ref.watch(imagesProvider);
-    final convexHullConfig = ref.watch(convexHullConfigProvider);
 
     return imagesAsyncValue.when(
       data: (images) {
@@ -68,7 +67,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
 
     searchPatternProteinConfig.forEach((searchPattern, protein) {
       for (final image in images) {
-        if (image.name.contains(searchPattern)) {
+        if (image.name.contains(searchPattern) && image.isBackgroundCorrected) {
           labeledImages[protein] = image.toJson();
         }
       }
@@ -85,6 +84,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     var index = state.indexWhere((set) => set.baseName == activeImageSetBaseName);
     if (index == -1) return;
     final activeImageSet = state[index];
+    logger.i(activeImageSet.images?.length);
 
     final images = activeImageSet.images ?? [];
     index = images.indexWhere((image) => image.imagePath == activeImagePath);
@@ -95,6 +95,15 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       imageSet: activeImageSet,
     );
     imageData[overlay] = overlayImage.toJson();
+    final proteinNames = imageData.keys;
+
+    if (proteinNames.length != hullData.searchPatternProteinConfig.keys.length + 1) {
+      throw 'You must perform background correction on all images in the set';
+    }
+
+    if (!proteinNames.contains(insulin) || !proteinNames.contains(glucagon)) {
+      throw 'You must include Insulin and Glucagon';
+    }
 
     final data = {
       'base_image_name': hullData.activeImageSetBaseName,

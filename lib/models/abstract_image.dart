@@ -24,6 +24,7 @@ class AbstractImage with _$AbstractImage {
   String get url => server + imagePath;
   String get name => basename(imagePath).split('.').first;
   String get baseName => name.split('_').first;
+  bool get isBackgroundCorrected => name.contains('bg_correct');
 
   factory AbstractImage.fromJson(Map<String, dynamic> json) => _$AbstractImageFromJson(json);
 }

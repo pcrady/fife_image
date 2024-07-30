@@ -56,6 +56,7 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
             ref.read(appDataProvider.notifier).setLoadingTrue();
             await ref.read(imagesProvider.notifier).uploadImages(filePickerResult: result);
           } catch (err, stack) {
+            ref.read(appDataProvider.notifier).setLoadingFalse();
             logger.e(err, stackTrace: stack);
           }
         },
