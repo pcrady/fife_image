@@ -1,6 +1,5 @@
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
-import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/widgets/dropdown_form_menu.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,9 @@ class ConvexHullSettings extends ConsumerStatefulWidget {
 }
 
 class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
+  // TODO get microscope objectives for image sizing
+  // TODO make images selectable for overlay cd4 cd8 image
+  // TODO make config survive restart
   final _formKey = GlobalKey<FormState>();
   late TextEditingController channelNumberController;
   late TextEditingController widthController;
@@ -190,7 +192,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8.0),
+                const SizedBox(height: 16.0),
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: searchPatternControllers.length,
@@ -204,7 +206,20 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                             SizedBox(
                               width: halfWidth,
                               child: TextFormField(
-                                validator: validator,
+                                validator: (_) {
+                                  final searchPattern = searchPatternControllers[index].text;
+                                  if (searchPattern.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  final searchPatterns = searchPatternControllers.map((controller) => controller.text).toList();
+                                  searchPatterns.removeAt(index);
+                                  for (var pattern in searchPatterns) {
+                                    if (pattern.contains(searchPattern)) {
+                                      return 'Your search pattern cannot be contained in another';
+                                    }
+                                  }
+                                  return null;
+                                },
                                 controller: searchPatternControllers[index],
                                 decoration: InputDecoration(
                                   hintText: 'Set Channel $index Search Pattern',

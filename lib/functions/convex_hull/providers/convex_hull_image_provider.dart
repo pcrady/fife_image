@@ -84,7 +84,6 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     var index = state.indexWhere((set) => set.baseName == activeImageSetBaseName);
     if (index == -1) return;
     final activeImageSet = state[index];
-    logger.i(activeImageSet.images?.length);
 
     final images = activeImageSet.images ?? [];
     index = images.indexWhere((image) => image.imagePath == activeImagePath);

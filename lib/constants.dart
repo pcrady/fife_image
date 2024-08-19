@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 const server = 'http://127.0.0.1:5000/';
 const bgTag = 'bg_correct';
 const cd4 = 'CD4';
@@ -10,4 +12,10 @@ const lengthScale = 'um';
 const totalChannelNumber = 5;
 const width = 10.0;
 const length = 10.0;
+const kTitleStyle = TextStyle(fontSize: 28.0);
+const kSubtitleStyle = TextStyle(fontSize: 22.0);
+const kTextStyle = TextStyle(color: Colors.white);
+const kLinkStyle = TextStyle(color: Colors.blue);
 const proteins = [cd4, glucagon, insulin, cd8, pdl1];
+const kParagraphSpacing = 16.0;
+const kBottomSpacer = 200.0;

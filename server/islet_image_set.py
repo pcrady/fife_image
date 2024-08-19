@@ -225,7 +225,6 @@ class IsletImageSet:
         cv2.imwrite(file_path, image)
 
 
-
     @staticmethod
     def convert_to_png(filepath, output_folder):
         image = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)

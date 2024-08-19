@@ -1,4 +1,5 @@
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
+import 'package:fife_image/functions/convex_hull/widgets/convex_hull_algorithm_description.dart';
 import 'package:fife_image/functions/convex_hull/widgets/convex_hull_display.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _ConvexHullRightSideState extends ConsumerState<ConvexHullRightSide> {
     return Column(
       children: [
         switch (leftMenu) {
-          LeftMenuEnum.functionSettings => Container(),
+          LeftMenuEnum.functionSettings => const ConvexHullAlgorithmDescription(),
           LeftMenuEnum.functionImageSelection => const ConvexHullDisplay(),
         }
       ],
