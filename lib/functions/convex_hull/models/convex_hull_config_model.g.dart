@@ -28,6 +28,11 @@ _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
                 (k, e) => MapEntry(k, e as String),
               ) ??
               const {},
+      searchPatternOverlayConfig:
+          (json['search_pattern_overlay_config'] as Map<String, dynamic>?)?.map(
+                (k, e) => MapEntry(k, e as bool),
+              ) ??
+              const {},
       imageWidth: (json['image_width'] as num?)?.toDouble() ?? width,
       imageHeight: (json['image_height'] as num?)?.toDouble() ?? length,
       units: json['units'] as String? ?? lengthScale,
@@ -51,6 +56,7 @@ Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
   val['left_menu_enum'] = _$LeftMenuEnumEnumMap[instance.leftMenuEnum]!;
   val['overlay_search_pattern'] = instance.overlaySearchPattern;
   val['search_pattern_protein_config'] = instance.searchPatternProteinConfig;
+  val['search_pattern_overlay_config'] = instance.searchPatternOverlayConfig;
   val['image_width'] = instance.imageWidth;
   val['image_height'] = instance.imageHeight;
   val['units'] = instance.units;

@@ -1,1 +1,2 @@
+conda activate fife_image_server
 python main.py

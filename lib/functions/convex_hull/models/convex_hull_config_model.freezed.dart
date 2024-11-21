@@ -28,6 +28,8 @@ mixin _$ConvexHullConfigModel {
   String get overlaySearchPattern => throw _privateConstructorUsedError;
   Map<String, String> get searchPatternProteinConfig =>
       throw _privateConstructorUsedError;
+  Map<String, bool> get searchPatternOverlayConfig =>
+      throw _privateConstructorUsedError;
   double get imageWidth => throw _privateConstructorUsedError;
   double get imageHeight => throw _privateConstructorUsedError;
   String get units => throw _privateConstructorUsedError;
@@ -56,6 +58,7 @@ abstract class $ConvexHullConfigModelCopyWith<$Res> {
       LeftMenuEnum leftMenuEnum,
       String overlaySearchPattern,
       Map<String, String> searchPatternProteinConfig,
+      Map<String, bool> searchPatternOverlayConfig,
       double imageWidth,
       double imageHeight,
       String units,
@@ -87,6 +90,7 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
     Object? leftMenuEnum = null,
     Object? overlaySearchPattern = null,
     Object? searchPatternProteinConfig = null,
+    Object? searchPatternOverlayConfig = null,
     Object? imageWidth = null,
     Object? imageHeight = null,
     Object? units = null,
@@ -117,6 +121,10 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
           ? _value.searchPatternProteinConfig
           : searchPatternProteinConfig // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
+      searchPatternOverlayConfig: null == searchPatternOverlayConfig
+          ? _value.searchPatternOverlayConfig
+          : searchPatternOverlayConfig // ignore: cast_nullable_to_non_nullable
+              as Map<String, bool>,
       imageWidth: null == imageWidth
           ? _value.imageWidth
           : imageWidth // ignore: cast_nullable_to_non_nullable
@@ -181,6 +189,7 @@ abstract class _$$ConvexHullConfigModelImplCopyWith<$Res>
       LeftMenuEnum leftMenuEnum,
       String overlaySearchPattern,
       Map<String, String> searchPatternProteinConfig,
+      Map<String, bool> searchPatternOverlayConfig,
       double imageWidth,
       double imageHeight,
       String units,
@@ -212,6 +221,7 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
     Object? leftMenuEnum = null,
     Object? overlaySearchPattern = null,
     Object? searchPatternProteinConfig = null,
+    Object? searchPatternOverlayConfig = null,
     Object? imageWidth = null,
     Object? imageHeight = null,
     Object? units = null,
@@ -242,6 +252,10 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
           ? _value._searchPatternProteinConfig
           : searchPatternProteinConfig // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
+      searchPatternOverlayConfig: null == searchPatternOverlayConfig
+          ? _value._searchPatternOverlayConfig
+          : searchPatternOverlayConfig // ignore: cast_nullable_to_non_nullable
+              as Map<String, bool>,
       imageWidth: null == imageWidth
           ? _value.imageWidth
           : imageWidth // ignore: cast_nullable_to_non_nullable
@@ -274,11 +288,13 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       this.leftMenuEnum = LeftMenuEnum.functionSettings,
       this.overlaySearchPattern = overlay,
       final Map<String, String> searchPatternProteinConfig = const {},
+      final Map<String, bool> searchPatternOverlayConfig = const {},
       this.imageWidth = width,
       this.imageHeight = length,
       this.units = lengthScale,
       this.channelNumber = totalChannelNumber})
-      : _searchPatternProteinConfig = searchPatternProteinConfig;
+      : _searchPatternProteinConfig = searchPatternProteinConfig,
+        _searchPatternOverlayConfig = searchPatternOverlayConfig;
 
   factory _$ConvexHullConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullConfigModelImplFromJson(json);
@@ -305,6 +321,16 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
     return EqualUnmodifiableMapView(_searchPatternProteinConfig);
   }
 
+  final Map<String, bool> _searchPatternOverlayConfig;
+  @override
+  @JsonKey()
+  Map<String, bool> get searchPatternOverlayConfig {
+    if (_searchPatternOverlayConfig is EqualUnmodifiableMapView)
+      return _searchPatternOverlayConfig;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_searchPatternOverlayConfig);
+  }
+
   @override
   @JsonKey()
   final double imageWidth;
@@ -320,7 +346,7 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
 
   @override
   String toString() {
-    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, overlaySearchPattern: $overlaySearchPattern, searchPatternProteinConfig: $searchPatternProteinConfig, imageWidth: $imageWidth, imageHeight: $imageHeight, units: $units, channelNumber: $channelNumber)';
+    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, overlaySearchPattern: $overlaySearchPattern, searchPatternProteinConfig: $searchPatternProteinConfig, searchPatternOverlayConfig: $searchPatternOverlayConfig, imageWidth: $imageWidth, imageHeight: $imageHeight, units: $units, channelNumber: $channelNumber)';
   }
 
   @override
@@ -341,6 +367,9 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
             const DeepCollectionEquality().equals(
                 other._searchPatternProteinConfig,
                 _searchPatternProteinConfig) &&
+            const DeepCollectionEquality().equals(
+                other._searchPatternOverlayConfig,
+                _searchPatternOverlayConfig) &&
             (identical(other.imageWidth, imageWidth) ||
                 other.imageWidth == imageWidth) &&
             (identical(other.imageHeight, imageHeight) ||
@@ -360,6 +389,7 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       leftMenuEnum,
       overlaySearchPattern,
       const DeepCollectionEquality().hash(_searchPatternProteinConfig),
+      const DeepCollectionEquality().hash(_searchPatternOverlayConfig),
       imageWidth,
       imageHeight,
       units,
@@ -390,6 +420,7 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
       final LeftMenuEnum leftMenuEnum,
       final String overlaySearchPattern,
       final Map<String, String> searchPatternProteinConfig,
+      final Map<String, bool> searchPatternOverlayConfig,
       final double imageWidth,
       final double imageHeight,
       final String units,
@@ -410,6 +441,8 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   String get overlaySearchPattern;
   @override
   Map<String, String> get searchPatternProteinConfig;
+  @override
+  Map<String, bool> get searchPatternOverlayConfig;
   @override
   double get imageWidth;
   @override

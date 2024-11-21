@@ -18,6 +18,7 @@ class ConvexHullConfigModel with _$ConvexHullConfigModel {
     @Default(LeftMenuEnum.functionSettings) LeftMenuEnum leftMenuEnum,
     @Default(overlay) String overlaySearchPattern,
     @Default({}) Map<String, String> searchPatternProteinConfig,
+    @Default({}) Map<String, bool> searchPatternOverlayConfig,
     @Default(width) double imageWidth,
     @Default(length) double imageHeight,
     @Default(lengthScale) String units,

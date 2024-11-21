@@ -69,6 +69,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       for (final image in images) {
         if (image.name.contains(searchPattern) && image.isBackgroundCorrected) {
           labeledImages[protein] = image.toJson();
+          labeledImages[protein]['validation'] = hullData.searchPatternOverlayConfig[searchPattern];
         }
       }
     });
@@ -94,6 +95,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       imageSet: activeImageSet,
     );
     imageData[overlay] = overlayImage.toJson();
+    imageData['overlay']['validation'] = false;
     final proteinNames = imageData.keys;
 
     if (proteinNames.length != hullData.searchPatternProteinConfig.keys.length + 1) {

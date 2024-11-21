@@ -24,6 +24,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   late TextEditingController overlayController;
   List<TextEditingController> searchPatternControllers = [];
   List<TextEditingController> proteinNameControllers = [];
+  List<bool> addToOverlay = [];
   bool insulinAndGlucagon = true;
   String? validator(String? value) {
     if (value == null || value.isEmpty) {
@@ -56,11 +57,13 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
           for (int i = searchPatternControllers.length; i < intValue; i++) {
             searchPatternControllers.add(TextEditingController(text: generateDefaultSearchString(i)));
             proteinNameControllers.add(TextEditingController());
+            addToOverlay.add(false);
           }
         } else if (intValue < searchPatternControllers.length) {
           for (int i = searchPatternControllers.length; i > intValue; i--) {
             searchPatternControllers.removeLast();
             proteinNameControllers.removeLast();
+            addToOverlay.removeLast();
           }
         }
       });
@@ -76,12 +79,14 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
       for (int i = 0; i < convexHullConfig.channelNumber; i++) {
         searchPatternControllers.add(TextEditingController(text: generateDefaultSearchString(i)));
         proteinNameControllers.add(TextEditingController(text: proteins[i]));
+        addToOverlay.add(false);
       }
     } else {
       final config = convexHullConfig.searchPatternProteinConfig;
       config.forEach((searchPattern, proteinName) {
         searchPatternControllers.add(TextEditingController(text: searchPattern));
         proteinNameControllers.add(TextEditingController(text: proteinName));
+        addToOverlay.add(convexHullConfig.searchPatternOverlayConfig[searchPattern] ?? false);
       });
     }
     widthController = TextEditingController(text: convexHullConfig.imageWidth.toString());
@@ -112,7 +117,6 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final halfWidth = constraints.maxWidth / 2.0 - 4.0;
-          final fourthWidth = constraints.maxWidth / 4.0 - 4.0;
 
           return Form(
             key: _formKey,
@@ -122,8 +126,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: fourthWidth,
+                    Expanded(
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty || (int.tryParse(value) == null)) {
@@ -139,8 +142,8 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: fourthWidth,
+                    const SizedBox(width: 8.0),
+                    Expanded(
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
@@ -156,8 +159,8 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: fourthWidth,
+                    const SizedBox(width: 8.0),
+                    Expanded(
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
@@ -173,8 +176,8 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: fourthWidth,
+                    const SizedBox(width: 8.0),
+                    Expanded(
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -201,7 +204,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
                               width: halfWidth,
@@ -228,23 +231,38 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                                 ),
                               ),
                             ),
-                            DropdownFormMenu<String>(
-                              validator: (_) {
-                                final protein = proteinNameControllers[index].text;
-                                final proteins = proteinNameControllers.map((controller) => controller.text).toList();
-                                proteins.removeAt(index);
-                                if (proteins.contains(protein)) {
-                                  return 'You cannot have duplicate protein names.';
-                                }
-                                return validator(protein);
-                              },
-                              width: halfWidth,
-                              hintText: 'Protein',
-                              controller: proteinNameControllers[index],
-                              entries: proteins.map<DropdownMenuEntry<String>>((String value) {
-                                return DropdownMenuEntry<String>(value: value, label: value, style: ButtonStyle());
-                              }).toList(),
+                            const SizedBox(width: 8.0),
+                            Flexible(
+                              child: DropdownFormMenu<String>(
+                                validator: (_) {
+                                  final protein = proteinNameControllers[index].text;
+                                  final proteins = proteinNameControllers.map((controller) => controller.text).toList();
+                                  proteins.removeAt(index);
+                                  if (proteins.contains(protein)) {
+                                    return 'You cannot have duplicate protein names.';
+                                  }
+                                  return validator(protein);
+                                },
+                                width: double.infinity,
+                                hintText: 'Protein',
+                                controller: proteinNameControllers[index],
+                                entries: proteins.map<DropdownMenuEntry<String>>((String value) {
+                                  return DropdownMenuEntry<String>(value: value, label: value);
+                                }).toList(),
+                              ),
                             ),
+                            SizedBox(
+                              width: halfWidth * 0.1,
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: addToOverlay[index],
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    addToOverlay[index] = !addToOverlay[index];
+                                  });
+                                },
+                              ),
+                            )
                           ],
                         ),
                         const SizedBox(height: 16.0),
@@ -295,8 +313,10 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               setState(() => insulinAndGlucagon = true);
                             }
                             Map<String, String> searchPatternProteinConfig = {};
+                            Map<String, bool> searchPatternOverlayConfig = {};
                             for (var i = 0; i < searchPatternControllers.length; i++) {
                               searchPatternProteinConfig[searchPatternControllers[i].text] = proteinNameControllers[i].text;
+                              searchPatternOverlayConfig[searchPatternControllers[i].text] = addToOverlay[i];
                             }
 
                             final oldConvexHullConfig = ref.watch(convexHullConfigProvider);
@@ -307,6 +327,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               units: unitsController.text,
                               channelNumber: int.tryParse(channelNumberController.text) ?? 0,
                               searchPatternProteinConfig: searchPatternProteinConfig,
+                              searchPatternOverlayConfig: searchPatternOverlayConfig,
                               leftMenuEnum: LeftMenuEnum.functionImageSelection,
                             );
 
