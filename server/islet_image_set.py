@@ -201,7 +201,6 @@ class IsletImageSet:
                 color = np.zeros((x_dim, y_dim, 3), dtype=np.uint8)
                 color[image.masked_image] = self._int_to_rgb(image.validation_color)
                 combined_image = combined_image + color
-                #combined_image = cv2.addWeighted(combined_image, 0.5, color, 0.5, 0)
 
         dimmed_image = combined_image.copy()
         dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(combined_image.dtype)
