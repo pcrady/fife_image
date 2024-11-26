@@ -7,7 +7,7 @@ part of 'convex_hull_image_provider.dart';
 // **************************************************************************
 
 String _$convexHullImageSetsHash() =>
-    r'e3eb1f5d7500c4682d95815afd72b39977fac912';
+    r'fdbbdee6d4b5e4f24733ea1c760bddaa18d42044';
 
 /// See also [ConvexHullImageSets].
 @ProviderFor(ConvexHullImageSets)
@@ -24,4 +24,4 @@ final convexHullImageSetsProvider = AutoDisposeNotifierProvider<
 
 typedef _$ConvexHullImageSets = AutoDisposeNotifier<List<ConvexHullImageSet>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

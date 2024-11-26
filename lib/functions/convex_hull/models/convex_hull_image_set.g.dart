@@ -19,17 +19,10 @@ _$ConvexHullImageSetImpl _$$ConvexHullImageSetImplFromJson(
     );
 
 Map<String, dynamic> _$$ConvexHullImageSetImplToJson(
-    _$ConvexHullImageSetImpl instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('base_name', instance.baseName);
-  writeNotNull('images', instance.images?.map((e) => e.toJson()).toList());
-  val['results'] = instance.results.toJson();
-  return val;
-}
+        _$ConvexHullImageSetImpl instance) =>
+    <String, dynamic>{
+      if (instance.baseName case final value?) 'base_name': value,
+      if (instance.images?.map((e) => e.toJson()).toList() case final value?)
+        'images': value,
+      'results': instance.results.toJson(),
+    };

@@ -20,17 +20,10 @@ _$ConvexHullResultsImpl _$$ConvexHullResultsImplFromJson(
     );
 
 Map<String, dynamic> _$$ConvexHullResultsImplToJson(
-    _$ConvexHullResultsImpl instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('inflammation', instance.inflammation?.toJson());
-  writeNotNull('simplex', instance.simplex?.toJson());
-  writeNotNull('data', instance.data);
-  return val;
-}
+        _$ConvexHullResultsImpl instance) =>
+    <String, dynamic>{
+      if (instance.inflammation?.toJson() case final value?)
+        'inflammation': value,
+      if (instance.simplex?.toJson() case final value?) 'simplex': value,
+      if (instance.data case final value?) 'data': value,
+    };

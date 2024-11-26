@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, send_from_directory, jsonify
+from flask import Flask, request, redirect, jsonify
 from flask_cors import CORS
 import os
 import hashlib
@@ -6,7 +6,6 @@ from islet_image_set import IsletImageSet
 from skimage import io
 import json
 import pandas as pd
-
 
 app = Flask(__name__)
 CORS(app)
@@ -70,7 +69,10 @@ def download_data():
             df = pd.DataFrame.from_dict(json_data, orient='index')
             df.to_csv(DATA_DIR + DATA_FILE_CSV)
 
-    return send_from_directory(DATA_DIR, DATA_FILE_CSV)
+    if not os.path.exists(data_file_path):
+        return "File not found", 404
+    with open(data_file_path, "rb") as f:
+        return f.read(), 200, {"Content-Type": "image/png"}
 
 
 @app.route('/', methods=['POST'])
@@ -134,9 +136,13 @@ def delete_image():
         return jsonify({"error": "File not found"}), 404
 
 
-@app.route('/converted/<filename>')
+@app.route('/converted/<filename>', methods=['GET'])
 def download_file(filename):
-    return send_from_directory(OUTPUT_FOLDER, filename)
+    file_path = os.path.join(OUTPUT_FOLDER, filename)
+    if not os.path.exists(file_path):
+        return "File not found", 404
+    with open(file_path, "rb") as f:
+        return f.read(), 200, {"Content-Type": "image/png"}
 
 
 @app.route('/background_correction', methods=['POST'])

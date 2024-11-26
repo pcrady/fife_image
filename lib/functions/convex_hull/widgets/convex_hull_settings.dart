@@ -1,8 +1,10 @@
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/widgets/dropdown_form_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ConvexHullSettings extends ConsumerStatefulWidget {
@@ -25,7 +27,10 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   List<TextEditingController> searchPatternControllers = [];
   List<TextEditingController> proteinNameControllers = [];
   List<bool> addToOverlay = [];
+  List<Color> overlayColors = [];
   bool insulinAndGlucagon = true;
+  static const defaultColor = Colors.white;
+
   String? validator(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter some text';
@@ -58,12 +63,14 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
             searchPatternControllers.add(TextEditingController(text: generateDefaultSearchString(i)));
             proteinNameControllers.add(TextEditingController());
             addToOverlay.add(false);
+            overlayColors.add(defaultColor);
           }
         } else if (intValue < searchPatternControllers.length) {
           for (int i = searchPatternControllers.length; i > intValue; i--) {
             searchPatternControllers.removeLast();
             proteinNameControllers.removeLast();
             addToOverlay.removeLast();
+            overlayColors.removeLast();
           }
         }
       });
@@ -80,6 +87,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
         searchPatternControllers.add(TextEditingController(text: generateDefaultSearchString(i)));
         proteinNameControllers.add(TextEditingController(text: proteins[i]));
         addToOverlay.add(false);
+        overlayColors.add(defaultColor);
       }
     } else {
       final config = convexHullConfig.searchPatternProteinConfig;
@@ -87,6 +95,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
         searchPatternControllers.add(TextEditingController(text: searchPattern));
         proteinNameControllers.add(TextEditingController(text: proteinName));
         addToOverlay.add(convexHullConfig.searchPatternOverlayConfig[searchPattern] ?? false);
+        overlayColors.add(Color(convexHullConfig.searchPatternOverlayColorConfig[searchPattern] ?? defaultColor.value));
       });
     }
     widthController = TextEditingController(text: convexHullConfig.imageWidth.toString());
@@ -251,18 +260,67 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                                 }).toList(),
                               ),
                             ),
+                            const SizedBox(width: 16.0),
+                            if (addToOverlay[index])
+                              Tooltip(
+                                message: 'Color on overlay',
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) => AlertDialog(
+                                        backgroundColor: const Color(0xff101418),
+                                        title: const Text('Pick A Color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            paletteType: PaletteType.hueWheel,
+                                            enableAlpha: false,
+                                            displayThumbColor: true,
+                                            portraitOnly: true,
+                                            pickerColor: overlayColors[index],
+                                            onColorChanged: (Color color) {
+                                              setState(() {
+                                                overlayColors[index] = color;
+                                              });
+                                            },
+                                          ),
+                                       ),
+                                        actions: <Widget>[
+                                          ElevatedButton(
+                                            child: const Text('Got it'),
+                                            onPressed: () {
+                                              //setState(() => currentColor = pickerColor);
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: halfWidth * 0.1,
+                                    height: 30.0,
+                                    color: overlayColors[index],
+                                  ),
+                                ),
+                              )
+                            else
+                              Container(),
                             SizedBox(
                               width: halfWidth * 0.1,
-                              child: Checkbox(
-                                checkColor: Colors.white,
-                                value: addToOverlay[index],
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    addToOverlay[index] = !addToOverlay[index];
-                                  });
-                                },
+                              child: Tooltip(
+                                message: 'Add to overlay image',
+                                child: Checkbox(
+                                  checkColor: Colors.white,
+                                  value: addToOverlay[index],
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      addToOverlay[index] = !addToOverlay[index];
+                                    });
+                                  },
+                                ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                         const SizedBox(height: 16.0),
@@ -314,9 +372,13 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                             }
                             Map<String, String> searchPatternProteinConfig = {};
                             Map<String, bool> searchPatternOverlayConfig = {};
+                            Map<String, int> searchPatternOverlayColorConfig = {};
+
                             for (var i = 0; i < searchPatternControllers.length; i++) {
-                              searchPatternProteinConfig[searchPatternControllers[i].text] = proteinNameControllers[i].text;
-                              searchPatternOverlayConfig[searchPatternControllers[i].text] = addToOverlay[i];
+                              final searchPattern = searchPatternControllers[i].text;
+                              searchPatternProteinConfig[searchPattern] = proteinNameControllers[i].text;
+                              searchPatternOverlayConfig[searchPattern] = addToOverlay[i];
+                              searchPatternOverlayColorConfig[searchPattern] = overlayColors[i].value;
                             }
 
                             final oldConvexHullConfig = ref.watch(convexHullConfigProvider);
@@ -329,6 +391,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               searchPatternProteinConfig: searchPatternProteinConfig,
                               searchPatternOverlayConfig: searchPatternOverlayConfig,
                               leftMenuEnum: LeftMenuEnum.functionImageSelection,
+                              searchPatternOverlayColorConfig: searchPatternOverlayColorConfig,
                             );
 
                             ref.read(convexHullConfigProvider.notifier).setConvexHullConfig(convexHullConfigModel: newConvexHullConfig);

@@ -63,6 +63,9 @@ class Images extends _$Images {
       data: formData,
       options: Options(
         headers: {'Content-Type': 'multipart/form-data'},
+        validateStatus: (status) {
+          return (status ?? 400) < 400;
+        },
       ),
     );
     ref.invalidateSelf();

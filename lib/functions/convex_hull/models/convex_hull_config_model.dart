@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/models/abstract_image.dart';
@@ -19,6 +21,7 @@ class ConvexHullConfigModel with _$ConvexHullConfigModel {
     @Default(overlay) String overlaySearchPattern,
     @Default({}) Map<String, String> searchPatternProteinConfig,
     @Default({}) Map<String, bool> searchPatternOverlayConfig,
+    @Default({}) Map<String, int> searchPatternOverlayColorConfig,
     @Default(width) double imageWidth,
     @Default(length) double imageHeight,
     @Default(lengthScale) String units,

@@ -6,7 +6,7 @@ part of 'images_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$imagesHash() => r'89236496989e082d36875b96a5ad0bcd248b39c7';
+String _$imagesHash() => r'024340246768da56f28671ae78bdb3700100b52f';
 
 /// See also [Images].
 @ProviderFor(Images)
@@ -22,4 +22,4 @@ final imagesProvider =
 
 typedef _$Images = AutoDisposeAsyncNotifier<List<AbstractImage>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

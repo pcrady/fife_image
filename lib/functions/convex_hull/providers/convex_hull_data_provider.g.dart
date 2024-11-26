@@ -6,7 +6,7 @@ part of 'convex_hull_data_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$convexHullDataHash() => r'13fefe7df3901a17b18b6ab3222e63ac4b3b1c21';
+String _$convexHullDataHash() => r'00defa3f452c41eae03ae773a6a6dfe359cff192';
 
 /// See also [ConvexHullData].
 @ProviderFor(ConvexHullData)
@@ -23,4 +23,4 @@ final convexHullDataProvider =
 
 typedef _$ConvexHullData = AutoDisposeAsyncNotifier<Map>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

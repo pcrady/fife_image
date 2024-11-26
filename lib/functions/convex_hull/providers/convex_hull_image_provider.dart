@@ -70,6 +70,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
         if (image.name.contains(searchPattern) && image.isBackgroundCorrected) {
           labeledImages[protein] = image.toJson();
           labeledImages[protein]['validation'] = hullData.searchPatternOverlayConfig[searchPattern];
+          labeledImages[protein]['validation_color'] = hullData.searchPatternOverlayColorConfig[searchPattern];
         }
       }
     });
@@ -112,6 +113,9 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       'height': hullData.imageHeight,
       'images': imageData,
     };
+
+
+    logger.i(data);
 
     await _dio.post(
       '${server}convex_hull_calculation',

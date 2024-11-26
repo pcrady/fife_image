@@ -127,7 +127,8 @@ calculate statistics
               'Next you must go through each channel and specify the region of highest background signal. This is used to perform the'
               ' channel specific background correction. The average and standard deviation of the region is then '
               'computed and a value of:'),
-          const TeXView(
+          // TODO get this working
+          /*const TeXView(
             child: TeXViewColumn(
               children: [
                 TeXViewColumn(children: [
@@ -140,7 +141,7 @@ calculate statistics
                 ])
               ],
             ),
-          ),
+          ),*/
           const Text('is subtracted from each pixel in the image. It is very important to only select the brightest areas of background.'),
           const SizedBox(height: kParagraphSpacing),
           Row(
@@ -148,7 +149,7 @@ calculate statistics
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                "selection_example.png",
+                "assets/selection_example.png",
                 width: imageSize,
                 height: imageSize,
               ),
@@ -158,7 +159,7 @@ calculate statistics
                 size: 32.0,
               ),
               Image.asset(
-                "bg_correction_example.png",
+                "assets/bg_correction_example.png",
                 width: imageSize,
                 height: imageSize,
               ),
@@ -175,7 +176,7 @@ calculate statistics
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                "islet_selection_example.png",
+                "assets/islet_selection_example.png",
                 width: imageSize,
                 height: imageSize,
               ),
@@ -185,7 +186,7 @@ calculate statistics
                 size: 32.0,
               ),
               Image.asset(
-                "islet_outline_example.png",
+                "assets/islet_outline_example.png",
                 width: imageSize,
                 height: imageSize,
               ),

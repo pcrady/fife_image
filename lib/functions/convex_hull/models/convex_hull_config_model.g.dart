@@ -33,6 +33,12 @@ _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
                 (k, e) => MapEntry(k, e as bool),
               ) ??
               const {},
+      searchPatternOverlayColorConfig:
+          (json['search_pattern_overlay_color_config'] as Map<String, dynamic>?)
+                  ?.map(
+                (k, e) => MapEntry(k, (e as num).toInt()),
+              ) ??
+              const {},
       imageWidth: (json['image_width'] as num?)?.toDouble() ?? width,
       imageHeight: (json['image_height'] as num?)?.toDouble() ?? length,
       units: json['units'] as String? ?? lengthScale,
@@ -41,28 +47,25 @@ _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
     );
 
 Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
-    _$ConvexHullConfigModelImpl instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('active_image_set_base_name', instance.activeImageSetBaseName);
-  writeNotNull('active_image', instance.activeImage?.toJson());
-  writeNotNull('active_results', instance.activeResults?.toJson());
-  val['left_menu_enum'] = _$LeftMenuEnumEnumMap[instance.leftMenuEnum]!;
-  val['overlay_search_pattern'] = instance.overlaySearchPattern;
-  val['search_pattern_protein_config'] = instance.searchPatternProteinConfig;
-  val['search_pattern_overlay_config'] = instance.searchPatternOverlayConfig;
-  val['image_width'] = instance.imageWidth;
-  val['image_height'] = instance.imageHeight;
-  val['units'] = instance.units;
-  val['channel_number'] = instance.channelNumber;
-  return val;
-}
+        _$ConvexHullConfigModelImpl instance) =>
+    <String, dynamic>{
+      if (instance.activeImageSetBaseName case final value?)
+        'active_image_set_base_name': value,
+      if (instance.activeImage?.toJson() case final value?)
+        'active_image': value,
+      if (instance.activeResults?.toJson() case final value?)
+        'active_results': value,
+      'left_menu_enum': _$LeftMenuEnumEnumMap[instance.leftMenuEnum]!,
+      'overlay_search_pattern': instance.overlaySearchPattern,
+      'search_pattern_protein_config': instance.searchPatternProteinConfig,
+      'search_pattern_overlay_config': instance.searchPatternOverlayConfig,
+      'search_pattern_overlay_color_config':
+          instance.searchPatternOverlayColorConfig,
+      'image_width': instance.imageWidth,
+      'image_height': instance.imageHeight,
+      'units': instance.units,
+      'channel_number': instance.channelNumber,
+    };
 
 const _$LeftMenuEnumEnumMap = {
   LeftMenuEnum.functionSettings: 'functionSettings',

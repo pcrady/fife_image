@@ -17,20 +17,13 @@ _$AppDataStoreImpl _$$AppDataStoreImplFromJson(Map<String, dynamic> json) =>
           FunctionsEnum.functions,
     );
 
-Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('selected_image', instance.selectedImage?.toJson());
-  val['loading'] = instance.loading;
-  val['function'] = _$FunctionsEnumEnumMap[instance.function]!;
-  return val;
-}
+Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) =>
+    <String, dynamic>{
+      if (instance.selectedImage?.toJson() case final value?)
+        'selected_image': value,
+      'loading': instance.loading,
+      'function': _$FunctionsEnumEnumMap[instance.function]!,
+    };
 
 const _$FunctionsEnumEnumMap = {
   FunctionsEnum.functions: 'functions',

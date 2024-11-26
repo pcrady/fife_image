@@ -15,22 +15,14 @@ _$AbstractImageImpl _$$AbstractImageImplFromJson(Map<String, dynamic> json) =>
           json['relative_selection_coordinates'] as List<List<double>>?),
     );
 
-Map<String, dynamic> _$$AbstractImageImplToJson(_$AbstractImageImpl instance) {
-  final val = <String, dynamic>{
-    'image_path': instance.imagePath,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('md5_hash', instance.md5Hash);
-  writeNotNull('file', const Uint8ListConverter().toJson(instance.file));
-  writeNotNull(
-      'relative_selection_coordinates',
-      const OffsetListConverter()
-          .toJson(instance.relativeSelectionCoordinates));
-  return val;
-}
+Map<String, dynamic> _$$AbstractImageImplToJson(_$AbstractImageImpl instance) =>
+    <String, dynamic>{
+      'image_path': instance.imagePath,
+      if (instance.md5Hash case final value?) 'md5_hash': value,
+      if (const Uint8ListConverter().toJson(instance.file) case final value?)
+        'file': value,
+      if (const OffsetListConverter()
+              .toJson(instance.relativeSelectionCoordinates)
+          case final value?)
+        'relative_selection_coordinates': value,
+    };

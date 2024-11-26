@@ -2,6 +2,7 @@ import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
+import 'package:fife_image/lib/image_manipulation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,13 +53,19 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
       leading: IconButton(
         onPressed: () async {
           try {
-            FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+            FilePickerResult? result = await FilePicker.platform.pickFiles(
+              allowMultiple: true,
+              withData: true,
+            );
             if (result == null) return;
             ref.read(appDataProvider.notifier).setLoadingTrue();
             await ref.read(imagesProvider.notifier).uploadImages(filePickerResult: result);
+            //await ImageManipulation.convertFileToPng(result.files.first);
+
           } catch (err, stack) {
-            ref.read(appDataProvider.notifier).setLoadingFalse();
             logger.e(err, stackTrace: stack);
+          } finally {
+            ref.read(appDataProvider.notifier).setLoadingFalse();
           }
         },
         icon: const Icon(
