@@ -183,6 +183,11 @@ def convex_hull_calculation():
     
     if image_set.combined_cd4_cd8_hull is not None:
         IsletImageSet.save_bgr_image(image_set.combined_cd4_cd8_hull, OUTPUT_FOLDER, base_image_name + '_inflammation.png')
+
+    if image_set.combined_custom_hull is not None:
+        IsletImageSet.save_bgr_image(image_set.combined_custom_hull, OUTPUT_FOLDER, base_image_name + '_custom_infiltration.png')
+
+
     IsletImageSet.save_bgr_image(image_set.dimmed_hull, OUTPUT_FOLDER, base_image_name + '_simplex.png')
 
     area_data = image_set.areas

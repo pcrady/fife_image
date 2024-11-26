@@ -99,7 +99,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                 ),
               ),
             ),
-            results.inflammation != null
+            results.infiltration != null
                 ? Expanded(
                     child: Card(
                       clipBehavior: Clip.antiAlias,
@@ -112,8 +112,8 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                               builder: (context) {
                                 return Dialog(
                                   child: CachedNetworkImage(
-                                    imageUrl: results.inflammation!.url,
-                                    cacheKey: results.inflammation!.md5Hash,
+                                    imageUrl: results.infiltration!.url,
+                                    cacheKey: results.infiltration!.md5Hash,
                                     placeholder: (context, url) => const CircularProgressIndicator(),
                                     errorListener: (error) {
                                       logger.e(error);
@@ -124,8 +124,8 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                             );
                           },
                           child: CachedNetworkImage(
-                            imageUrl: results.inflammation!.url,
-                            cacheKey: results.inflammation!.md5Hash,
+                            imageUrl: results.infiltration!.url,
+                            cacheKey: results.infiltration!.md5Hash,
                             placeholder: (context, url) => const CircularProgressIndicator(),
                             errorListener: (error) {
                               logger.e(error);
@@ -141,7 +141,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
         results.inflammation != null
             ? const Text(
                 'The image on the left shows the convex hull superimposed on top of the overlay image. The image '
-                'on the right shows CD4 (Blue) and CD8 (Red) in and around the convex hull.',
+                'on the right shows infiltration in the colors selected in and around the convex hull.',
                 style: TextStyle(fontSize: 18.0),
               )
             : Container(),
@@ -223,19 +223,6 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                     Expanded(
                       child: Container(),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        ref.read(convexHullDataProvider.notifier).downloadJSONData();
-                      },
-                      child: const Text('Download json'),
-                    ),
-                    /*const SizedBox(width: 8.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        ref.read(convexHullDataProvider.notifier).downloadCSVData();
-                      },
-                      child: const Text('Download csv'),
-                    ),*/
                   ],
                 ),
               ],
@@ -331,9 +318,9 @@ class _BackgroundSelect extends ConsumerWidget {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (image != null) {
-                      ref.read(imagesProvider.notifier).updateSelection(image: image, selection: null);
+                      await ref.read(imagesProvider.notifier).updateSelection(image: image, selection: null);
                     }
                   },
                   child: const Text('Clear Selection'),
@@ -381,9 +368,9 @@ class _BackgroundSelect extends ConsumerWidget {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (image != null) {
-                      ref.read(imagesProvider.notifier).updateSelection(image: image, selection: null);
+                      await ref.read(imagesProvider.notifier).updateSelection(image: image, selection: null);
                     }
                   },
                   child: const Text('Clear Selection'),

@@ -80,23 +80,21 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
   Future<void> performCalculation() async {
     final hullData = ref.read(convexHullConfigProvider);
     final activeImageSetBaseName = hullData.activeImageSetBaseName;
-    final activeImagePath = hullData.activeImage?.imagePath;
-    if (activeImagePath == null) return;
+    // TODO this isnt getting set properly why do I have two of them?? this works but it seem hakcy
+    // final activeImage = hullData.activeImage;
+    final activeImage = ref.read(appDataProvider).selectedImage;
+    if (activeImage == null) return;
+    final imageSetIndex = state.indexWhere((set) => set.baseName == activeImageSetBaseName);
+    if (imageSetIndex == -1) return;
+    final activeImageSet = state[imageSetIndex];
 
-    var index = state.indexWhere((set) => set.baseName == activeImageSetBaseName);
-    if (index == -1) return;
-    final activeImageSet = state[index];
-
-    final images = activeImageSet.images ?? [];
-    index = images.indexWhere((image) => image.imagePath == activeImagePath);
-    if (index == -1) return;
-    final overlayImage = images[index];
     var imageData = _getImageLabel(
       hullData: hullData,
       imageSet: activeImageSet,
     );
-    imageData[overlay] = overlayImage.toJson();
+    imageData['overlay'] = activeImage.toJson();
     imageData['overlay']['validation'] = false;
+    imageData['overlay']['validation_color'] = 0;
     final proteinNames = imageData.keys;
 
     if (proteinNames.length != hullData.searchPatternProteinConfig.keys.length + 1) {
@@ -113,9 +111,6 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       'height': hullData.imageHeight,
       'images': imageData,
     };
-
-
-    logger.i(data);
 
     await _dio.post(
       '${server}convex_hull_calculation',

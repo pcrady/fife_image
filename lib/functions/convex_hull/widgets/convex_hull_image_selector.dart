@@ -71,14 +71,26 @@ class _ImageSetWidget extends ConsumerWidget {
     required this.width,
   });
 
-  List<Widget> buildNameRow({required List<String> proteinNames}) {
-    List<Widget> names = proteinNames.map<Widget>((name) => Text(name, textAlign: TextAlign.center)).toList();
+  List<Widget> buildNameRow({
+    required List<String> proteinNames,
+    required List<Color> proteinColors,
+  }) {
+    List<Widget> names = [];
+
+    for (int i = 0; i < proteinNames.length; i++) {
+      names.add(Text(
+        proteinNames[i],
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: proteinColors[i],
+          fontWeight: FontWeight.w500,
+        ),
+      ));
+    }
+
     names.insert(
       0,
-      Container(
-        color: Colors.red,
-        width: 8.0,
-      ),
+      const SizedBox(width: 8.0),
     );
     return names;
   }
@@ -169,10 +181,13 @@ class _ImageSetWidget extends ConsumerWidget {
         );
       }
     }
-    final simplexIndex = images.indexWhere((image) => image.name.contains('simplex'));
-    final inflammationIndex = images.indexWhere((image) => image.name.contains('inflammation'));
+    final simplexIndex = images.indexWhere((image) => image.name.endsWith('simplex'));
+    final inflammationIndex = images.indexWhere((image) => image.name.endsWith('inflammation'));
+    final infiltrationIndex = images.indexWhere((image) => image.name.endsWith('custom_infiltration'));
+
     AbstractImage? simplex;
     AbstractImage? inflammation;
+    AbstractImage? infiltration;
 
     if (simplexIndex != -1) {
       simplex = images[simplexIndex];
@@ -180,11 +195,15 @@ class _ImageSetWidget extends ConsumerWidget {
     if (inflammationIndex != -1) {
       inflammation = images[inflammationIndex];
     }
+    if (infiltrationIndex != -1) {
+      infiltration = images[infiltrationIndex];
+    }
     if (simplex != null) {
       widgets.removeLast();
       final results = ConvexHullResults(
         simplex: simplex,
         inflammation: inflammation,
+        infiltration: infiltration,
         data: data,
       );
       widgets.add(
@@ -204,6 +223,15 @@ class _ImageSetWidget extends ConsumerWidget {
     final config = convexHullConfig.searchPatternProteinConfig;
     final searchPatterns = [...config.keys, convexHullConfig.overlaySearchPattern];
     final proteinNames = [...config.values, 'Overlay'];
+    List<Color> proteinColors = searchPatterns.map((name) {
+      final colorConfig = convexHullConfig.searchPatternOverlayColorConfig;
+      final validation = convexHullConfig.searchPatternOverlayConfig;
+      if (validation[name] ?? false) {
+        return Color(colorConfig[name] ?? 0);
+      } else {
+        return Colors.white;
+      }
+    }).toList();
     Map<int, TableColumnWidth> columnWidths = {0: const FixedColumnWidth(32)};
     for (int i = 1; i <= proteinNames.length; i++) {
       columnWidths[i] = const IntrinsicColumnWidth();
@@ -228,6 +256,7 @@ class _ImageSetWidget extends ConsumerWidget {
                   TableRow(
                     children: buildNameRow(
                       proteinNames: proteinNames,
+                      proteinColors: proteinColors,
                     ),
                   ),
                   TableRow(

@@ -11,14 +11,18 @@ class IsletImageData:
     def __init__(self, 
                  protein_name: str,
                  image: np.ndarray,
+                 validation: bool = False,
+                 validation_color: int = 0,
                  cropped_image = np.ndarray([]),
                  masked_image = np.ndarray([]),
                  ):
         self.protein_name = protein_name
         self.image = image
+        self.validation = validation
+        self.validation_color = validation_color
         self.cropped_image = cropped_image
         self.masked_image = masked_image
-    
+   
 
 
 class IsletImageSet:
@@ -43,7 +47,13 @@ class IsletImageSet:
         self.image_data = image_data
         self.unscaled_crop_region = unscaled_crop_region
 
-        self.images = [IsletImageData(protein_name=protein_name, image=io.imread(image_data['image_path'])) for protein_name, image_data in image_data.items()]
+        self.images = [IsletImageData(
+            protein_name=protein_name,
+            image=io.imread(image_data['image_path']),
+            validation = image_data['validation'], 
+            validation_color = image_data['validation_color'],
+        ) for protein_name, image_data in image_data.items()]
+
         self.scaled_crop_region = self._scale_region(self.images[0].image, self.unscaled_crop_region)
 
         for image in self.images:
@@ -60,6 +70,9 @@ class IsletImageSet:
 
         # color image of cropped cd4 and cd8 with convex hull superimposed on top
         self.combined_cd4_cd8_hull = self._create_color_cd4_cd8_convex_hull()
+
+        # custom hull image with colors
+        self.combined_custom_hull = self._create_color_convex_hull()
 
         # a dimmed overlay image with the convex hull superimposed
         self.dimmed_hull = self._create_dimmed_hull_image()
@@ -154,11 +167,44 @@ class IsletImageSet:
 
         color_cd4 = np.zeros((cd4.masked_image.shape[0], cd4.masked_image.shape[1], 3), dtype=np.uint8)
         color_cd4[cd4.masked_image] = self.BLUE
+
         color_cd8 = np.zeros((cd8.masked_image.shape[0], cd8.masked_image.shape[1], 3), dtype=np.uint8)
         color_cd8[cd8.masked_image] = self.RED
+
         combined_cd4_cd8 = color_cd4 + color_cd8
         dimmed_image = combined_cd4_cd8.copy()
         dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(combined_cd4_cd8.dtype)
+        points = self.hull.points[self.hull.vertices]
+        int_region = points.astype(np.int32)
+        swapped_int_region = int_region[:, ::-1]
+        cv2.polylines(dimmed_image, [swapped_int_region], True, color=self.WHITE, thickness=5)
+        return dimmed_image
+
+
+    def _int_to_rgb(self, color_int):
+        """Convert a 32-bit ARGB color integer to an RGB tuple."""
+        alpha = (color_int >> 24) & 255
+        red = (color_int >> 16) & 255  
+        green = (color_int >> 8) & 255 
+        blue = color_int & 255         
+        return [red, green, blue]
+
+
+    def _create_color_convex_hull(self):
+        x_dim = self.images[0].masked_image.shape[0]
+        y_dim = self.images[0].masked_image.shape[1]
+        
+        combined_image = np.zeros((x_dim, y_dim, 3), dtype=np.uint8)
+
+        for image in self.images:
+            if image.validation:
+                color = np.zeros((x_dim, y_dim, 3), dtype=np.uint8)
+                color[image.masked_image] = self._int_to_rgb(image.validation_color)
+                combined_image = combined_image + color
+                #combined_image = cv2.addWeighted(combined_image, 0.5, color, 0.5, 0)
+
+        dimmed_image = combined_image.copy()
+        dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(combined_image.dtype)
         points = self.hull.points[self.hull.vertices]
         int_region = points.astype(np.int32)
         swapped_int_region = int_region[:, ::-1]

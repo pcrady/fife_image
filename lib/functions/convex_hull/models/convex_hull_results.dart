@@ -12,6 +12,7 @@ class ConvexHullResults with _$ConvexHullResults {
   const factory ConvexHullResults({
     AbstractImage? inflammation,
     AbstractImage? simplex,
+    AbstractImage? infiltration,
     Map<String, dynamic>? data,
   }) = _ConvexHullResults;
 

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -90,7 +91,7 @@ class Images extends _$Images {
     required List<Offset>? selection,
   }) async {
     final images = await future;
-    images.remove(image);
+    images.removeWhere((oldImage) => oldImage.imagePath == image.imagePath);
     final newImage = image.copyWith(relativeSelectionCoordinates: selection);
     images.add(newImage);
     images.sort((a, b) => a.imagePath.compareTo(b.imagePath));

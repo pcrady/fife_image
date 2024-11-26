@@ -16,6 +16,10 @@ _$ConvexHullResultsImpl _$$ConvexHullResultsImplFromJson(
       simplex: json['simplex'] == null
           ? null
           : AbstractImage.fromJson(json['simplex'] as Map<String, dynamic>),
+      infiltration: json['infiltration'] == null
+          ? null
+          : AbstractImage.fromJson(
+              json['infiltration'] as Map<String, dynamic>),
       data: json['data'] as Map<String, dynamic>?,
     );
 
@@ -25,5 +29,7 @@ Map<String, dynamic> _$$ConvexHullResultsImplToJson(
       if (instance.inflammation?.toJson() case final value?)
         'inflammation': value,
       if (instance.simplex?.toJson() case final value?) 'simplex': value,
+      if (instance.infiltration?.toJson() case final value?)
+        'infiltration': value,
       if (instance.data case final value?) 'data': value,
     };
