@@ -49,3 +49,7 @@ app.*.map.json
 server/build/
 server/dist/
 server/main.spec
+
+macos/build/
+macos/dist/
+macos/main.spec
