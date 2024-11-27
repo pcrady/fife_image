@@ -456,7 +456,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source /opt/anaconda3/etc/profile.d/conda.sh\n\nconda activate fife_image_server\n\npyinstaller --onefile ../server/main.py\n";
+			shellScript = "source /opt/anaconda3/etc/profile.d/conda.sh\n\nconda activate fife_image_server\n\npyinstaller --onefile --noconfirm ../server/main.py\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
