@@ -141,7 +141,8 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
         results.inflammation != null
             ? const Text(
                 'The image on the left shows the convex hull superimposed on top of the overlay image. The image '
-                'on the right shows infiltration in the colors selected in and around the convex hull.',
+                'on the right shows infiltration in the colors selected in and around the convex hull. The color '
+                'key is displayed in the table below.',
                 style: TextStyle(fontSize: 18.0),
               )
             : Container(),
@@ -190,7 +191,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                           bold: true,
                         ),
                         _TableEntry(
-                          text: '% of Islet with Protein',
+                          text: '% Area of Islet with Protein',
                           bold: true,
                         ),
                       ],
@@ -199,6 +200,8 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                       return TableRow(children: [
                         _TableEntry(
                           text: entry.key,
+                          color: Color(entry.value['validation_color']),
+                          bold: true,
                         ),
                         _TableEntry(
                           text: (entry.value['total_area'] ?? 0).toStringAsFixed(2),
@@ -265,12 +268,14 @@ class _TableEntry extends StatelessWidget {
   final String text;
   final String? units;
   final String? superscript;
+  final Color? color;
   final bool bold;
 
   const _TableEntry({
     required this.text,
     this.units,
     this.superscript,
+    this.color,
     this.bold = false,
   });
 
@@ -285,7 +290,7 @@ class _TableEntry extends StatelessWidget {
               text: text,
               style: TextStyle(
                 fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-                color: Colors.white,
+                color: color ?? Colors.white,
               ),
             ),
             TextSpan(

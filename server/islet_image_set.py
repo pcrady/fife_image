@@ -250,6 +250,7 @@ class IsletImageSet:
                         'islet_area': islet_area,
                         'percent_islet_area': percent_islet_area,
                         'percent_of_islet_with_protein': (islet_area / total_area) * 100,
+                        'validation_color': image.validation_color,
                         }
                 data['proteins'][protein_name] = protein_data
                                 
