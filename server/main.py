@@ -199,6 +199,25 @@ def convex_hull_calculation():
     data[base_image_name] = area_data
     with open(data_file_path, 'w') as json_file:
         json.dump(data, json_file, indent=4)
+
+    data_file_csv_path = os.path.join(DATA_DIR, DATA_FILE_CSV)
+
+    rows = []
+    for image_id, image_data in data.items():
+        total_image_area = image_data["total_image_area"]
+        total_islet_area = image_data["total_islet_area"]
+        for protein, protein_data in image_data["proteins"].items():
+            row = {
+                "Image": image_id,
+                "Total Image Area": total_image_area,
+                "Total Islet Area": total_islet_area,
+                "Protein": protein,
+                **protein_data,
+            }
+            rows.append(row)
+
+    df = pd.DataFrame(rows)
+    df.to_csv(data_file_csv_path, encoding='utf-8', index=False)
         
     return converted_paths()
 
