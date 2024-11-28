@@ -6,6 +6,7 @@ from islet_image_set import IsletImageSet
 from skimage import io
 import json
 import pandas as pd
+from image_utils import ImageUtils
 
 app = Flask(__name__)
 CORS(app)
@@ -87,7 +88,7 @@ def upload_files():
     if file and file.filename != None:
         filepath = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(filepath)
-        IsletImageSet.convert_to_png(filepath, OUTPUT_FOLDER)
+        ImageUtils.convert_to_png(filepath, OUTPUT_FOLDER)
         return redirect('/')
     else:
         return jsonify({"error": "Invalid file type, only .tif files are allowed"}), 400
@@ -161,7 +162,7 @@ def background_correction():
     selected_region = data[selected_region_parameter]
     corrected_image = IsletImageSet.subtract_background(image, selected_region)
     corrected_image_name = (file_path.split('.')[0] + '_bg_correct.png').split('/')[-1]
-    IsletImageSet.save_bgr_image(corrected_image, OUTPUT_FOLDER, corrected_image_name)
+    ImageUtils.save_bgr_image(corrected_image, OUTPUT_FOLDER, corrected_image_name)
     return converted_paths()
 
 
@@ -182,13 +183,10 @@ def convex_hull_calculation():
             )
     
     if image_set.combined_cd4_cd8_hull is not None:
-        IsletImageSet.save_bgr_image(image_set.combined_cd4_cd8_hull, OUTPUT_FOLDER, base_image_name + '_inflammation.png')
-
+        ImageUtils.save_bgr_image(image_set.combined_cd4_cd8_hull, OUTPUT_FOLDER, base_image_name + '_inflammation.png')
     if image_set.combined_custom_hull is not None:
-        IsletImageSet.save_bgr_image(image_set.combined_custom_hull, OUTPUT_FOLDER, base_image_name + '_custom_infiltration.png')
-
-
-    IsletImageSet.save_bgr_image(image_set.dimmed_hull, OUTPUT_FOLDER, base_image_name + '_simplex.png')
+        ImageUtils.save_bgr_image(image_set.combined_custom_hull, OUTPUT_FOLDER, base_image_name + '_custom_infiltration.png')
+    ImageUtils.save_bgr_image(image_set.dimmed_hull, OUTPUT_FOLDER, base_image_name + '_simplex.png')
 
     area_data = image_set.areas
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
