@@ -16,5 +16,9 @@ class ConvexHullImageSet with _$ConvexHullImageSet {
     @Default(ConvexHullResults()) ConvexHullResults results,
   }) = _ConvexHullImageSet;
 
+  List<String> get imageNames {
+    return images?.map((image) => image.name).toList() ?? [];
+  }
+
   factory ConvexHullImageSet.fromJson(Map<String, dynamic> json) => _$ConvexHullImageSetFromJson(json);
 }
