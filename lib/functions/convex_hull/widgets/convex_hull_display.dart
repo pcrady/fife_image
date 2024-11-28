@@ -148,12 +148,15 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
         asyncData.when(
           data: (data) {
             final areaData = data[imageSetBaseName];
+            if (areaData == null) {
+              return Container();
+            }
             final totalArea = areaData['total_image_area'];
             final totalIsletArea = areaData['total_islet_area'];
             final proteins = areaData['proteins'];
             final units = config.units;
 
-            if (areaData == null) {
+            if (totalIsletArea == null || totalIsletArea == null || proteins == null) {
               return Container();
             }
 
@@ -175,11 +178,19 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                           bold: true,
                         ),
                         _TableEntry(
+                          text: 'Total Protein Outside Islet',
+                          bold: true,
+                        ),
+                        _TableEntry(
                           text: 'Total Protein Area in Islet',
                           bold: true,
                         ),
                         _TableEntry(
                           text: '% Protein Inside Islet',
+                          bold: true,
+                        ),
+                        _TableEntry(
+                          text: '% of Islet with Protein',
                           bold: true,
                         ),
                       ],
@@ -190,17 +201,26 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                           text: entry.key,
                         ),
                         _TableEntry(
-                          text: entry.value['total_area'].toStringAsFixed(3),
+                          text: (entry.value['total_area'] ?? 0).toStringAsFixed(2),
                           units: units,
                           superscript: '2',
                         ),
                         _TableEntry(
-                          text: entry.value['islet_area'].toStringAsFixed(3),
+                          text: (entry.value['outside_islet_area'] ?? 0).toStringAsFixed(2),
                           units: units,
                           superscript: '2',
                         ),
                         _TableEntry(
-                          text: entry.value['percent_islet_area'].toStringAsFixed(3),
+                          text: (entry.value['islet_area'] ?? 0).toStringAsFixed(2),
+                          units: units,
+                          superscript: '2',
+                        ),
+                        _TableEntry(
+                          text: (entry.value['percent_islet_area'] ?? 0).toStringAsFixed(2),
+                          units: '%',
+                        ),
+                        _TableEntry(
+                          text: (entry.value['percent_of_islet_with_protein'] ?? 0).toStringAsFixed(2),
                           units: '%',
                         ),
                       ]);

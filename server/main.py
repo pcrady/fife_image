@@ -84,7 +84,7 @@ def upload_files():
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
-    if file and file.filename != None and file.filename.lower().endswith('.tif'):
+    if file and file.filename != None:
         filepath = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(filepath)
         IsletImageSet.convert_to_png(filepath, OUTPUT_FOLDER)

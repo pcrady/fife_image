@@ -7,6 +7,7 @@ import os
 from skimage import io
 
 
+
 class IsletImageData:
     def __init__(self, 
                  protein_name: str,
@@ -22,7 +23,7 @@ class IsletImageData:
         self.validation_color = validation_color
         self.cropped_image = cropped_image
         self.masked_image = masked_image
-   
+
 
 
 class IsletImageSet:
@@ -240,12 +241,15 @@ class IsletImageSet:
 
                 total_area = 0.0 if np.isnan(total_area) else total_area
                 islet_area = 0.0 if np.isnan(islet_area) else islet_area
+                outside_islet_area = total_area - islet_area
                 percent_islet_area = 0.0 if np.isnan(percent_islet_area) else percent_islet_area
 
                 protein_data = {
                         'total_area': total_area,
+                        'outside_islet_area': outside_islet_area, 
                         'islet_area': islet_area,
                         'percent_islet_area': percent_islet_area,
+                        'percent_of_islet_with_protein': (islet_area / total_area) * 100,
                         }
                 data['proteins'][protein_name] = protein_data
                                 
@@ -272,7 +276,7 @@ class IsletImageSet:
 
     @staticmethod
     def convert_to_png(filepath, output_folder):
-        image = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
+        image = cv2.imread(filepath, cv2.IMREAD_COLOR)
         png_filename = os.path.splitext(os.path.basename(filepath))[0] + '.png'
         IsletImageSet.save_rgb_image(image, output_folder, png_filename)
 
