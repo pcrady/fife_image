@@ -2,6 +2,7 @@ import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
+import 'package:fife_image/providers/images_provider.dart';
 import 'package:fife_image/widgets/dropdown_form_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -16,7 +17,6 @@ class ConvexHullSettings extends ConsumerStatefulWidget {
 
 class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   // TODO get microscope objectives for image sizing
-  // TODO make images selectable for overlay cd4 cd8 image
   // TODO make config survive restart
   final _formKey = GlobalKey<FormState>();
   late TextEditingController channelNumberController;
@@ -26,10 +26,13 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   late TextEditingController overlayController;
   List<TextEditingController> searchPatternControllers = [];
   List<TextEditingController> proteinNameControllers = [];
+  List<FocusNode> focusNodes = [];
+  late FocusNode overlayFocusNode;
   List<bool> addToOverlay = [];
   List<Color> overlayColors = [];
   bool insulinAndGlucagon = true;
   static const defaultColor = Colors.white;
+  List<String> imageNames = [];
 
   String? validator(String? value) {
     if (value == null || value.isEmpty) {
@@ -44,6 +47,18 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     } else {
       return 'ch$i';
     }
+  }
+
+  List<Widget> _buildMenuChildren(String searchString) {
+    final subImages = imageNames.where((name) => name.contains(searchString));
+    return subImages
+        .map(
+          (name) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(name),
+          ),
+        )
+        .toList();
   }
 
   void listener() {
@@ -61,6 +76,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
         if (intValue > searchPatternControllers.length) {
           for (int i = searchPatternControllers.length; i < intValue; i++) {
             searchPatternControllers.add(TextEditingController(text: generateDefaultSearchString(i)));
+            focusNodes.add(FocusNode(debugLabel: 'FocusNode($i)'));
             proteinNameControllers.add(TextEditingController());
             addToOverlay.add(false);
             overlayColors.add(defaultColor);
@@ -68,6 +84,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
         } else if (intValue < searchPatternControllers.length) {
           for (int i = searchPatternControllers.length; i > intValue; i--) {
             searchPatternControllers.removeLast();
+            focusNodes.removeLast();
             proteinNameControllers.removeLast();
             addToOverlay.removeLast();
             overlayColors.removeLast();
@@ -85,6 +102,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     if (convexHullConfig.searchPatternProteinConfig.isEmpty) {
       for (int i = 0; i < convexHullConfig.channelNumber; i++) {
         searchPatternControllers.add(TextEditingController(text: generateDefaultSearchString(i)));
+        focusNodes.add(FocusNode(debugLabel: 'FocusNode($i)'));
         proteinNameControllers.add(TextEditingController(text: proteins[i]));
         addToOverlay.add(false);
         overlayColors.add(defaultColor);
@@ -93,15 +111,28 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
       final config = convexHullConfig.searchPatternProteinConfig;
       config.forEach((searchPattern, proteinName) {
         searchPatternControllers.add(TextEditingController(text: searchPattern));
+        focusNodes.add(FocusNode(debugLabel: 'FocusNode($searchPattern)'));
         proteinNameControllers.add(TextEditingController(text: proteinName));
         addToOverlay.add(convexHullConfig.searchPatternOverlayConfig[searchPattern] ?? false);
         overlayColors.add(Color(convexHullConfig.searchPatternOverlayColorConfig[searchPattern] ?? defaultColor.value));
       });
     }
+    overlayFocusNode = FocusNode(debugLabel: 'FocusNode(overlay)');
     widthController = TextEditingController(text: convexHullConfig.imageWidth.toString());
     heightController = TextEditingController(text: convexHullConfig.imageHeight.toString());
     unitsController = TextEditingController(text: convexHullConfig.units.toString());
     overlayController = TextEditingController(text: convexHullConfig.overlaySearchPattern.toString());
+    imageNames = ref.read(imagesProvider).value?.map((image) => image.name).toList() ?? [];
+    imageNames.sort();
+    imageNames
+        .removeWhere((name) => name.endsWith('_bg_correct') || name.endsWith('_inflammation') || name.endsWith('_custom_infiltration'));
+
+    ref.listenManual(imagesProvider, (previous, next) {
+      imageNames = next.value?.map((image) => image.name).toList() ?? [];
+      imageNames.sort();
+      imageNames
+          .removeWhere((name) => name.endsWith('_bg_correct') || name.endsWith('_inflammation') || name.endsWith('_custom_infiltration'));
+    });
     super.initState();
   }
 
@@ -110,8 +141,10 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     final controllerNumber = searchPatternControllers.length;
     for (int i = 0; i < controllerNumber; i++) {
       searchPatternControllers[i].dispose();
+      focusNodes[i].dispose();
       proteinNameControllers[i].dispose();
     }
+    overlayFocusNode.dispose();
     channelNumberController.dispose();
     widthController.dispose();
     heightController.dispose();
@@ -217,27 +250,42 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                           children: [
                             SizedBox(
                               width: halfWidth,
-                              child: TextFormField(
-                                validator: (_) {
-                                  final searchPattern = searchPatternControllers[index].text;
-                                  if (searchPattern.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  final searchPatterns = searchPatternControllers.map((controller) => controller.text).toList();
-                                  searchPatterns.removeAt(index);
-                                  for (var pattern in searchPatterns) {
-                                    if (pattern.contains(searchPattern)) {
-                                      return 'Your search pattern cannot be contained in another';
-                                    }
-                                  }
-                                  return null;
-                                },
-                                controller: searchPatternControllers[index],
-                                decoration: InputDecoration(
-                                  hintText: 'Set Channel $index Search Pattern',
-                                  border: const OutlineInputBorder(),
-                                  labelText: 'Channel $index Search Pattern',
+                              child: MenuAnchor(
+                                childFocusNode: focusNodes[index],
+                                menuChildren: _buildMenuChildren(searchPatternControllers[index].text),
+                                style: MenuStyle(
+                                  backgroundColor: WidgetStateProperty.all(Colors.deepPurple),
                                 ),
+                                builder: (BuildContext context, MenuController controller, Widget? child) {
+                                  return TextFormField(
+                                    focusNode: focusNodes[index],
+                                    onTap: () => controller.open(),
+                                    onTapOutside: (_) => controller.close(),
+                                    onChanged: (_) {
+                                      setState(() {});
+                                    },
+                                    validator: (_) {
+                                      final searchPattern = searchPatternControllers[index].text;
+                                      if (searchPattern.isEmpty) {
+                                        return 'Please enter some text';
+                                      }
+                                      final searchPatterns = searchPatternControllers.map((controller) => controller.text).toList();
+                                      searchPatterns.removeAt(index);
+                                      for (var pattern in searchPatterns) {
+                                        if (pattern.contains(searchPattern)) {
+                                          return 'Your search pattern cannot be contained in another';
+                                        }
+                                      }
+                                      return null;
+                                    },
+                                    controller: searchPatternControllers[index],
+                                    decoration: InputDecoration(
+                                      hintText: 'Set Channel $index Search Pattern',
+                                      border: const OutlineInputBorder(),
+                                      labelText: 'Channel $index Search Pattern',
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                             const SizedBox(width: 8.0),
@@ -284,7 +332,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                                               });
                                             },
                                           ),
-                                       ),
+                                        ),
                                         actions: <Widget>[
                                           ElevatedButton(
                                             child: const Text('Got it'),
@@ -328,15 +376,29 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     );
                   },
                 ),
-                TextFormField(
-                  validator: validator,
-                  controller: overlayController,
-                  decoration: const InputDecoration(
-                    hintText: 'Overlay Search Pattern',
-                    border: OutlineInputBorder(),
-                    labelText: 'Overlay Search Pattern',
-                  ),
-                ),
+                MenuAnchor(
+                    childFocusNode: overlayFocusNode,
+                    menuChildren: _buildMenuChildren(overlayController.text),
+                    style: MenuStyle(
+                      backgroundColor: WidgetStateProperty.all(Colors.deepPurple),
+                    ),
+                    builder: (BuildContext context, MenuController controller, Widget? child) {
+                      return TextFormField(
+                        focusNode: overlayFocusNode,
+                        onTap: () => controller.open(),
+                        onTapOutside: (_) => controller.close(),
+                        onChanged: (_) {
+                          setState(() {});
+                        },
+                        validator: validator,
+                        controller: overlayController,
+                        decoration: const InputDecoration(
+                          hintText: 'Overlay Search Pattern',
+                          border: OutlineInputBorder(),
+                          labelText: 'Overlay Search Pattern',
+                        ),
+                      );
+                    }),
                 insulinAndGlucagon
                     ? Container()
                     : const Column(
