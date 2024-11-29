@@ -25,7 +25,7 @@ os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
 
 
-def calculate_md5(file_path):
+def _calculate_md5(file_path):
     hash_md5 = hashlib.md5()
     with open(file_path, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
@@ -40,7 +40,7 @@ def converted_paths():
 
     for filename in converted_files:
         file_path = os.path.join(OUTPUT_FOLDER, filename)
-        md5_hash = calculate_md5(file_path)
+        md5_hash = _calculate_md5(file_path)
         converted_paths_with_hashes.append({
             'image_path': file_path,
             'md5_hash': md5_hash,
@@ -48,7 +48,29 @@ def converted_paths():
     return jsonify(converted_paths_with_hashes)
 
 
-@app.route('/data', methods=['get'])
+@app.route('/config', methods=['POST'])
+def set_config():
+    data  = request.get_json()
+    if 'working_dir' not in data:
+        return jsonify({"error": "No path provided"}), 400
+    working_dir = data['working_dir']
+
+    global UPLOAD_FOLDER
+    global OUTPUT_FOLDER
+    global DATA_DIR
+
+    UPLOAD_FOLDER = os.path.join(working_dir, 'uploads/')
+    OUTPUT_FOLDER = os.path.join(working_dir, 'converted/')
+    DATA_DIR = os.path.join(working_dir, 'computed_data/')
+
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+    os.makedirs(DATA_DIR, exist_ok=True)
+
+    return jsonify({'message': 'working directory set'}), 200
+
+
+@app.route('/data', methods=['GET'])
 def computed_data():
     data = {}
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
@@ -56,11 +78,10 @@ def computed_data():
     if os.path.exists(data_file_path):
         with open(data_file_path, 'r') as json_file:
             data = json.load(json_file)
-
     return jsonify(data)
 
 
-@app.route('/download', methods=['get'])
+@app.route('/download', methods=['GET'])
 def download_data():
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
  
@@ -91,7 +112,7 @@ def upload_files():
         ImageUtils.convert_to_png(filepath, OUTPUT_FOLDER)
         return redirect('/')
     else:
-        return jsonify({"error": "Invalid file type, only .tif files are allowed"}), 400
+        return jsonify({"error": "Invalid file type"}), 400
 
 
 @app.route('/delete', methods=['POST'])

@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
@@ -75,25 +75,15 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                         context: context,
                         builder: (context) {
                           return Dialog(
-                            child: CachedNetworkImage(
-                              imageUrl: results.simplex!.url,
-                              cacheKey: results.simplex!.md5Hash,
-                              placeholder: (context, url) => const CircularProgressIndicator(),
-                              errorListener: (error) {
-                                logger.e(error);
-                              },
+                            child: Image.file(
+                              File(results.simplex!.imagePath),
                             ),
                           );
                         },
                       );
                     },
-                    child: CachedNetworkImage(
-                      imageUrl: results.simplex!.url,
-                      cacheKey: results.simplex!.md5Hash,
-                      placeholder: (context, url) => const CircularProgressIndicator(),
-                      errorListener: (error) {
-                        logger.e(error);
-                      },
+                    child: Image.file(
+                      File(results.simplex!.imagePath),
                     ),
                   ),
                 ),
@@ -111,25 +101,15 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                               context: context,
                               builder: (context) {
                                 return Dialog(
-                                  child: CachedNetworkImage(
-                                    imageUrl: results.infiltration!.url,
-                                    cacheKey: results.infiltration!.md5Hash,
-                                    placeholder: (context, url) => const CircularProgressIndicator(),
-                                    errorListener: (error) {
-                                      logger.e(error);
-                                    },
+                                  child: Image.file(
+                                    File(results.infiltration!.imagePath),
                                   ),
                                 );
                               },
                             );
                           },
-                          child: CachedNetworkImage(
-                            imageUrl: results.infiltration!.url,
-                            cacheKey: results.infiltration!.md5Hash,
-                            placeholder: (context, url) => const CircularProgressIndicator(),
-                            errorListener: (error) {
-                              logger.e(error);
-                            },
+                          child: Image.file(
+                            File(results.infiltration!.imagePath),
                           ),
                         ),
                       ),

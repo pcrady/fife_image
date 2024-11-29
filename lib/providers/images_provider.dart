@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
-import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -69,7 +68,6 @@ class Images extends _$Images {
         },
       ),
     );
-    ref.invalidateSelf();
   }
 
   Future<void> deleteImageFromServer({

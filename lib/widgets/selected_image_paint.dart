@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -126,12 +126,8 @@ class _SelectedImagePaintState extends ConsumerState<SelectedImagePaint> {
               width: currentWidth,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image:  CachedNetworkImageProvider(
-                    widget.image.url,
-                    cacheKey: widget.image.md5Hash,
-                    errorListener: (error) {
-                      logger.e(error);
-                    },
+                  image:  FileImage(
+                    File(widget.image.imagePath),
                   ),
                   fit: BoxFit.cover,
                 ),

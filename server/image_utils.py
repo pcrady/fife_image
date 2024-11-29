@@ -27,6 +27,6 @@ class ImageUtils:
     def convert_to_png(filepath, output_folder):
         image = cv2.imread(filepath, cv2.IMREAD_COLOR)
         png_filename = os.path.splitext(os.path.basename(filepath))[0] + '.png'
-        IsletImageSet.save_rgb_image(image, output_folder, png_filename)
+        ImageUtils.save_rgb_image(image, output_folder, png_filename)
 
 
