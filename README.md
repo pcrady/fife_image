@@ -35,3 +35,9 @@ however it WILL attempt to run the server from macos/dist/main if the server is 
 manually.
 If the app is closed from android studio with the stop button it will not kill the server. You
 must kill it manually.
+
+to build for MacOS:
+rm macos/dist/main
+flutter build macos
+
+to build for Windows:
