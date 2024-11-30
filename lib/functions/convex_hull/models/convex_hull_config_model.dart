@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';

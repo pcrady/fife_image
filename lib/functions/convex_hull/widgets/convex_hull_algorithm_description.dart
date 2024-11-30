@@ -2,7 +2,6 @@ import 'package:fife_image/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_tex/flutter_tex.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ConvexHullAlgorithmDescription extends StatelessWidget {

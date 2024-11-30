@@ -5,10 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 
 
-import 'package:fife_image/main.dart';
 
 void main() {
 

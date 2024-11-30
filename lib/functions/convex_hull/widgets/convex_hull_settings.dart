@@ -1,13 +1,10 @@
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
-import 'package:fife_image/functions/convex_hull/widgets/convex_hull_image_selector.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
-import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
 import 'package:fife_image/widgets/dropdown_form_menu.dart';
 import 'package:fife_image/widgets/working_directory_selector.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

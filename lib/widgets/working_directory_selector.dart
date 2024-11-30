@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'package:fife_image/functions/convex_hull/widgets/convex_hull_image_selector.dart';
 import 'package:fife_image/lib/app_logger.dart';
-import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
