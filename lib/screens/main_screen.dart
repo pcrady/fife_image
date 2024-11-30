@@ -5,6 +5,7 @@ import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
+import 'package:fife_image/providers/working_dir_provider.dart';
 import 'package:fife_image/widgets/fife_image_app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,18 +25,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   late ScrollController leftController;
   late ScrollController rightController;
 
-  Future<void> setWorkingDir() async {
-    final appData = ref.read(appDataProvider.notifier);
-    final workingDir = await appData.getWorkingDirFromDisk();
-    await appData.setWorkingDir(workingDir: workingDir);
-  }
-
   Future<void> testServer() async {
     final dio = Dio();
     try {
       await dio.get(server);
-      await setWorkingDir();
-      ref.invalidate(imagesProvider);
+      final workingDirFromDisk = ref.read(workingDirProvider).value;
+      await ref.read(workingDirProvider.notifier).setWorkingDir(workingDir: workingDirFromDisk);
       setState(() => loading = false);
       ref.read(appDataProvider.notifier).setLoadingFalse();
     } catch (err) {

@@ -15,7 +15,6 @@ _$AppDataStoreImpl _$$AppDataStoreImplFromJson(Map<String, dynamic> json) =>
       loading: json['loading'] as bool? ?? false,
       function: $enumDecodeNullable(_$FunctionsEnumEnumMap, json['function']) ??
           FunctionsEnum.functions,
-      workingDirectory: json['working_directory'] as String?,
     );
 
 Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) =>
@@ -24,8 +23,6 @@ Map<String, dynamic> _$$AppDataStoreImplToJson(_$AppDataStoreImpl instance) =>
         'selected_image': value,
       'loading': instance.loading,
       'function': _$FunctionsEnumEnumMap[instance.function]!,
-      if (instance.workingDirectory case final value?)
-        'working_directory': value,
     };
 
 const _$FunctionsEnumEnumMap = {

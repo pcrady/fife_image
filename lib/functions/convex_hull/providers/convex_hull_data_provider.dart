@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
+import 'package:fife_image/providers/working_dir_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // flutter pub run build_runner build
@@ -11,6 +12,7 @@ class ConvexHullData extends _$ConvexHullData {
 
   @override
   FutureOr<Map> build() async {
+    ref.watch(workingDirProvider);
     final response = await _dio.get('$server/data');
     return Map.from(response.data);
   }

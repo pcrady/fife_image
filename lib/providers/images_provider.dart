@@ -3,6 +3,7 @@ import 'package:fife_image/constants.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
+import 'package:fife_image/providers/working_dir_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,6 +17,7 @@ class Images extends _$Images {
 
   @override
   Future<List<AbstractImage>> build() async {
+    ref.watch(workingDirProvider);
     final response = await _dio.get(server);
     final data = List<Map<String, dynamic>>.from(response.data);
     var images = data.map((fileData) => AbstractImage.fromJson(fileData)).toList();

@@ -23,7 +23,6 @@ mixin _$AppDataStore {
   AbstractImage? get selectedImage => throw _privateConstructorUsedError;
   bool get loading => throw _privateConstructorUsedError;
   FunctionsEnum get function => throw _privateConstructorUsedError;
-  String? get workingDirectory => throw _privateConstructorUsedError;
 
   /// Serializes this AppDataStore to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,10 +41,7 @@ abstract class $AppDataStoreCopyWith<$Res> {
       _$AppDataStoreCopyWithImpl<$Res, AppDataStore>;
   @useResult
   $Res call(
-      {AbstractImage? selectedImage,
-      bool loading,
-      FunctionsEnum function,
-      String? workingDirectory});
+      {AbstractImage? selectedImage, bool loading, FunctionsEnum function});
 
   $AbstractImageCopyWith<$Res>? get selectedImage;
 }
@@ -68,7 +64,6 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
     Object? selectedImage = freezed,
     Object? loading = null,
     Object? function = null,
-    Object? workingDirectory = freezed,
   }) {
     return _then(_value.copyWith(
       selectedImage: freezed == selectedImage
@@ -83,10 +78,6 @@ class _$AppDataStoreCopyWithImpl<$Res, $Val extends AppDataStore>
           ? _value.function
           : function // ignore: cast_nullable_to_non_nullable
               as FunctionsEnum,
-      workingDirectory: freezed == workingDirectory
-          ? _value.workingDirectory
-          : workingDirectory // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 
@@ -114,10 +105,7 @@ abstract class _$$AppDataStoreImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {AbstractImage? selectedImage,
-      bool loading,
-      FunctionsEnum function,
-      String? workingDirectory});
+      {AbstractImage? selectedImage, bool loading, FunctionsEnum function});
 
   @override
   $AbstractImageCopyWith<$Res>? get selectedImage;
@@ -139,7 +127,6 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
     Object? selectedImage = freezed,
     Object? loading = null,
     Object? function = null,
-    Object? workingDirectory = freezed,
   }) {
     return _then(_$AppDataStoreImpl(
       selectedImage: freezed == selectedImage
@@ -154,10 +141,6 @@ class __$$AppDataStoreImplCopyWithImpl<$Res>
           ? _value.function
           : function // ignore: cast_nullable_to_non_nullable
               as FunctionsEnum,
-      workingDirectory: freezed == workingDirectory
-          ? _value.workingDirectory
-          : workingDirectory // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -170,8 +153,7 @@ class _$AppDataStoreImpl implements _AppDataStore {
   const _$AppDataStoreImpl(
       {this.selectedImage,
       this.loading = false,
-      this.function = FunctionsEnum.functions,
-      this.workingDirectory});
+      this.function = FunctionsEnum.functions});
 
   factory _$AppDataStoreImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppDataStoreImplFromJson(json);
@@ -184,12 +166,10 @@ class _$AppDataStoreImpl implements _AppDataStore {
   @override
   @JsonKey()
   final FunctionsEnum function;
-  @override
-  final String? workingDirectory;
 
   @override
   String toString() {
-    return 'AppDataStore(selectedImage: $selectedImage, loading: $loading, function: $function, workingDirectory: $workingDirectory)';
+    return 'AppDataStore(selectedImage: $selectedImage, loading: $loading, function: $function)';
   }
 
   @override
@@ -201,15 +181,13 @@ class _$AppDataStoreImpl implements _AppDataStore {
                 other.selectedImage == selectedImage) &&
             (identical(other.loading, loading) || other.loading == loading) &&
             (identical(other.function, function) ||
-                other.function == function) &&
-            (identical(other.workingDirectory, workingDirectory) ||
-                other.workingDirectory == workingDirectory));
+                other.function == function));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, selectedImage, loading, function, workingDirectory);
+  int get hashCode =>
+      Object.hash(runtimeType, selectedImage, loading, function);
 
   /// Create a copy of AppDataStore
   /// with the given fields replaced by the non-null parameter values.
@@ -231,8 +209,7 @@ abstract class _AppDataStore implements AppDataStore {
   const factory _AppDataStore(
       {final AbstractImage? selectedImage,
       final bool loading,
-      final FunctionsEnum function,
-      final String? workingDirectory}) = _$AppDataStoreImpl;
+      final FunctionsEnum function}) = _$AppDataStoreImpl;
 
   factory _AppDataStore.fromJson(Map<String, dynamic> json) =
       _$AppDataStoreImpl.fromJson;
@@ -243,8 +220,6 @@ abstract class _AppDataStore implements AppDataStore {
   bool get loading;
   @override
   FunctionsEnum get function;
-  @override
-  String? get workingDirectory;
 
   /// Create a copy of AppDataStore
   /// with the given fields replaced by the non-null parameter values.

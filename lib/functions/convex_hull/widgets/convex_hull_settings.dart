@@ -429,7 +429,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     SizedBox(
                       width: 200,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             final proteins = proteinNameControllers.map((controller) => controller.text).toList();
                             if (!proteins.contains(insulin) || !proteins.contains(glucagon)) {
@@ -461,8 +461,11 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               leftMenuEnum: LeftMenuEnum.functionImageSelection,
                               searchPatternOverlayColorConfig: searchPatternOverlayColorConfig,
                             );
-
-                            ref.read(convexHullConfigProvider.notifier).setConvexHullConfig(convexHullConfigModel: newConvexHullConfig);
+                            try {
+                              ref.read(convexHullConfigProvider.notifier).setConvexHullConfig(convexHullConfigModel: newConvexHullConfig);
+                            } catch (err, stack) {
+                              logger.e(err, stackTrace: stack);
+                            }
                           }
                         },
                         child: const Text('Start'),

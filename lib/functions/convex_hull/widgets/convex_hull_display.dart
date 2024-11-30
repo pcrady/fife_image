@@ -214,12 +214,12 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                 Row(
                   children: [
                     _TableEntry(
-                      text: 'Total Image Area: ${totalArea.toStringAsFixed(3)}',
+                      text: 'Total Image Area: ${totalArea.toStringAsFixed(2)}',
                       units: units,
                       superscript: '2',
                     ),
                     _TableEntry(
-                      text: 'Total Islet Area: ${totalIsletArea.toStringAsFixed(3)}',
+                      text: 'Total Islet Area: ${totalIsletArea.toStringAsFixed(2)}',
                       units: units,
                       superscript: '2',
                     ),

@@ -13,7 +13,6 @@ class AppDataStore with _$AppDataStore {
     AbstractImage? selectedImage,
     @Default(false) bool loading,
     @Default(FunctionsEnum.functions) FunctionsEnum function,
-    String? workingDirectory,
   }) = _AppDataStore;
 
   factory AppDataStore.fromJson(Map<String, dynamic> json) => _$AppDataStoreFromJson(json);
