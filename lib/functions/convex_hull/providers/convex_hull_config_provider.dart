@@ -44,7 +44,6 @@ class ConvexHullConfig extends _$ConvexHullConfig {
   void setActiveResults({required ConvexHullResults? results}) {
     ref.read(appDataProvider.notifier).selectImage(image: null);
     state = state.copyWith(
-      //activeImage: null,
       activeResults: results,
     );
   }

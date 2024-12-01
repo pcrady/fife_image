@@ -83,11 +83,20 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     final appData = ref.read(appDataProvider);
     final activeImageSetBaseName = appData.selectedImage?.baseName;
     final activeImage = ref.read(appDataProvider).selectedImage;
-    if (activeImage == null) return;
-    final imageSetIndex = state.indexWhere((set) => set.baseName == activeImageSetBaseName);
-    if (imageSetIndex == -1) return;
-    final activeImageSet = state[imageSetIndex];
 
+    if (activeImage == null) {
+      ref.read(appDataProvider.notifier).setLoadingFalse();
+      return;
+    }
+
+    final imageSetIndex = state.indexWhere((set) => set.baseName == activeImageSetBaseName);
+
+    if (imageSetIndex == -1) {
+      ref.read(appDataProvider.notifier).setLoadingFalse();
+      return;
+    }
+
+    final activeImageSet = state[imageSetIndex];
     var imageData = _getImageLabel(
       hullData: hullData,
       imageSet: activeImageSet,
