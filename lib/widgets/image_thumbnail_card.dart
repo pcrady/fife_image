@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
@@ -56,7 +57,7 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
       child: Container(
         clipBehavior: Clip.antiAlias,
         foregroundDecoration: BoxDecoration(
-          border: widget.image == selectedImage ? Border.all(color: Colors.green, width: 2) : null,
+          border: widget.image.imagePath == selectedImage?.imagePath ? Border.all(color: Colors.green, width: 2) : null,
           borderRadius: const BorderRadius.all(Radius.circular(12)),
         ),
         decoration: const BoxDecoration(

@@ -46,6 +46,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     );
   }
 
+  // TODO this is causing the bug
   Future<void> backgroundSelect() async {
     final appData = ref.read(appDataProvider);
     final image = appData.selectedImage;

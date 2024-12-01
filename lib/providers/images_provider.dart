@@ -21,8 +21,6 @@ class Images extends _$Images {
     final data = List<Map<String, dynamic>>.from(response.data);
     var images = data.map((fileData) => AbstractImage.fromJson(fileData)).toList();
     images.sort((a, b) => a.imagePath.compareTo(b.imagePath));
-    //imageCache.clear();
-    //imageCache.clearLiveImages();
     ref.read(appDataProvider.notifier).setLoadingFalse();
     return images;
   }
@@ -81,7 +79,7 @@ class Images extends _$Images {
       data: {'filename': image.name},
     );
     final appData = ref.read(appDataProvider);
-    if (appData.selectedImage == image) {
+    if (appData.selectedImage?.imagePath == image.imagePath) {
       ref.read(appDataProvider.notifier).selectImage(image: null);
     }
     ref.invalidateSelf();
