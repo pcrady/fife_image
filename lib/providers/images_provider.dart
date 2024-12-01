@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
@@ -21,6 +22,8 @@ class Images extends _$Images {
     final data = List<Map<String, dynamic>>.from(response.data);
     var images = data.map((fileData) => AbstractImage.fromJson(fileData)).toList();
     images.sort((a, b) => a.imagePath.compareTo(b.imagePath));
+    //imageCache.clear();
+    //imageCache.clearLiveImages();
     ref.read(appDataProvider.notifier).setLoadingFalse();
     return images;
   }

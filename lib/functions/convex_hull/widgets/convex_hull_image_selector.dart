@@ -8,6 +8,7 @@ import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_pro
 import 'package:fife_image/functions/convex_hull/widgets/convex_hull_card.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
+import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/widgets/image_thumbnail_card.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +39,11 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
               shrinkWrap: true,
               itemCount: convexHullImages.length,
               itemBuilder: (context, index) {
+                final baseName = convexHullImages[index].baseName;
                 return Column(
                   children: [
                     _ImageSetWidget(
+                      key: baseName != null ? Key(baseName) : UniqueKey(),
                       imageSet: convexHullImages[index],
                       convexHullConfig: convexHullConfig,
                       cardSize: cardSize,
@@ -69,6 +72,7 @@ class _ImageSetWidget extends ConsumerWidget {
     required this.convexHullConfig,
     required this.cardSize,
     required this.width,
+    super.key,
   });
 
   List<Widget> buildNameRow({
@@ -121,9 +125,10 @@ class _ImageSetWidget extends ConsumerWidget {
             height: cardSize,
             width: cardSize,
             child: ImageThumbnailCard(
+              key: Key(images[index].hashCode.toString()),
               image: images[index],
               callback: () {
-                ref.read(convexHullConfigProvider.notifier).setActiveImage(activeImage: images[index]);
+                ref.read(appDataProvider.notifier).selectImage(image: images[index]);
               },
             ),
           ),
@@ -165,9 +170,10 @@ class _ImageSetWidget extends ConsumerWidget {
             height: cardSize,
             width: cardSize,
             child: ImageThumbnailCard(
+              key: Key(images[index].hashCode.toString()),
               image: images[index],
               callback: () {
-                ref.read(convexHullConfigProvider.notifier).setActiveImage(activeImage: images[index]);
+                ref.read(appDataProvider.notifier).selectImage(image: images[index]);
               },
             ),
           ),

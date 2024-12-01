@@ -21,7 +21,10 @@ class ImageList extends ConsumerWidget {
           ),
           itemCount: images.length,
           itemBuilder: (BuildContext context, int index) {
-            return ImageThumbnailCard(image: images[index]);
+            return ImageThumbnailCard(
+              key: Key(images[index].hashCode.toString()),
+              image: images[index],
+            );
           },
         );
       },
