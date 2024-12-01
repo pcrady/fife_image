@@ -76,6 +76,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                         builder: (context) {
                           return Dialog(
                             child: Image.file(
+                              key: UniqueKey(),
                               File(results.simplex!.imagePath),
                             ),
                           );
@@ -83,6 +84,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                       );
                     },
                     child: Image.file(
+                      key: UniqueKey(),
                       File(results.simplex!.imagePath),
                     ),
                   ),
@@ -102,6 +104,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                               builder: (context) {
                                 return Dialog(
                                   child: Image.file(
+                                    key: UniqueKey(),
                                     File(results.infiltration!.imagePath),
                                   ),
                                 );
@@ -109,6 +112,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                             );
                           },
                           child: Image.file(
+                            key: UniqueKey(),
                             File(results.infiltration!.imagePath),
                           ),
                         ),

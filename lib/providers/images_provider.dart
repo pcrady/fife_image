@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
+import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
@@ -79,8 +81,17 @@ class Images extends _$Images {
       data: {'filename': image.name},
     );
     final appData = ref.read(appDataProvider);
-    if (appData.selectedImage?.imagePath == image.imagePath) {
+    final hullResults = ref.read(convexHullConfigProvider).activeResults;
+    final imagePath = appData.selectedImage?.imagePath;
+    if (imagePath == image.imagePath) {
       ref.read(appDataProvider.notifier).selectImage(image: null);
+    }
+
+    if (image.imagePath == hullResults?.simplex?.imagePath ||
+        image.imagePath == hullResults?.infiltration?.imagePath ||
+        image.imagePath == hullResults?.inflammation?.imagePath) {
+      logger.i('here');
+      ref.read(convexHullConfigProvider.notifier).setActiveResults(results: null);
     }
     ref.invalidateSelf();
   }
