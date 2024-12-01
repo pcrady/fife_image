@@ -9,11 +9,6 @@ part of 'convex_hull_config_model.dart';
 _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
         Map<String, dynamic> json) =>
     _$ConvexHullConfigModelImpl(
-      activeImageSetBaseName: json['active_image_set_base_name'] as String?,
-      activeImage: json['active_image'] == null
-          ? null
-          : AbstractImage.fromJson(
-              json['active_image'] as Map<String, dynamic>),
       activeResults: json['active_results'] == null
           ? null
           : ConvexHullResults.fromJson(
@@ -49,10 +44,6 @@ _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
 Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
         _$ConvexHullConfigModelImpl instance) =>
     <String, dynamic>{
-      if (instance.activeImageSetBaseName case final value?)
-        'active_image_set_base_name': value,
-      if (instance.activeImage?.toJson() case final value?)
-        'active_image': value,
       if (instance.activeResults?.toJson() case final value?)
         'active_results': value,
       'left_menu_enum': _$LeftMenuEnumEnumMap[instance.leftMenuEnum]!,

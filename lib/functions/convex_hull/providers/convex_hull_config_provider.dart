@@ -12,26 +12,10 @@ part 'convex_hull_config_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class ConvexHullConfig extends _$ConvexHullConfig {
-  File _getConfigFile() {
-    final workingDir = ref.watch(workingDirProvider).value;
-    return File('$workingDir/convex_hull_config.json');
-  }
-
   @override
   ConvexHullConfigModel build() {
-    // TODO fix this I dont like that it reads from disk all the time and that i'm manually copying activeresults in
-    // Maybe think about selected images being held elsewhere
-    final appData = ref.watch(appDataProvider);
-    final jsonFile = _getConfigFile();
-    final state = stateOrNull;
-
-    if (state != null) {
-      return state.copyWith(
-        activeImage: appData.selectedImage,
-        activeImageSetBaseName: appData.selectedImage?.baseName,
-        activeResults: null, // TODO this is weird investigate this
-      );
-    }
+    final workingDir = ref.watch(workingDirProvider).value;
+    final jsonFile = File('$workingDir/convex_hull_config.json');
 
     if (!jsonFile.existsSync()) {
       return const ConvexHullConfigModel();
@@ -42,11 +26,11 @@ class ConvexHullConfig extends _$ConvexHullConfig {
   }
 
   Future<void> setConvexHullConfig({required ConvexHullConfigModel convexHullConfigModel}) async {
-    final jsonFile = _getConfigFile();
+    final workingDir = ref.read(workingDirProvider).value;
+    final jsonFile = File('$workingDir/convex_hull_config.json');
     const encoder = JsonEncoder.withIndent('  ');
     final strippedModel = convexHullConfigModel.copyWith(
       activeResults: null,
-      activeImageSetBaseName: null,
     );
     final formattedJson = encoder.convert(strippedModel.toJson());
     await jsonFile.writeAsString(formattedJson);
@@ -60,9 +44,8 @@ class ConvexHullConfig extends _$ConvexHullConfig {
   void setActiveResults({required ConvexHullResults? results}) {
     ref.read(appDataProvider.notifier).selectImage(image: null);
     state = state.copyWith(
-      activeImage: null,
+      //activeImage: null,
       activeResults: results,
-      activeImageSetBaseName: results?.simplex?.baseName,
     );
   }
 }

@@ -6,7 +6,7 @@ part of 'convex_hull_data_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$convexHullDataHash() => r'69653052cb7a582deca7f335c39fb705b92a4ae9';
+String _$convexHullDataHash() => r'6bdcbe57a25cc7b5283c5681c7e0e94bc24f8324';
 
 /// See also [ConvexHullData].
 @ProviderFor(ConvexHullData)

@@ -46,7 +46,6 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     );
   }
 
-  // TODO this is causing the bug
   Future<void> backgroundSelect() async {
     final appData = ref.read(appDataProvider);
     final image = appData.selectedImage;
@@ -81,9 +80,8 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
 
   Future<void> performCalculation() async {
     final hullData = ref.read(convexHullConfigProvider);
-    final activeImageSetBaseName = hullData.activeImageSetBaseName;
-    // TODO this isnt getting set properly why do I have two of them?? this works but it seem hakcy
-    // final activeImage = hullData.activeImage;
+    final appData = ref.read(appDataProvider);
+    final activeImageSetBaseName = appData.selectedImage?.baseName;
     final activeImage = ref.read(appDataProvider).selectedImage;
     if (activeImage == null) return;
     final imageSetIndex = state.indexWhere((set) => set.baseName == activeImageSetBaseName);
@@ -108,7 +106,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     }
 
     final data = {
-      'base_image_name': hullData.activeImageSetBaseName,
+      'base_image_name': activeImageSetBaseName,
       'width': hullData.imageWidth,
       'height': hullData.imageHeight,
       'images': imageData,

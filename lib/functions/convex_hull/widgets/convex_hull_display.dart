@@ -24,8 +24,9 @@ class _ConvexHullControlsState extends ConsumerState<ConvexHullDisplay> {
   @override
   Widget build(BuildContext context) {
     final convexHullConfig = ref.watch(convexHullConfigProvider);
+    final appData = ref.watch(appDataProvider);
 
-    if (convexHullConfig.leftMenuEnum == LeftMenuEnum.functionImageSelection && convexHullConfig.activeImage != null) {
+    if (convexHullConfig.leftMenuEnum == LeftMenuEnum.functionImageSelection && appData.selectedImage != null) {
       return const Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: _BackgroundSelect(),
@@ -51,7 +52,6 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final asyncData = ref.watch(convexHullDataProvider);
     final results = config.activeResults ?? const ConvexHullResults();
-    final imageSetBaseName = config.activeImageSetBaseName;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +128,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
             : Container(),
         asyncData.when(
           data: (data) {
-            final areaData = data[imageSetBaseName];
+            final areaData = data[results.simplex?.baseName];
             if (areaData == null) {
               return Container();
             }
@@ -299,7 +299,8 @@ class _BackgroundSelect extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final convexHullConfig = ref.watch(convexHullConfigProvider);
-    final image = convexHullConfig.activeImage;
+    final appData = ref.watch(appDataProvider);
+    final image = appData.selectedImage;
     final name = image?.name ?? '';
 
     if (name.contains(bgTag)) {

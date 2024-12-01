@@ -13,8 +13,8 @@ part 'convex_hull_config_model.g.dart';
 class ConvexHullConfigModel with _$ConvexHullConfigModel {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   const factory ConvexHullConfigModel({
-    String? activeImageSetBaseName,
-    AbstractImage? activeImage,
+    //String? activeImageSetBaseName,
+    //AbstractImage? activeImage,
     ConvexHullResults? activeResults,
     @Default(LeftMenuEnum.functionSettings) LeftMenuEnum leftMenuEnum,
     @Default(overlay) String overlaySearchPattern,

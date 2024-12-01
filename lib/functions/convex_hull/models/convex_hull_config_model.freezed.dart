@@ -21,8 +21,8 @@ ConvexHullConfigModel _$ConvexHullConfigModelFromJson(
 
 /// @nodoc
 mixin _$ConvexHullConfigModel {
-  String? get activeImageSetBaseName => throw _privateConstructorUsedError;
-  AbstractImage? get activeImage => throw _privateConstructorUsedError;
+//String? activeImageSetBaseName,
+//AbstractImage? activeImage,
   ConvexHullResults? get activeResults => throw _privateConstructorUsedError;
   LeftMenuEnum get leftMenuEnum => throw _privateConstructorUsedError;
   String get overlaySearchPattern => throw _privateConstructorUsedError;
@@ -54,9 +54,7 @@ abstract class $ConvexHullConfigModelCopyWith<$Res> {
       _$ConvexHullConfigModelCopyWithImpl<$Res, ConvexHullConfigModel>;
   @useResult
   $Res call(
-      {String? activeImageSetBaseName,
-      AbstractImage? activeImage,
-      ConvexHullResults? activeResults,
+      {ConvexHullResults? activeResults,
       LeftMenuEnum leftMenuEnum,
       String overlaySearchPattern,
       Map<String, String> searchPatternProteinConfig,
@@ -67,7 +65,6 @@ abstract class $ConvexHullConfigModelCopyWith<$Res> {
       String units,
       int channelNumber});
 
-  $AbstractImageCopyWith<$Res>? get activeImage;
   $ConvexHullResultsCopyWith<$Res>? get activeResults;
 }
 
@@ -87,8 +84,6 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? activeImageSetBaseName = freezed,
-    Object? activeImage = freezed,
     Object? activeResults = freezed,
     Object? leftMenuEnum = null,
     Object? overlaySearchPattern = null,
@@ -101,14 +96,6 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
     Object? channelNumber = null,
   }) {
     return _then(_value.copyWith(
-      activeImageSetBaseName: freezed == activeImageSetBaseName
-          ? _value.activeImageSetBaseName
-          : activeImageSetBaseName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      activeImage: freezed == activeImage
-          ? _value.activeImage
-          : activeImage // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
       activeResults: freezed == activeResults
           ? _value.activeResults
           : activeResults // ignore: cast_nullable_to_non_nullable
@@ -156,20 +143,6 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $AbstractImageCopyWith<$Res>? get activeImage {
-    if (_value.activeImage == null) {
-      return null;
-    }
-
-    return $AbstractImageCopyWith<$Res>(_value.activeImage!, (value) {
-      return _then(_value.copyWith(activeImage: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ConvexHullConfigModel
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
   $ConvexHullResultsCopyWith<$Res>? get activeResults {
     if (_value.activeResults == null) {
       return null;
@@ -191,9 +164,7 @@ abstract class _$$ConvexHullConfigModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? activeImageSetBaseName,
-      AbstractImage? activeImage,
-      ConvexHullResults? activeResults,
+      {ConvexHullResults? activeResults,
       LeftMenuEnum leftMenuEnum,
       String overlaySearchPattern,
       Map<String, String> searchPatternProteinConfig,
@@ -204,8 +175,6 @@ abstract class _$$ConvexHullConfigModelImplCopyWith<$Res>
       String units,
       int channelNumber});
 
-  @override
-  $AbstractImageCopyWith<$Res>? get activeImage;
   @override
   $ConvexHullResultsCopyWith<$Res>? get activeResults;
 }
@@ -224,8 +193,6 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? activeImageSetBaseName = freezed,
-    Object? activeImage = freezed,
     Object? activeResults = freezed,
     Object? leftMenuEnum = null,
     Object? overlaySearchPattern = null,
@@ -238,14 +205,6 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
     Object? channelNumber = null,
   }) {
     return _then(_$ConvexHullConfigModelImpl(
-      activeImageSetBaseName: freezed == activeImageSetBaseName
-          ? _value.activeImageSetBaseName
-          : activeImageSetBaseName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      activeImage: freezed == activeImage
-          ? _value.activeImage
-          : activeImage // ignore: cast_nullable_to_non_nullable
-              as AbstractImage?,
       activeResults: freezed == activeResults
           ? _value.activeResults
           : activeResults // ignore: cast_nullable_to_non_nullable
@@ -296,9 +255,7 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   const _$ConvexHullConfigModelImpl(
-      {this.activeImageSetBaseName,
-      this.activeImage,
-      this.activeResults,
+      {this.activeResults,
       this.leftMenuEnum = LeftMenuEnum.functionSettings,
       this.overlaySearchPattern = overlay,
       final Map<String, String> searchPatternProteinConfig = const {},
@@ -315,10 +272,8 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   factory _$ConvexHullConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullConfigModelImplFromJson(json);
 
-  @override
-  final String? activeImageSetBaseName;
-  @override
-  final AbstractImage? activeImage;
+//String? activeImageSetBaseName,
+//AbstractImage? activeImage,
   @override
   final ConvexHullResults? activeResults;
   @override
@@ -372,7 +327,7 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
 
   @override
   String toString() {
-    return 'ConvexHullConfigModel(activeImageSetBaseName: $activeImageSetBaseName, activeImage: $activeImage, activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, overlaySearchPattern: $overlaySearchPattern, searchPatternProteinConfig: $searchPatternProteinConfig, searchPatternOverlayConfig: $searchPatternOverlayConfig, searchPatternOverlayColorConfig: $searchPatternOverlayColorConfig, imageWidth: $imageWidth, imageHeight: $imageHeight, units: $units, channelNumber: $channelNumber)';
+    return 'ConvexHullConfigModel(activeResults: $activeResults, leftMenuEnum: $leftMenuEnum, overlaySearchPattern: $overlaySearchPattern, searchPatternProteinConfig: $searchPatternProteinConfig, searchPatternOverlayConfig: $searchPatternOverlayConfig, searchPatternOverlayColorConfig: $searchPatternOverlayColorConfig, imageWidth: $imageWidth, imageHeight: $imageHeight, units: $units, channelNumber: $channelNumber)';
   }
 
   @override
@@ -380,10 +335,6 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ConvexHullConfigModelImpl &&
-            (identical(other.activeImageSetBaseName, activeImageSetBaseName) ||
-                other.activeImageSetBaseName == activeImageSetBaseName) &&
-            (identical(other.activeImage, activeImage) ||
-                other.activeImage == activeImage) &&
             (identical(other.activeResults, activeResults) ||
                 other.activeResults == activeResults) &&
             (identical(other.leftMenuEnum, leftMenuEnum) ||
@@ -412,8 +363,6 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      activeImageSetBaseName,
-      activeImage,
       activeResults,
       leftMenuEnum,
       overlaySearchPattern,
@@ -444,9 +393,7 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
 
 abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   const factory _ConvexHullConfigModel(
-      {final String? activeImageSetBaseName,
-      final AbstractImage? activeImage,
-      final ConvexHullResults? activeResults,
+      {final ConvexHullResults? activeResults,
       final LeftMenuEnum leftMenuEnum,
       final String overlaySearchPattern,
       final Map<String, String> searchPatternProteinConfig,
@@ -460,10 +407,8 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   factory _ConvexHullConfigModel.fromJson(Map<String, dynamic> json) =
       _$ConvexHullConfigModelImpl.fromJson;
 
-  @override
-  String? get activeImageSetBaseName;
-  @override
-  AbstractImage? get activeImage;
+//String? activeImageSetBaseName,
+//AbstractImage? activeImage,
   @override
   ConvexHullResults? get activeResults;
   @override

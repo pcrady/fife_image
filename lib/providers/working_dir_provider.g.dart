@@ -6,7 +6,7 @@ part of 'working_dir_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$workingDirHash() => r'7af487426c6ea9c5fdf68830c574163dc8255c1e';
+String _$workingDirHash() => r'f21873cad20bd47de42f4433d6fdb8ad027581c2';
 
 /// See also [WorkingDir].
 @ProviderFor(WorkingDir)

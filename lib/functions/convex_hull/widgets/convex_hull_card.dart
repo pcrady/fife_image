@@ -38,7 +38,7 @@ class _ConvexHullCardState extends ConsumerState<ConvexHullCard> {
           ref.read(appDataProvider.notifier).selectImage(image: widget.image);
         },
         deleteCallback: () {
-          if (ref.read(convexHullConfigProvider).activeImage == widget.image) {
+          if (ref.read(appDataProvider).selectedImage == widget.image) {
             ref.read(appDataProvider.notifier).selectImage(image: null);
           }
         },
