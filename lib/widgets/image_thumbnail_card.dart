@@ -105,7 +105,9 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
                             size: 18.0,
                           ),
                           onTap: () async {
-                            await ref.read(imagesProvider.notifier).deleteImageFromServer(image: widget.image);
+                            await ref.read(imagesProvider.notifier).deleteImageFromServer(
+                                image: widget.image,
+                            );
                             final deleteCallback = widget.deleteCallback;
                             if (deleteCallback != null) {
                               deleteCallback();

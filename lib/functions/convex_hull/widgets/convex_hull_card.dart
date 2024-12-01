@@ -101,9 +101,11 @@ class _ConvexHullCardState extends ConsumerState<ConvexHullCard> {
                             final images = ref.read(imagesProvider.notifier);
                             final inflammation = widget.results?.inflammation;
                             final simplex = widget.results?.simplex;
+                            final infiltration = widget.results?.infiltration;
                             List<Future> futures = [];
                             if (inflammation != null) futures.add(images.deleteImageFromServer(image: inflammation));
                             if (simplex != null) futures.add(images.deleteImageFromServer(image: simplex));
+                            if (infiltration != null) futures.add(images.deleteImageFromServer(image: infiltration));
                             await Future.wait(futures);
 
                             if (ref.read(convexHullConfigProvider).activeResults == widget.results) {

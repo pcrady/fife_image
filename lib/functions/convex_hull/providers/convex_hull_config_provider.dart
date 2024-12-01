@@ -44,7 +44,11 @@ class ConvexHullConfig extends _$ConvexHullConfig {
   Future<void> setConvexHullConfig({required ConvexHullConfigModel convexHullConfigModel}) async {
     final jsonFile = _getConfigFile();
     const encoder = JsonEncoder.withIndent('  ');
-    final formattedJson = encoder.convert(convexHullConfigModel.toJson());
+    final strippedModel = convexHullConfigModel.copyWith(
+      activeResults: null,
+      activeImageSetBaseName: null,
+    );
+    final formattedJson = encoder.convert(strippedModel.toJson());
     await jsonFile.writeAsString(formattedJson);
     state = convexHullConfigModel;
   }

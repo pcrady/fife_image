@@ -1,6 +1,7 @@
 import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/models/app_data_store.dart';
+import 'package:fife_image/providers/working_dir_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // flutter pub run build_runner build
@@ -11,6 +12,7 @@ class AppData extends _$AppData {
 
   @override
   AppDataStore build() {
+    ref.watch(workingDirProvider);
     return const AppDataStore();
   }
 
