@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
-import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
@@ -53,7 +52,6 @@ class ConvexHullConfig extends _$ConvexHullConfig {
   void setLeftMenu({required LeftMenuEnum leftMenu}) {
     state = state.copyWith(leftMenuEnum: leftMenu);
   }
-
 
   void setActiveResults({required ConvexHullResults? results}) {
     ref.read(appDataProvider.notifier).selectImage(image: null);
