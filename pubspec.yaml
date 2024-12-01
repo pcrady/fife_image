@@ -35,6 +35,7 @@ dev_dependencies:
   # todo this is the problem: riverpod_lint: ^2.3.12
   json_serializable: ^6.9.0
   freezed: ^2.5.7
+  msix: ^3.16.8
 
 flutter:
   uses-material-design: true
