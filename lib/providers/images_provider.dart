@@ -90,7 +90,6 @@ class Images extends _$Images {
     if (image.imagePath == hullResults?.simplex?.imagePath ||
         image.imagePath == hullResults?.infiltration?.imagePath ||
         image.imagePath == hullResults?.inflammation?.imagePath) {
-      logger.i('here');
       ref.read(convexHullConfigProvider.notifier).setActiveResults(results: null);
     }
     ref.invalidateSelf();
