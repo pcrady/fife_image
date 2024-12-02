@@ -42,3 +42,6 @@ rm macos/dist/main
 flutter build macos
 
 to build for Windows:
+dart run msix:create
+then copy the python binary into the resulting folder
+
