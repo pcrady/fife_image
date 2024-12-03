@@ -1,7 +1,5 @@
-
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
-import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_data_provider.dart';
@@ -53,55 +51,22 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     ref.invalidate(imagesProvider);
   }
 
-  Map<String, dynamic> _getImageLabel({
-    required ConvexHullConfigModel hullData,
-    required ConvexHullImageSet imageSet,
-  }) {
-    final images = imageSet.images ?? [];
-    final searchPatternProteinConfig = hullData.searchPatternProteinConfig;
-    Map<String, dynamic> labeledImages = {};
-
-    searchPatternProteinConfig.forEach((searchPattern, protein) {
-      for (final image in images) {
-        if (image.name.contains(searchPattern) && image.isBackgroundCorrected) {
-          labeledImages[protein] = image.toJson();
-          labeledImages[protein]['validation'] = hullData.searchPatternOverlayConfig[searchPattern];
-          labeledImages[protein]['validation_color'] = hullData.searchPatternOverlayColorConfig[searchPattern];
-        }
-      }
-    });
-    return labeledImages;
-  }
-
   Future<void> performCalculation() async {
-    final hullData = ref.read(convexHullConfigProvider);
+    final hullConfig = ref.read(convexHullConfigProvider);
     final appData = ref.read(appDataProvider);
     final activeImageSetBaseName = appData.selectedImage?.baseName;
-    final activeImage = ref.read(appDataProvider).selectedImage;
-
-    if (activeImage == null) {
-      ref.read(appDataProvider.notifier).setLoadingFalse();
-      return;
-    }
-
+    final overlayImage = ref.read(appDataProvider).selectedImage;
     final imageSetIndex = state.indexWhere((set) => set.baseName == activeImageSetBaseName);
 
-    if (imageSetIndex == -1) {
-      ref.read(appDataProvider.notifier).setLoadingFalse();
-      return;
+    if (overlayImage == null || imageSetIndex == -1) {
+      throw 'Something has gone wrong';
     }
 
     final activeImageSet = state[imageSetIndex];
-    var imageData = _getImageLabel(
-      hullData: hullData,
-      imageSet: activeImageSet,
-    );
-    imageData['overlay'] = activeImage.toJson();
-    imageData['overlay']['validation'] = false;
-    imageData['overlay']['validation_color'] = 0;
+    final imageData = activeImageSet.toJsonForCalc(hullConfig: hullConfig, overlayImage: overlayImage);
     final proteinNames = imageData.keys;
 
-    if (proteinNames.length != hullData.searchPatternProteinConfig.keys.length + 1) {
+    if (!activeImageSet.bgCorrectComplete(hullConfig)) {
       throw 'You must perform background correction on all images in the set';
     }
 
@@ -111,8 +76,8 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
 
     final data = {
       'base_image_name': activeImageSetBaseName,
-      'width': hullData.imageWidth,
-      'height': hullData.imageHeight,
+      'width': hullConfig.imageWidth,
+      'height': hullConfig.imageHeight,
       'images': imageData,
     };
 

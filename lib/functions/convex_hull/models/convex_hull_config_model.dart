@@ -1,6 +1,4 @@
-
 import 'package:fife_image/constants.dart';
-import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -12,7 +10,6 @@ part 'convex_hull_config_model.g.dart';
 class ConvexHullConfigModel with _$ConvexHullConfigModel {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   const factory ConvexHullConfigModel({
-    //ConvexHullResults? activeResults,// todo maybe move this elsewhere, appdata maybe
     @Default(LeftMenuEnum.functionSettings) LeftMenuEnum leftMenuEnum,
     @Default(overlay) String overlaySearchPattern,
     @Default({}) Map<String, String> searchPatternProteinConfig,
