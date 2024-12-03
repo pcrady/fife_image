@@ -21,9 +21,8 @@ ConvexHullConfigModel _$ConvexHullConfigModelFromJson(
 
 /// @nodoc
 mixin _$ConvexHullConfigModel {
-//String? activeImageSetBaseName,
-//AbstractImage? activeImage,
-  ConvexHullResults? get activeResults => throw _privateConstructorUsedError;
+  ConvexHullResults? get activeResults =>
+      throw _privateConstructorUsedError; // todo maybe move this elsewhere, appdata maybe
   LeftMenuEnum get leftMenuEnum => throw _privateConstructorUsedError;
   String get overlaySearchPattern => throw _privateConstructorUsedError;
   Map<String, String> get searchPatternProteinConfig =>
@@ -272,10 +271,9 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   factory _$ConvexHullConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullConfigModelImplFromJson(json);
 
-//String? activeImageSetBaseName,
-//AbstractImage? activeImage,
   @override
   final ConvexHullResults? activeResults;
+// todo maybe move this elsewhere, appdata maybe
   @override
   @JsonKey()
   final LeftMenuEnum leftMenuEnum;
@@ -407,10 +405,9 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   factory _ConvexHullConfigModel.fromJson(Map<String, dynamic> json) =
       _$ConvexHullConfigModelImpl.fromJson;
 
-//String? activeImageSetBaseName,
-//AbstractImage? activeImage,
   @override
-  ConvexHullResults? get activeResults;
+  ConvexHullResults?
+      get activeResults; // todo maybe move this elsewhere, appdata maybe
   @override
   LeftMenuEnum get leftMenuEnum;
   @override

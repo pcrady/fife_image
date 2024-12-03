@@ -6,7 +6,6 @@ import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.da
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_data_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
-import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,19 +23,15 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
 
     return imagesAsyncValue.when(
       data: (images) {
-        List<ConvexHullImageSet> sortedImages = [];
-        for (AbstractImage image in images) {
-          final oldImageSet = sortedImages.firstWhere(
-            (element) => element.baseName == image.baseName,
-            orElse: () => ConvexHullImageSet(baseName: image.baseName),
-          );
-          List<AbstractImage> imageList = List.from(oldImageSet.images ?? [])..add(image);
-          final newImageSet = oldImageSet.copyWith(images: imageList);
-          sortedImages.remove(oldImageSet);
-          sortedImages.add(newImageSet);
-        }
+        List<String> uniqueBaseNames = images.map((image) => image.baseName).toSet().toList();
+        List<ConvexHullImageSet> sets = [];
 
-        return sortedImages;
+        for (final baseName in uniqueBaseNames) {
+          final imageList = images.where((image) => image.baseName == baseName).toList();
+          final convexHullImageSet = ConvexHullImageSet(images: imageList);
+          sets.add(convexHullImageSet);
+        }
+        return sets;
       },
       error: (err, stack) {
         logger.e(err, stackTrace: stack);

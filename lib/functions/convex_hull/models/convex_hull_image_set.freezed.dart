@@ -20,7 +20,7 @@ ConvexHullImageSet _$ConvexHullImageSetFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ConvexHullImageSet {
-  String? get baseName => throw _privateConstructorUsedError;
+//String? baseName,
   List<AbstractImage>? get images => throw _privateConstructorUsedError;
   ConvexHullResults get results => throw _privateConstructorUsedError;
 
@@ -40,10 +40,7 @@ abstract class $ConvexHullImageSetCopyWith<$Res> {
           ConvexHullImageSet value, $Res Function(ConvexHullImageSet) then) =
       _$ConvexHullImageSetCopyWithImpl<$Res, ConvexHullImageSet>;
   @useResult
-  $Res call(
-      {String? baseName,
-      List<AbstractImage>? images,
-      ConvexHullResults results});
+  $Res call({List<AbstractImage>? images, ConvexHullResults results});
 
   $ConvexHullResultsCopyWith<$Res> get results;
 }
@@ -63,15 +60,10 @@ class _$ConvexHullImageSetCopyWithImpl<$Res, $Val extends ConvexHullImageSet>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? baseName = freezed,
     Object? images = freezed,
     Object? results = null,
   }) {
     return _then(_value.copyWith(
-      baseName: freezed == baseName
-          ? _value.baseName
-          : baseName // ignore: cast_nullable_to_non_nullable
-              as String?,
       images: freezed == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
@@ -102,10 +94,7 @@ abstract class _$$ConvexHullImageSetImplCopyWith<$Res>
       __$$ConvexHullImageSetImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? baseName,
-      List<AbstractImage>? images,
-      ConvexHullResults results});
+  $Res call({List<AbstractImage>? images, ConvexHullResults results});
 
   @override
   $ConvexHullResultsCopyWith<$Res> get results;
@@ -124,15 +113,10 @@ class __$$ConvexHullImageSetImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? baseName = freezed,
     Object? images = freezed,
     Object? results = null,
   }) {
     return _then(_$ConvexHullImageSetImpl(
-      baseName: freezed == baseName
-          ? _value.baseName
-          : baseName // ignore: cast_nullable_to_non_nullable
-              as String?,
       images: freezed == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
@@ -151,8 +135,7 @@ class __$$ConvexHullImageSetImplCopyWithImpl<$Res>
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
   _$ConvexHullImageSetImpl(
-      {this.baseName,
-      final List<AbstractImage>? images,
+      {final List<AbstractImage>? images,
       this.results = const ConvexHullResults()})
       : _images = images,
         super._();
@@ -160,9 +143,9 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
   factory _$ConvexHullImageSetImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullImageSetImplFromJson(json);
 
-  @override
-  final String? baseName;
+//String? baseName,
   final List<AbstractImage>? _images;
+//String? baseName,
   @override
   List<AbstractImage>? get images {
     final value = _images;
@@ -178,7 +161,7 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
 
   @override
   String toString() {
-    return 'ConvexHullImageSet(baseName: $baseName, images: $images, results: $results)';
+    return 'ConvexHullImageSet(images: $images, results: $results)';
   }
 
   @override
@@ -186,16 +169,14 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ConvexHullImageSetImpl &&
-            (identical(other.baseName, baseName) ||
-                other.baseName == baseName) &&
             const DeepCollectionEquality().equals(other._images, _images) &&
             (identical(other.results, results) || other.results == results));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, baseName,
-      const DeepCollectionEquality().hash(_images), results);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_images), results);
 
   /// Create a copy of ConvexHullImageSet
   /// with the given fields replaced by the non-null parameter values.
@@ -216,16 +197,14 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
 
 abstract class _ConvexHullImageSet extends ConvexHullImageSet {
   factory _ConvexHullImageSet(
-      {final String? baseName,
-      final List<AbstractImage>? images,
+      {final List<AbstractImage>? images,
       final ConvexHullResults results}) = _$ConvexHullImageSetImpl;
   _ConvexHullImageSet._() : super._();
 
   factory _ConvexHullImageSet.fromJson(Map<String, dynamic> json) =
       _$ConvexHullImageSetImpl.fromJson;
 
-  @override
-  String? get baseName;
+//String? baseName,
   @override
   List<AbstractImage>? get images;
   @override

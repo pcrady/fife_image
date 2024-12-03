@@ -11,13 +11,18 @@ class ConvexHullImageSet with _$ConvexHullImageSet {
 
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   factory ConvexHullImageSet({
-    String? baseName,
     List<AbstractImage>? images,
     @Default(ConvexHullResults()) ConvexHullResults results,
   }) = _ConvexHullImageSet;
 
   List<String> get imageNames {
     return images?.map((image) => image.name).toList() ?? [];
+  }
+
+  String? get baseName {
+    if (images == null) return null;
+    assert(images!.map((image) => image.baseName).toSet().length == 1);
+    return images?.first.baseName;
   }
 
   factory ConvexHullImageSet.fromJson(Map<String, dynamic> json) => _$ConvexHullImageSetFromJson(json);
