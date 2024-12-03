@@ -12,7 +12,7 @@ part 'convex_hull_config_model.g.dart';
 class ConvexHullConfigModel with _$ConvexHullConfigModel {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   const factory ConvexHullConfigModel({
-    ConvexHullResults? activeResults,// todo maybe move this elsewhere, appdata maybe
+    //ConvexHullResults? activeResults,// todo maybe move this elsewhere, appdata maybe
     @Default(LeftMenuEnum.functionSettings) LeftMenuEnum leftMenuEnum,
     @Default(overlay) String overlaySearchPattern,
     @Default({}) Map<String, String> searchPatternProteinConfig,

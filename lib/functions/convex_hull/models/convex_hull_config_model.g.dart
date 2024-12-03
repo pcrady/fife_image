@@ -9,10 +9,6 @@ part of 'convex_hull_config_model.dart';
 _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
         Map<String, dynamic> json) =>
     _$ConvexHullConfigModelImpl(
-      activeResults: json['active_results'] == null
-          ? null
-          : ConvexHullResults.fromJson(
-              json['active_results'] as Map<String, dynamic>),
       leftMenuEnum:
           $enumDecodeNullable(_$LeftMenuEnumEnumMap, json['left_menu_enum']) ??
               LeftMenuEnum.functionSettings,
@@ -44,8 +40,6 @@ _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
 Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
         _$ConvexHullConfigModelImpl instance) =>
     <String, dynamic>{
-      if (instance.activeResults?.toJson() case final value?)
-        'active_results': value,
       'left_menu_enum': _$LeftMenuEnumEnumMap[instance.leftMenuEnum]!,
       'overlay_search_pattern': instance.overlaySearchPattern,
       'search_pattern_protein_config': instance.searchPatternProteinConfig,

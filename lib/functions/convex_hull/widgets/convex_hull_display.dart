@@ -6,6 +6,7 @@ import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_pr
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_data_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
+import 'package:fife_image/models/app_data_store.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
@@ -31,9 +32,10 @@ class _ConvexHullControlsState extends ConsumerState<ConvexHullDisplay> {
         padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: _BackgroundSelect(),
       );
-    } else if (convexHullConfig.activeResults != null) {
+    } else if (appData.activeResults != null) {
       return _ConvexHullResultsDisplay(
         config: convexHullConfig,
+        appData: appData,
       );
     } else {
       return Container();
@@ -43,15 +45,17 @@ class _ConvexHullControlsState extends ConsumerState<ConvexHullDisplay> {
 
 class _ConvexHullResultsDisplay extends ConsumerWidget {
   final ConvexHullConfigModel config;
+  final AppDataStore appData;
 
   const _ConvexHullResultsDisplay({
     required this.config,
+    required this.appData,
   });
 
   @override
   Widget build(BuildContext context, ref) {
     final asyncData = ref.watch(convexHullDataProvider);
-    final results = config.activeResults ?? const ConvexHullResults();
+    final results = appData.activeResults ?? const ConvexHullResults();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

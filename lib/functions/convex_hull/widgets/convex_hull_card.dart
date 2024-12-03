@@ -29,7 +29,7 @@ class _ConvexHullCardState extends ConsumerState<ConvexHullCard> {
 
   @override
   Widget build(BuildContext context) {
-    final config = ref.watch(convexHullConfigProvider);
+    final appData = ref.watch(appDataProvider);
 
     if (widget.image != null) {
       return ImageThumbnailCard(
@@ -54,10 +54,10 @@ class _ConvexHullCardState extends ConsumerState<ConvexHullCard> {
         },
         child: GestureDetector(
           onTap: () {
-            ref.read(convexHullConfigProvider.notifier).setActiveResults(results: widget.results!);
+            ref.read(appDataProvider.notifier).setActiveResults(results: widget.results!);
           },
           child: Card(
-            shape: config.activeResults == widget.results
+            shape: appData.activeResults == widget.results
                 ? RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0),
                     side: const BorderSide(
@@ -108,8 +108,8 @@ class _ConvexHullCardState extends ConsumerState<ConvexHullCard> {
                             if (infiltration != null) futures.add(images.deleteImageFromServer(image: infiltration));
                             await Future.wait(futures);
 
-                            if (ref.read(convexHullConfigProvider).activeResults == widget.results) {
-                              ref.read(convexHullConfigProvider.notifier).setActiveResults(results: null);
+                            if (appData.activeResults == widget.results) {
+                              ref.read(appDataProvider.notifier).setActiveResults(results: null);
                             }
                           },
                         ),

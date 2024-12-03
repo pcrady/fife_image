@@ -80,7 +80,7 @@ class Images extends _$Images {
       data: {'filename': image.name},
     );
     final appData = ref.read(appDataProvider);
-    final hullResults = ref.read(convexHullConfigProvider).activeResults;
+    final hullResults = appData.activeResults;
     final imagePath = appData.selectedImage?.imagePath;
     if (imagePath == image.imagePath) {
       ref.read(appDataProvider.notifier).selectImage(image: null);
@@ -89,7 +89,7 @@ class Images extends _$Images {
     if (image.imagePath == hullResults?.simplex?.imagePath ||
         image.imagePath == hullResults?.infiltration?.imagePath ||
         image.imagePath == hullResults?.inflammation?.imagePath) {
-      ref.read(convexHullConfigProvider.notifier).setActiveResults(results: null);
+      ref.read(appDataProvider.notifier).setActiveResults(results: null);
     }
     ref.invalidateSelf();
   }

@@ -1,3 +1,4 @@
+import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/models/abstract_image.dart';
@@ -23,9 +24,16 @@ class AppData extends _$AppData {
 
   void selectImage({required AbstractImage? image}) {
     if (image != null) {
-      ref.read(convexHullConfigProvider.notifier).setActiveResults(results: null);
+      setActiveResults(results: null);
     }
     state = state.copyWith(selectedImage: image);
+  }
+
+  void setActiveResults({required ConvexHullResults? results}) {
+    if (results != null) {
+      selectImage(image: null);
+    }
+    state = state.copyWith(activeResults: results);
   }
 
   void setLoadingTrue() {

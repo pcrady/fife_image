@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
-import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
 import 'package:fife_image/models/enums.dart';
-import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -29,22 +27,12 @@ class ConvexHullConfig extends _$ConvexHullConfig {
     final workingDir = ref.read(workingDirProvider).value;
     final jsonFile = File('$workingDir/convex_hull_config.json');
     const encoder = JsonEncoder.withIndent('  ');
-    final strippedModel = convexHullConfigModel.copyWith(
-      activeResults: null,
-    );
-    final formattedJson = encoder.convert(strippedModel.toJson());
+    final formattedJson = encoder.convert(convexHullConfigModel.toJson());
     await jsonFile.writeAsString(formattedJson);
     state = convexHullConfigModel;
   }
 
   void setLeftMenu({required LeftMenuEnum leftMenu}) {
     state = state.copyWith(leftMenuEnum: leftMenu);
-  }
-
-  void setActiveResults({required ConvexHullResults? results}) {
-    ref.read(appDataProvider.notifier).selectImage(image: null);
-    state = state.copyWith(
-      activeResults: results,
-    );
   }
 }

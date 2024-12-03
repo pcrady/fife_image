@@ -20,7 +20,6 @@ ConvexHullImageSet _$ConvexHullImageSetFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ConvexHullImageSet {
-//String? baseName,
   List<AbstractImage>? get images => throw _privateConstructorUsedError;
   ConvexHullResults get results => throw _privateConstructorUsedError;
 
@@ -143,9 +142,7 @@ class _$ConvexHullImageSetImpl extends _ConvexHullImageSet {
   factory _$ConvexHullImageSetImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullImageSetImplFromJson(json);
 
-//String? baseName,
   final List<AbstractImage>? _images;
-//String? baseName,
   @override
   List<AbstractImage>? get images {
     final value = _images;
@@ -204,7 +201,6 @@ abstract class _ConvexHullImageSet extends ConvexHullImageSet {
   factory _ConvexHullImageSet.fromJson(Map<String, dynamic> json) =
       _$ConvexHullImageSetImpl.fromJson;
 
-//String? baseName,
   @override
   List<AbstractImage>? get images;
   @override
