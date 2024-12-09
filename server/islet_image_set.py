@@ -243,14 +243,16 @@ class IsletImageSet:
                 islet_area = 0.0 if np.isnan(islet_area) else islet_area
                 outside_islet_area = total_area - islet_area
                 percent_islet_area = 0.0 if np.isnan(percent_islet_area) else percent_islet_area
+                unclean_percent_of_islet_with_protein = (islet_area / total_area) * 100
+                percent_of_islet_with_protein = 0.0 if np.isnan(unclean_percent_of_islet_with_protein) else unclean_percent_of_islet_with_protein
 
                 protein_data = {
                         'total_area': total_area,
                         'outside_islet_area': outside_islet_area, 
                         'islet_area': islet_area,
                         'percent_islet_area': percent_islet_area,
-                        'percent_of_islet_with_protein': (islet_area / total_area) * 100,
-                        'validation_color': image.validation_color,
+                        'percent_of_islet_with_protein': percent_of_islet_with_protein,
+                        'validation_color': image.validation_color, 
                         }
                 data['proteins'][protein_name] = protein_data
                                 

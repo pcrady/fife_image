@@ -16,6 +16,7 @@ OUTPUT_FOLDER = 'converted/'
 DATA_DIR = 'computed_data/'
 DATA_FILE = 'convex_hull_data.json'
 DATA_FILE_CSV = 'convex_hull_data.csv'
+VERSION = '1.0.0'
 
 
 
@@ -31,6 +32,12 @@ def _calculate_md5(file_path):
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
+
+@app.route('/version', methods=['GET'])
+def version():
+    version = {'server_version': VERSION}
+    return jsonify(version), 200
 
 
 @app.route('/', methods=['GET'])

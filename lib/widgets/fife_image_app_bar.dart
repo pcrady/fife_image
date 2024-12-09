@@ -1,6 +1,8 @@
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
+import 'package:fife_image/models/app_info.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
+import 'package:fife_image/providers/app_info_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,45 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
   late List<FunctionsEnum> dropdownValues;
   late FunctionsEnum dropdownValue;
 
+  Future<void> _dialogBuilder(BuildContext context) async {
+    final value = await ref.read(appInfoProvider.future);
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Basic Info'),
+          backgroundColor: const Color(0xff1f004a),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'App Version: ${value.appVersion}',
+                style: const TextStyle(color: Colors.white),
+              ),
+              Text(
+                'Server Version: ${value.serverVersion}',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     dropdownValues = FunctionsEnum.values;
@@ -39,12 +80,17 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
         children: [
           loading ? const CircularProgressIndicator() : Container(),
           const SizedBox(width: 16.0),
-          const Text(
-            'Fife Image',
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          TextButton(
+            onPressed: () async {
+              await _dialogBuilder(context);
+            },
+            child: const Text(
+              'Fife Image',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -60,7 +106,6 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
             ref.read(appDataProvider.notifier).setLoadingTrue();
             await ref.read(imagesProvider.notifier).uploadImages(filePickerResult: result);
             //await ImageManipulation.convertFileToPng(result.files.first);
-
           } catch (err, stack) {
             logger.e(err, stackTrace: stack);
           } finally {

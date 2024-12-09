@@ -21,7 +21,6 @@ ConvexHullConfigModel _$ConvexHullConfigModelFromJson(
 
 /// @nodoc
 mixin _$ConvexHullConfigModel {
-//ConvexHullResults? activeResults,// todo maybe move this elsewhere, appdata maybe
   LeftMenuEnum get leftMenuEnum => throw _privateConstructorUsedError;
   String get overlaySearchPattern => throw _privateConstructorUsedError;
   Map<String, String> get searchPatternProteinConfig =>
@@ -238,7 +237,6 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   factory _$ConvexHullConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullConfigModelImplFromJson(json);
 
-//ConvexHullResults? activeResults,// todo maybe move this elsewhere, appdata maybe
   @override
   @JsonKey()
   final LeftMenuEnum leftMenuEnum;
@@ -366,7 +364,6 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   factory _ConvexHullConfigModel.fromJson(Map<String, dynamic> json) =
       _$ConvexHullConfigModelImpl.fromJson;
 
-//ConvexHullResults? activeResults,// todo maybe move this elsewhere, appdata maybe
   @override
   LeftMenuEnum get leftMenuEnum;
   @override

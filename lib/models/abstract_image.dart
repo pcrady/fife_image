@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:cross_file/cross_file.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/models/json_converters.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -25,6 +26,8 @@ class AbstractImage with _$AbstractImage {
   String get name => basename(imagePath).split('.').first;
   String get baseName => name.split('_').first;
   bool get isBackgroundCorrected => name.contains('bg_correct');
+
+  XFile get xFile => XFile(imagePath);
 
   factory AbstractImage.fromJson(Map<String, dynamic> json) => _$AbstractImageFromJson(json);
 }
