@@ -13,6 +13,7 @@ import 'package:fife_image/providers/images_provider.dart';
 import 'package:fife_image/widgets/selected_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class ConvexHullDisplay extends ConsumerStatefulWidget {
   const ConvexHullDisplay({super.key});
@@ -149,6 +150,8 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
               return Container();
             }
 
+            final formatter = NumberFormat("###,###.0#", "en_US");
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -193,26 +196,26 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                           bold: true,
                         ),
                         _TableEntry(
-                          text: (entry.value['total_area'] ?? 0).toStringAsFixed(2),
+                          text: formatter.format(entry.value['total_area'] ?? 0).toString(),
                           units: units,
                           superscript: '2',
                         ),
                         _TableEntry(
-                          text: (entry.value['outside_islet_area'] ?? 0).toStringAsFixed(2),
+                          text: formatter.format(entry.value['outside_islet_area'] ?? 0).toString(),
                           units: units,
                           superscript: '2',
                         ),
                         _TableEntry(
-                          text: (entry.value['islet_area'] ?? 0).toStringAsFixed(2),
+                          text: formatter.format(entry.value['islet_area'] ?? 0).toString(),
                           units: units,
                           superscript: '2',
                         ),
                         _TableEntry(
-                          text: (entry.value['percent_islet_area'] ?? 0).toStringAsFixed(2),
+                          text: formatter.format(entry.value['percent_islet_area'] ?? 0).toString(),
                           units: '%',
                         ),
                         _TableEntry(
-                          text: (entry.value['percent_of_islet_with_protein'] ?? 0).toStringAsFixed(2),
+                          text: formatter.format(entry.value['percent_of_islet_with_protein'] ?? 0).toString(),
                           units: '%',
                         ),
                       ]);

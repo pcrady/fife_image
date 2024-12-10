@@ -19,7 +19,7 @@ OUTPUT_FOLDER = 'converted/'
 DATA_DIR = 'computed_data/'
 DATA_FILE = 'convex_hull_data.json'
 DATA_FILE_CSV = 'convex_hull_data.csv'
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 
 
 
