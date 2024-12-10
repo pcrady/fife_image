@@ -74,8 +74,12 @@ class Heartbeat extends _$Heartbeat {
 
 void _runProcess(String execPath) async {
   final Process process = await Process.start(execPath, []);
-  process.stdout.transform(const SystemEncoding().decoder).listen((output) {});
-  process.stderr.transform(const SystemEncoding().decoder).listen((error) {});
+  process.stdout.transform(const SystemEncoding().decoder).listen((output) {
+    print(output);
+  });
+  process.stderr.transform(const SystemEncoding().decoder).listen((error) {
+    print(error);
+  });
   final exitCode = await process.exitCode;
   if (kDebugMode) {
     print('Process exited with code: $exitCode');

@@ -185,10 +185,11 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                       ],
                     ),
                     ...proteins.entries.map((entry) {
+                      final color =  entry.value['validation_color'] != null ? Color(entry.value['validation_color']) : null;
                       return TableRow(children: [
                         _TableEntry(
                           text: entry.key,
-                          color: Color(entry.value['validation_color']),
+                          color: color,
                           bold: true,
                         ),
                         _TableEntry(
