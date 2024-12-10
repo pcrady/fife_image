@@ -27,6 +27,8 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
   Future<void> _dialogBuilder(BuildContext context) async {
     final value = await ref.read(appInfoProvider.future);
 
+    if (!context.mounted) return;
+
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -105,7 +107,6 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
             if (result == null) return;
             ref.read(appDataProvider.notifier).setLoadingTrue();
             await ref.read(imagesProvider.notifier).uploadImages(filePickerResult: result);
-            //await ImageManipulation.convertFileToPng(result.files.first);
           } catch (err, stack) {
             logger.e(err, stackTrace: stack);
           } finally {

@@ -5,6 +5,7 @@ import 'package:fife_image/constants.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'heartbeat_provider.g.dart';
@@ -13,12 +14,15 @@ part 'heartbeat_provider.g.dart';
 class Heartbeat extends _$Heartbeat {
   static const heartBeatDuration = Duration(seconds: 5);
   static const testInterval = Duration(seconds: 1);
+  static String _logFilePath = '';
 
   @override
   Future<bool> build() async {
     _checkForRunningServer();
     return _testServer();
   }
+
+  String get logFilePath => _logFilePath;
 
   Future<void> _checkForRunningServer() async {
     final dio = Dio();
@@ -39,7 +43,9 @@ class Heartbeat extends _$Heartbeat {
   }
 
   Future<void> _runExecutable() async {
-    await Isolate.spawn(_runProcess, serverPath);
+    final logDir = await getApplicationCacheDirectory();
+    _logFilePath = '${logDir.path}/fife_image.log';
+    await Isolate.spawn(_runProcess, _logFilePath);
   }
 
   Future<void> _heartBeat() async {
@@ -59,6 +65,9 @@ class Heartbeat extends _$Heartbeat {
         await dio.get(server);
         final workingDirFromDisk = ref.read(workingDirProvider).value;
         await ref.read(workingDirProvider.notifier).setWorkingDir(workingDir: workingDirFromDisk);
+        if (kDebugMode) {
+          print('connected to server');
+        }
         _heartBeat();
         shouldTest = false;
       } catch (err) {
@@ -72,16 +81,22 @@ class Heartbeat extends _$Heartbeat {
   }
 }
 
-void _runProcess(String execPath) async {
-  final Process process = await Process.start(execPath, []);
-  process.stdout.transform(const SystemEncoding().decoder).listen((output) {
-    print(output);
-  });
-  process.stderr.transform(const SystemEncoding().decoder).listen((error) {
-    print(error);
-  });
-  final exitCode = await process.exitCode;
+void _runProcess(
+  String logFilePath,
+) async {
+  final File logFile = File(logFilePath);
+  final Process process = await Process.start(serverPath, []);
   if (kDebugMode) {
-    print('Process exited with code: $exitCode');
+    print('logging to: $logFilePath');
   }
+  process.stdout.transform(const SystemEncoding().decoder).listen((output) {
+    logFile.writeAsStringSync(output, mode: FileMode.append);
+  });
+
+  process.stderr.transform(const SystemEncoding().decoder).listen((error) {
+    logFile.writeAsStringSync(error, mode: FileMode.append);
+  });
+
+  final exitCode = await process.exitCode;
+  logFile.writeAsStringSync('Process exited with code: $exitCode\n', mode: FileMode.append);
 }
