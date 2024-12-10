@@ -352,7 +352,6 @@ class _BackgroundSelect extends ConsumerWidget {
                       ref.read(appDataProvider.notifier).setLoadingTrue();
                       await ref.read(convexHullImageSetsProvider.notifier).performCalculation();
                     } catch (err, stack) {
-                      ref.read(appDataProvider.notifier).setLoadingFalse();
                       logger.e(err, stackTrace: stack);
                       final snackBar = SnackBar(
                         content: Text(err.toString()),
@@ -361,7 +360,10 @@ class _BackgroundSelect extends ConsumerWidget {
                           onPressed: () {},
                         ),
                       );
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    } finally {
+                      ref.read(appDataProvider.notifier).setLoadingFalse();
                     }
                   },
                   child: const Text('Perform Calculations'),
@@ -402,7 +404,6 @@ class _BackgroundSelect extends ConsumerWidget {
                       ref.read(appDataProvider.notifier).setLoadingTrue();
                       await ref.read(convexHullImageSetsProvider.notifier).backgroundSelect();
                     } catch (err, stack) {
-                      ref.read(appDataProvider.notifier).setLoadingFalse();
                       logger.e(err, stackTrace: stack);
                       final snackBar = SnackBar(
                         content: Text(err.toString()),
@@ -411,7 +412,10 @@ class _BackgroundSelect extends ConsumerWidget {
                           onPressed: () {},
                         ),
                       );
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    } finally {
+                      ref.read(appDataProvider.notifier).setLoadingFalse();
                     }
                   },
                   child: const Text('Perform Background Correction'),

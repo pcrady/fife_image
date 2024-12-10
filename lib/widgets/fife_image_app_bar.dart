@@ -109,6 +109,15 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
             await ref.read(imagesProvider.notifier).uploadImages(filePickerResult: result);
           } catch (err, stack) {
             logger.e(err, stackTrace: stack);
+            final snackBar = SnackBar(
+              content: Text(err.toString()),
+              action: SnackBarAction(
+                label: 'Close',
+                onPressed: () {},
+              ),
+            );
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } finally {
             ref.read(appDataProvider.notifier).setLoadingFalse();
           }
