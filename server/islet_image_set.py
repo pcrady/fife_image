@@ -200,6 +200,8 @@ class IsletImageSet:
         for image in self.images:
             if image.validation:
                 color = np.zeros((x_dim, y_dim, 3), dtype=np.uint8)
+                # TODO figure out how we want to do this with calculations and stuff
+                #cleaned_image = self._remove_small_objects_and_holes(image.masked_image) 
                 color[image.masked_image] = self._int_to_rgb(image.validation_color)
                 combined_image = combined_image + color
 
@@ -235,16 +237,23 @@ class IsletImageSet:
         for image in self.images:
             if image.protein_name != 'overlay':
                 protein_name = image.protein_name.lower()
+
+                # total area of protein in selected region
                 total_area = (image.masked_image.sum() / image.masked_image.size) * total_image_area
+                # total area of protein inside convex hull
                 islet_area = (np.logical_and(image.masked_image, self.hull_mask).sum() / image.masked_image.size) * total_image_area
+                # percentage of islet covered by protein
                 percent_islet_area = (islet_area / total_area) * 100
 
                 total_area = 0.0 if np.isnan(total_area) else total_area
                 islet_area = 0.0 if np.isnan(islet_area) else islet_area
                 outside_islet_area = total_area - islet_area
                 percent_islet_area = 0.0 if np.isnan(percent_islet_area) else percent_islet_area
-                unclean_percent_of_islet_with_protein = (islet_area / total_area) * 100
+                unclean_percent_of_islet_with_protein = (islet_area / total_islet_area) * 100
+                # total percentage of area of convex hull covered by protein
                 percent_of_islet_with_protein = 0.0 if np.isnan(unclean_percent_of_islet_with_protein) else unclean_percent_of_islet_with_protein
+                # color of the mask on the overlay
+                color = image.validation_color if image.validation else None
 
                 protein_data = {
                         'total_area': total_area,
@@ -252,7 +261,7 @@ class IsletImageSet:
                         'islet_area': islet_area,
                         'percent_islet_area': percent_islet_area,
                         'percent_of_islet_with_protein': percent_of_islet_with_protein,
-                        'validation_color': image.validation_color, 
+                        'validation_color': color, 
                         }
                 data['proteins'][protein_name] = protein_data
                                 

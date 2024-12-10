@@ -256,7 +256,7 @@ def convex_hull_calculation():
 @app.route('/heartbeat', methods=['POST'])
 def heartbeat():
     global last_heartbeat_time
-    print('heartbeat received')
+    # print('heartbeat received')
     with heartbeat_lock:
         last_heartbeat_time = time.time()
     return jsonify({"status": "Heartbeat received"}), 200
@@ -268,7 +268,7 @@ def monitor_heartbeat():
         time.sleep(5)
         with heartbeat_lock:
             elapsed_time = time.time() - last_heartbeat_time
-            print('elapsed_time: ' + str(elapsed_time))
+            # print('elapsed_time: ' + str(elapsed_time))
         if elapsed_time > 20: 
             print("No heartbeat detected! Shutting down server.")
             os.kill(os.getpid(), signal.SIGINT)
