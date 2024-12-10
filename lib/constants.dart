@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const server = 'http://127.0.0.1:5000/';
+const serverPath = 'server/dist/main';
 const bgTag = 'bg_correct';
 const cd4 = 'CD4';
 const cd8 = 'CD8';

@@ -1,46 +1,7 @@
-import 'package:dio/dio.dart';
-import 'package:fife_image/constants.dart';
 import 'package:fife_image/lib/fife_image_router.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:async';
-import 'dart:io';
-import 'dart:isolate';
 
-Future<void> testServer() async {
-  final dio = Dio();
-  if (kDebugMode) {
-    print('Testing server');
-  }
-  try {
-    await dio.get(server);
-    if (kDebugMode) {
-      print('Server already running');
-    }
-  } catch (err) {
-    if (kDebugMode) {
-      print('No server detected. Starting server.');
-    }
-    await runExecutable();
-  }
-}
-
-Future<void> runExecutable() async {
-  const serverPath = 'server/dist/main';
-  await Isolate.spawn(runProcess, serverPath);
-}
-
-void runProcess(String execPath) async {
-  final Process process = await Process.start(execPath, []);
-  process.stdout.transform(const SystemEncoding().decoder).listen((output) {});
-  process.stderr.transform(const SystemEncoding().decoder).listen((error) {});
-
-  final exitCode = await process.exitCode;
-  if (kDebugMode) {
-    print('Process exited with code: $exitCode');
-  }
-}
 
 void main() {
   runApp(
@@ -48,7 +9,6 @@ void main() {
       child: MyApp(),
     ),
   );
-  testServer();
 }
 
 class MyApp extends StatelessWidget with FifeImageRouter {
