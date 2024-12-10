@@ -1,6 +1,6 @@
-import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
@@ -23,14 +23,27 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   late ScrollController leftController;
   late ScrollController rightController;
 
+  Future<void> heartBeat() async {
+    final dio = Dio();
+    try {
+      await dio.post('${server}heartbeat');
+    } catch (err, stack) {
+      logger.e(err, stackTrace: stack);
+    }
+    await Future.delayed(const Duration(seconds: 5));
+    await heartBeat();
+  }
+
   Future<void> testServer() async {
     final dio = Dio();
+    ref.read(appDataProvider.notifier).setLoadingTrue();
     try {
       await dio.get(server);
       final workingDirFromDisk = ref.read(workingDirProvider).value;
       await ref.read(workingDirProvider.notifier).setWorkingDir(workingDir: workingDirFromDisk);
       setState(() => loading = false);
       ref.read(appDataProvider.notifier).setLoadingFalse();
+      await heartBeat();
     } catch (err) {
       if (kDebugMode) {
         print('connecting to server');
@@ -42,10 +55,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      testServer();
-      ref.read(appDataProvider.notifier).setLoadingTrue();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => testServer());
     leftController = ScrollController();
     rightController = ScrollController();
     super.initState();

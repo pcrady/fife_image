@@ -22,6 +22,7 @@ AppInfoStore _$AppInfoStoreFromJson(Map<String, dynamic> json) {
 mixin _$AppInfoStore {
   String get serverVersion => throw _privateConstructorUsedError;
   String get appVersion => throw _privateConstructorUsedError;
+  bool get initializing => throw _privateConstructorUsedError;
 
   /// Serializes this AppInfoStore to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +40,7 @@ abstract class $AppInfoStoreCopyWith<$Res> {
           AppInfoStore value, $Res Function(AppInfoStore) then) =
       _$AppInfoStoreCopyWithImpl<$Res, AppInfoStore>;
   @useResult
-  $Res call({String serverVersion, String appVersion});
+  $Res call({String serverVersion, String appVersion, bool initializing});
 }
 
 /// @nodoc
@@ -59,6 +60,7 @@ class _$AppInfoStoreCopyWithImpl<$Res, $Val extends AppInfoStore>
   $Res call({
     Object? serverVersion = null,
     Object? appVersion = null,
+    Object? initializing = null,
   }) {
     return _then(_value.copyWith(
       serverVersion: null == serverVersion
@@ -69,6 +71,10 @@ class _$AppInfoStoreCopyWithImpl<$Res, $Val extends AppInfoStore>
           ? _value.appVersion
           : appVersion // ignore: cast_nullable_to_non_nullable
               as String,
+      initializing: null == initializing
+          ? _value.initializing
+          : initializing // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -81,7 +87,7 @@ abstract class _$$AppInfoStoreImplCopyWith<$Res>
       __$$AppInfoStoreImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String serverVersion, String appVersion});
+  $Res call({String serverVersion, String appVersion, bool initializing});
 }
 
 /// @nodoc
@@ -99,6 +105,7 @@ class __$$AppInfoStoreImplCopyWithImpl<$Res>
   $Res call({
     Object? serverVersion = null,
     Object? appVersion = null,
+    Object? initializing = null,
   }) {
     return _then(_$AppInfoStoreImpl(
       serverVersion: null == serverVersion
@@ -109,6 +116,10 @@ class __$$AppInfoStoreImplCopyWithImpl<$Res>
           ? _value.appVersion
           : appVersion // ignore: cast_nullable_to_non_nullable
               as String,
+      initializing: null == initializing
+          ? _value.initializing
+          : initializing // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -118,7 +129,10 @@ class __$$AppInfoStoreImplCopyWithImpl<$Res>
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class _$AppInfoStoreImpl implements _AppInfoStore {
-  const _$AppInfoStoreImpl({this.serverVersion = '', this.appVersion = ''});
+  const _$AppInfoStoreImpl(
+      {this.serverVersion = '',
+      this.appVersion = '',
+      this.initializing = true});
 
   factory _$AppInfoStoreImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppInfoStoreImplFromJson(json);
@@ -129,10 +143,13 @@ class _$AppInfoStoreImpl implements _AppInfoStore {
   @override
   @JsonKey()
   final String appVersion;
+  @override
+  @JsonKey()
+  final bool initializing;
 
   @override
   String toString() {
-    return 'AppInfoStore(serverVersion: $serverVersion, appVersion: $appVersion)';
+    return 'AppInfoStore(serverVersion: $serverVersion, appVersion: $appVersion, initializing: $initializing)';
   }
 
   @override
@@ -143,12 +160,15 @@ class _$AppInfoStoreImpl implements _AppInfoStore {
             (identical(other.serverVersion, serverVersion) ||
                 other.serverVersion == serverVersion) &&
             (identical(other.appVersion, appVersion) ||
-                other.appVersion == appVersion));
+                other.appVersion == appVersion) &&
+            (identical(other.initializing, initializing) ||
+                other.initializing == initializing));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, serverVersion, appVersion);
+  int get hashCode =>
+      Object.hash(runtimeType, serverVersion, appVersion, initializing);
 
   /// Create a copy of AppInfoStore
   /// with the given fields replaced by the non-null parameter values.
@@ -169,7 +189,8 @@ class _$AppInfoStoreImpl implements _AppInfoStore {
 abstract class _AppInfoStore implements AppInfoStore {
   const factory _AppInfoStore(
       {final String serverVersion,
-      final String appVersion}) = _$AppInfoStoreImpl;
+      final String appVersion,
+      final bool initializing}) = _$AppInfoStoreImpl;
 
   factory _AppInfoStore.fromJson(Map<String, dynamic> json) =
       _$AppInfoStoreImpl.fromJson;
@@ -178,6 +199,8 @@ abstract class _AppInfoStore implements AppInfoStore {
   String get serverVersion;
   @override
   String get appVersion;
+  @override
+  bool get initializing;
 
   /// Create a copy of AppInfoStore
   /// with the given fields replaced by the non-null parameter values.

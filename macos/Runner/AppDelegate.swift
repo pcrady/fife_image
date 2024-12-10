@@ -4,7 +4,7 @@ import os
 
 @main
 class AppDelegate: FlutterAppDelegate {
-    var processPid: Int32? = nil
+    /*var processPid: Int32? = nil
 
     override func applicationDidFinishLaunching(_ notification: Notification) {
         let logger = Logger(subsystem: "com.pcrady.fife_image", category: "server")
@@ -51,13 +51,13 @@ class AppDelegate: FlutterAppDelegate {
         }
 
         super.applicationDidFinishLaunching(notification)
-    }
+    }*/
 
     override func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
 
-    override func applicationWillTerminate(_ notification: Notification) {
+    /*override func applicationWillTerminate(_ notification: Notification) {
         let logger = Logger(subsystem: "com.pcrady.fife_image", category: "server")
 
         if let pid = self.processPid {
@@ -65,5 +65,5 @@ class AppDelegate: FlutterAppDelegate {
             logger.info("Server process terminated: \(self.processPid!)")
         }
         super.applicationWillTerminate(notification)
-    }
+    }*/
 }

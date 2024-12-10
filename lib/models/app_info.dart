@@ -10,6 +10,7 @@ class AppInfoStore with _$AppInfoStore {
   const factory AppInfoStore({
     @Default('') String serverVersion,
     @Default('') String appVersion,
+    @Default(true) bool initializing,
   }) = _AppInfoStore;
 
   factory AppInfoStore.fromJson(Map<String, dynamic> json) => _$AppInfoStoreFromJson(json);
