@@ -30,28 +30,28 @@ class Heartbeat extends _$Heartbeat {
   String get appLogPath => _appLogPath;
   String get serverLogPath => _serverLogPath;
 
-  void _writeToAppLog(String message) {
+  Future<void> _writeToAppLog(String message) async {
     if (kDebugMode) {
       print(message);
     }
-    final File logFile = File(_appLogPath);
+    final File logFile = await File(_appLogPath).create(recursive: true, exclusive: false);
     logFile.writeAsStringSync('$message\n', mode: FileMode.append);
   }
 
   Future<void> _checkForRunningServer() async {
     final dio = Dio();
-    _writeToAppLog('Checking for running server.');
+    await _writeToAppLog('Checking for running server.');
     try {
       await dio.get(server);
-      _writeToAppLog('Server already running.');
+      await _writeToAppLog('Server already running.');
     } catch (err) {
-      _writeToAppLog('No server detected. Starting server.');
+      await _writeToAppLog('No server detected. Starting server.');
       await _runExecutable();
     }
   }
 
   Future<void> _runExecutable() async {
-    final logFile = File(_serverLogPath);
+    final logFile = await File(_serverLogPath).create(recursive: true, exclusive: false);
     final appExecutable = File(Platform.resolvedExecutable).absolute.path;
     final executableDir = File(appExecutable).parent;
     final mainProgram = File('${executableDir.path}/main');
@@ -59,7 +59,7 @@ class Heartbeat extends _$Heartbeat {
     final args = _SubprocessArgs(
       rootIsolateToken: RootIsolateToken.instance!,
       logFile: logFile,
-      tempFile: mainProgram,
+      binary: mainProgram,
     );
     await Isolate.spawn(_runProcess, args);
   }
@@ -67,7 +67,7 @@ class Heartbeat extends _$Heartbeat {
   Future<void> _heartBeat() async {
     while (true) {
       final dio = Dio();
-      _writeToAppLog('heartbeat: ${DateTime.now().millisecondsSinceEpoch}');
+      await _writeToAppLog('heartbeat: ${DateTime.now().millisecondsSinceEpoch}');
       await dio.post('${server}heartbeat');
       await Future.delayed(heartBeatDuration);
     }
@@ -83,11 +83,11 @@ class Heartbeat extends _$Heartbeat {
         final workingDirFromDisk = ref.read(workingDirProvider).value;
         await ref.read(workingDirProvider.notifier).setWorkingDir(workingDir: workingDirFromDisk);
 
-        _writeToAppLog('connected to server');
+        await _writeToAppLog('connected to server');
         _heartBeat();
         shouldTest = false;
       } catch (err) {
-        _writeToAppLog('connecting to server');
+        await _writeToAppLog('connecting to server');
         await Future.delayed(testInterval);
       }
     }
@@ -99,12 +99,12 @@ class Heartbeat extends _$Heartbeat {
 class _SubprocessArgs {
   RootIsolateToken rootIsolateToken;
   File logFile;
-  File tempFile;
+  File binary;
 
   _SubprocessArgs({
     required this.rootIsolateToken,
     required this.logFile,
-    required this.tempFile,
+    required this.binary,
   });
 }
 
@@ -113,7 +113,7 @@ void _runProcess(_SubprocessArgs args) async {
   BackgroundIsolateBinaryMessenger.ensureInitialized(args.rootIsolateToken);
 
   try {
-    final Process process = await Process.start(args.tempFile.path, []);
+    final Process process = await Process.start(args.binary.path, []);
 
     process.stdout.transform(const SystemEncoding().decoder).listen((output) {
       args.logFile.writeAsStringSync(output, mode: FileMode.append);
