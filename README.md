@@ -37,8 +37,9 @@ If the app is closed from android studio with the stop button it will not kill t
 must kill it manually.
 
 TODO write a makefile that cleans everything as well
+
 to build for MacOS:
-rm macos/dist/main
+pyinstaller --onefile main.py
 flutter build macos
 
 to build for Windows:

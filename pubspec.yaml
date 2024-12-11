@@ -44,4 +44,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - server/dist/main

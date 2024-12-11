@@ -24,9 +24,9 @@ VERSION = '1.1.0'
 
 
 # Ensure the upload and output folders exist
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(OUTPUT_FOLDER, exist_ok=True)
-os.makedirs(DATA_DIR, exist_ok=True)
+#os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+#os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+#os.makedirs(DATA_DIR, exist_ok=True)
 
 
 def _calculate_md5(file_path):
@@ -45,6 +45,9 @@ def version():
 
 @app.route('/', methods=['GET'])
 def converted_paths():
+    if not os.path.exists(OUTPUT_FOLDER):
+        return jsonify({'message': 'no output folder yet'}), 200
+
     converted_files = os.listdir(OUTPUT_FOLDER)
     converted_paths_with_hashes = []
 
