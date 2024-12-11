@@ -23,12 +23,6 @@ VERSION = '1.1.0'
 
 
 
-# Ensure the upload and output folders exist
-#os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-#os.makedirs(OUTPUT_FOLDER, exist_ok=True)
-#os.makedirs(DATA_DIR, exist_ok=True)
-
-
 def _calculate_md5(file_path):
     hash_md5 = hashlib.md5()
     with open(file_path, "rb") as f:
