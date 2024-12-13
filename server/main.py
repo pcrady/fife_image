@@ -198,14 +198,12 @@ def background_correction():
 def convex_hull_calculation():
     data = request.get_json()
     base_image_name = data['base_image_name']
-    image_width = data['width']
-    image_height = data['height']
+    pixel_size = data['pixel_size']
     images = data['images']
     unscaled_crop_region = images['overlay']['relative_selection_coordinates']
 
     image_set = IsletImageSet(
-            image_height=image_width,
-            image_width=image_height,
+            pixel_size=pixel_size,
             image_data=images,
             unscaled_crop_region=unscaled_crop_region,
             )

@@ -21,8 +21,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   // TODO make config survive restart
   final _formKey = GlobalKey<FormState>();
   late TextEditingController channelNumberController;
-  late TextEditingController widthController;
-  late TextEditingController heightController;
+  late TextEditingController pixelSizeController;
   late TextEditingController unitsController;
   late TextEditingController overlayController;
   List<TextEditingController> searchPatternControllers = [];
@@ -119,8 +118,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
       });
     }
     overlayFocusNode = FocusNode(debugLabel: 'FocusNode(overlay)');
-    widthController = TextEditingController(text: convexHullConfig.imageWidth.toString());
-    heightController = TextEditingController(text: convexHullConfig.imageHeight.toString());
+    pixelSizeController = TextEditingController(text: convexHullConfig.pixelSize.toString());
     unitsController = TextEditingController(text: convexHullConfig.units.toString());
     overlayController = TextEditingController(text: convexHullConfig.overlaySearchPattern.toString());
     imageNames = ref.read(imagesProvider).value?.map((image) => image.name).toList() ?? [];
@@ -147,8 +145,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     }
     overlayFocusNode.dispose();
     channelNumberController.dispose();
-    widthController.dispose();
-    heightController.dispose();
+    pixelSizeController.dispose();
     unitsController.dispose();
     overlayController.dispose();
     super.dispose();
@@ -196,28 +193,11 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                           }
                           return null;
                         },
-                        controller: widthController,
+                        controller: pixelSizeController,
                         decoration: const InputDecoration(
-                          hintText: 'Image Width',
+                          hintText: 'Pixel Size',
                           border: OutlineInputBorder(),
-                          labelText: 'Image Width',
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8.0),
-                    Expanded(
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
-                            return 'Please enter a numerical value';
-                          }
-                          return null;
-                        },
-                        controller: heightController,
-                        decoration: const InputDecoration(
-                          hintText: 'Image Height',
-                          border: OutlineInputBorder(),
-                          labelText: 'Image Height',
+                          labelText: 'Pixel Size',
                         ),
                       ),
                     ),
@@ -449,8 +429,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                             final oldConvexHullConfig = ref.watch(convexHullConfigProvider);
                             final newConvexHullConfig = oldConvexHullConfig.copyWith(
                               overlaySearchPattern: overlayController.text,
-                              imageHeight: double.tryParse(heightController.text) ?? 0.0,
-                              imageWidth: double.tryParse(widthController.text) ?? 0.0,
+                              pixelSize: double.tryParse(pixelSizeController.text) ?? 0.0,
                               units: unitsController.text,
                               channelNumber: int.tryParse(channelNumberController.text) ?? 0,
                               searchPatternProteinConfig: searchPatternProteinConfig,

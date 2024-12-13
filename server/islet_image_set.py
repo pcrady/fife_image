@@ -12,6 +12,7 @@ class IsletImageData:
     def __init__(self, 
                  protein_name: str,
                  image: np.ndarray,
+                 pixel_size: float,
                  validation: bool = False,
                  validation_color: int = 0,
                  cropped_image = np.ndarray([]),
@@ -23,6 +24,11 @@ class IsletImageData:
         self.validation_color = validation_color
         self.cropped_image = cropped_image
         self.masked_image = masked_image
+        self.width = image.shape[0]
+        self.height = image.shape[1]
+        self.depth = image.shape[2]
+        self.pixel_size = pixel_size
+        self.area = self.height * self.pixel_size * self.width * self.pixel_size
 
 
 
@@ -38,19 +44,18 @@ class IsletImageSet:
 
     # all these images have already been background corrected
     def __init__(self,
-                 image_height: float,
-                 image_width: float,
+                 pixel_size: float,
                  image_data: dict,
                  unscaled_crop_region: np.ndarray,
                  ):
-        self.image_height = image_height
-        self.image_width = image_width
+        self.pixel_size = pixel_size
         self.image_data = image_data
         self.unscaled_crop_region = unscaled_crop_region
 
         self.images = [IsletImageData(
             protein_name=protein_name,
             image=io.imread(image_data['image_path']),
+            pixel_size = self.pixel_size,
             validation = image_data['validation'], 
             validation_color = image_data['validation_color'],
         ) for protein_name, image_data in image_data.items()]
@@ -226,7 +231,7 @@ class IsletImageSet:
 
 
     def _compute_areas(self):
-        total_image_area = self.image_height * self.image_width
+        total_image_area = self.images[0].area
         total_islet_area = (self.hull_mask.sum()/ self.hull_mask.size) * total_image_area
         data = {
             'total_image_area': total_image_area,
@@ -276,7 +281,17 @@ class IsletImageSet:
         int_region = rounded_region.astype(np.int32)
         cv2.fillPoly(mask, pts=[int_region], color=IsletImageSet.WHITE)
         boolean_mask = np.all(mask == IsletImageSet.WHITE, axis=-1)
+        print(image[0])
+        gray_image = color.rgb2gray(image)
         subtraction_value = np.mean(image[boolean_mask], axis=0) + 3 * np.std(image[boolean_mask], axis=0) 
+        print('')
+        print('Mean:')
+        print(np.mean(image[boolean_mask], axis=0))
+        print('Standard Deviation:')
+        print(np.std(image[boolean_mask], axis=0))
+        print('Subtraction Value:')
+        print(subtraction_value)
+        print('')
         modified_image = image - subtraction_value
         return np.clip(modified_image, 0, 255).astype(np.uint8)
  
