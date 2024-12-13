@@ -23,28 +23,7 @@ class ImageThumbnailCard extends ConsumerStatefulWidget {
 
 class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
   bool mouseHover = false;
-  late String md5Hash;
-  late FileImage fileImage;
 
-  Future<bool> invalidateImage() async {
-    if (widget.image.md5Hash == md5Hash) {
-      return false;
-    } else {
-      md5Hash = widget.image.md5Hash ?? '';
-      // This returns false because the image is
-      await fileImage.evict();
-      return true;
-    }
-  }
-
-  @override
-  void initState() {
-    md5Hash = widget.image.md5Hash ?? '';
-    fileImage = FileImage(
-      File(widget.image.imagePath),
-    );
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,18 +60,9 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
             child: Stack(
               clipBehavior: Clip.antiAlias,
               children: [
-                FutureBuilder(
-                  future: invalidateImage(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Image(
-                        key: UniqueKey(),
-                        image: fileImage,
-                      );
-                    } else {
-                      return Container();
-                    }
-                  },
+                Image(
+                  key: UniqueKey(),
+                  image: widget.image.fileImage,
                 ),
                 mouseHover
                     ? Positioned(
@@ -106,8 +76,8 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
                           ),
                           onTap: () async {
                             await ref.read(imagesProvider.notifier).deleteImageFromServer(
-                                image: widget.image,
-                            );
+                                  image: widget.image,
+                                );
                             final deleteCallback = widget.deleteCallback;
                             if (deleteCallback != null) {
                               deleteCallback();

@@ -1,6 +1,9 @@
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
+import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/heartbeat_provider.dart';
+import 'package:fife_image/providers/images_provider.dart';
 import 'package:fife_image/widgets/fife_image_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,10 +26,23 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   void initState() {
     leftController = ScrollController();
     rightController = ScrollController();
+
     ref.listenManual(heartbeatProvider, (previous, next) {
       setState(() {
         loading = !(next.value ?? false);
       });
+    });
+
+    ref.listenManual(imagesProvider, (previous, next) async {
+      final previousImages = previous?.value;
+      final newImages = next.value;
+      if (newImages == null || previousImages == null) return;
+
+      for (AbstractImage image in previousImages) {
+        if (!newImages.contains(image)) {
+          await image.evict();
+        }
+      }
     });
     super.initState();
   }

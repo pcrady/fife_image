@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
@@ -32,12 +35,10 @@ class Images extends _$Images {
     List<AbstractImage> images = [];
 
     for (final file in filePickerResult.files) {
-      images.add(
-        AbstractImage(
-          imagePath: file.name,
-          file: file.bytes,
-        ),
-      );
+      final path = file.path;
+      if (path == null) continue;
+      final fileImage = FileImage(File(path));
+      images.add(AbstractImage(fileImage: fileImage));
     }
 
     List<Future> futures = [];
@@ -51,8 +52,7 @@ class Images extends _$Images {
   Future<void> _uploadImage({
     required AbstractImage image,
   }) async {
-    final bytes = image.file;
-    if (bytes == null) return;
+    final bytes = await image.file;
     FormData formData = FormData.fromMap({
       "file": MultipartFile.fromBytes(
         bytes,
@@ -78,6 +78,7 @@ class Images extends _$Images {
       '$server/delete',
       data: {'filename': image.name},
     );
+
     final appData = ref.read(appDataProvider);
     final hullResults = appData.activeResults;
     final imagePath = appData.selectedImage?.imagePath;
@@ -90,7 +91,9 @@ class Images extends _$Images {
         image.imagePath == hullResults?.inflammation?.imagePath) {
       ref.read(appDataProvider.notifier).setActiveResults(results: null);
     }
-    ref.invalidateSelf();
+    final previousState = await future;
+    previousState.remove(image);
+    state = AsyncData(previousState);
   }
 
   Future<void> updateSelection({

@@ -54,7 +54,7 @@ class IsletImageSet:
 
         self.images = [IsletImageData(
             protein_name=protein_name,
-            image=io.imread(image_data['image_path']),
+            image=io.imread(image_data['file_image']),
             pixel_size = self.pixel_size,
             validation = image_data['validation'], 
             validation_color = image_data['validation_color'],

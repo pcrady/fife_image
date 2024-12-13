@@ -19,7 +19,7 @@ OUTPUT_FOLDER = 'converted/'
 DATA_DIR = 'computed_data/'
 DATA_FILE = 'convex_hull_data.json'
 DATA_FILE_CSV = 'convex_hull_data.csv'
-VERSION = '1.1.0'
+VERSION = '1.1.1'
 
 
 
@@ -49,7 +49,7 @@ def converted_paths():
         file_path = os.path.join(OUTPUT_FOLDER, filename)
         md5_hash = _calculate_md5(file_path)
         converted_paths_with_hashes.append({
-            'image_path': file_path,
+            'file_image': file_path,
             'md5_hash': md5_hash,
         })
     return jsonify(converted_paths_with_hashes)
@@ -176,7 +176,7 @@ def download_file(filename):
 
 @app.route('/background_correction', methods=['POST'])
 def background_correction():
-    file_path_parameter = 'image_path'
+    file_path_parameter = 'file_image'
     selected_region_parameter = 'relative_selection_coordinates'
     data = request.get_json()
     if file_path_parameter not in data:

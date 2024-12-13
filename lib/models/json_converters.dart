@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -14,6 +15,20 @@ class Uint8ListConverter implements JsonConverter<Uint8List?, List<int>?> {
   @override
   List<int>? toJson(Uint8List? object) {
     return object?.toList();
+  }
+}
+
+class FileImageConverter implements JsonConverter<FileImage, String> {
+  const FileImageConverter();
+
+  @override
+  FileImage fromJson(String json) {
+    return FileImage(File(json));
+  }
+
+  @override
+  String toJson(FileImage object) {
+    return object.file.path;
   }
 }
 
