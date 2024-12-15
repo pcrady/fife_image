@@ -17,12 +17,11 @@ class ConvexHullSettings extends ConsumerStatefulWidget {
 }
 
 class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
-  // TODO get microscope objectives for image sizing
-  // TODO make config survive restart
   final _formKey = GlobalKey<FormState>();
   late TextEditingController channelNumberController;
   late TextEditingController pixelSizeController;
   late TextEditingController unitsController;
+  late TextEditingController cellSizeController;
   late TextEditingController overlayController;
   List<TextEditingController> searchPatternControllers = [];
   List<TextEditingController> proteinNameControllers = [];
@@ -120,6 +119,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     overlayFocusNode = FocusNode(debugLabel: 'FocusNode(overlay)');
     pixelSizeController = TextEditingController(text: convexHullConfig.pixelSize.toString());
     unitsController = TextEditingController(text: convexHullConfig.units.toString());
+    cellSizeController = TextEditingController(text: convexHullConfig.cellSize.toString());
     overlayController = TextEditingController(text: convexHullConfig.overlaySearchPattern.toString());
     imageNames = ref.read(imagesProvider).value?.map((image) => image.name).toList() ?? [];
     imageNames.sort();
@@ -131,6 +131,10 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
       imageNames.sort();
       imageNames
           .removeWhere((name) => name.endsWith('_bg_correct') || name.endsWith('_inflammation') || name.endsWith('_custom_infiltration'));
+    });
+
+    unitsController.addListener(() {
+      setState(() {});
     });
     super.initState();
   }
@@ -147,6 +151,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     channelNumberController.dispose();
     pixelSizeController.dispose();
     unitsController.dispose();
+    cellSizeController.dispose();
     overlayController.dispose();
     super.dispose();
   }
@@ -198,6 +203,23 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                           hintText: 'Pixel Size',
                           border: OutlineInputBorder(),
                           labelText: 'Pixel Size',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8.0),
+                    Expanded(
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
+                            return 'Please enter a numerical value';
+                          }
+                          return null;
+                        },
+                        controller: cellSizeController,
+                        decoration: InputDecoration(
+                          hintText: 'Cell Size',
+                          border: const OutlineInputBorder(),
+                          labelText: 'Cell Size ${unitsController.text}^2',
                         ),
                       ),
                     ),
@@ -431,6 +453,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               overlaySearchPattern: overlayController.text,
                               pixelSize: double.tryParse(pixelSizeController.text) ?? 0.0,
                               units: unitsController.text,
+                              cellSize: double.tryParse(cellSizeController.text) ?? 0.0,
                               channelNumber: int.tryParse(channelNumberController.text) ?? 0,
                               searchPatternProteinConfig: searchPatternProteinConfig,
                               searchPatternOverlayConfig: searchPatternOverlayConfig,

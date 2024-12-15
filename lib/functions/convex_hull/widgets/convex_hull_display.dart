@@ -305,11 +305,44 @@ class _TableEntry extends StatelessWidget {
   }
 }
 
-class _BackgroundSelect extends ConsumerWidget {
-  const _BackgroundSelect();
+class _BackgroundSelect extends ConsumerStatefulWidget {
+  const _BackgroundSelect({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => __BackgroundSelectState();
+}
+
+class __BackgroundSelectState extends ConsumerState<_BackgroundSelect> {
+  late FocusNode focusNode;
+
+  @override
+  void initState() {
+    focusNode = FocusNode();
+    focusNode.requestFocus();
+    super.initState();
+  }
+
+  Future<void> performBackgroundCorrection(BuildContext context) async {
+    try {
+      ref.read(appDataProvider.notifier).setLoadingTrue();
+      await ref.read(convexHullImageSetsProvider.notifier).backgroundSelect();
+    } catch (err, stack) {
+      logger.e(err, stackTrace: stack);
+      final snackBar = SnackBar(
+        content: Text(err.toString()),
+        action: SnackBarAction(
+          label: 'Close',
+          onPressed: () {},
+        ),
+      );
+      if (!context.mounted) return;
+      ref.read(appDataProvider.notifier).setLoadingFalse();
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final convexHullConfig = ref.watch(convexHullConfigProvider);
     final appData = ref.watch(appDataProvider);
     final image = appData.selectedImage;
@@ -361,9 +394,8 @@ class _BackgroundSelect extends ConsumerWidget {
                         ),
                       );
                       if (!context.mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    } finally {
                       ref.read(appDataProvider.notifier).setLoadingFalse();
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
                   child: const Text('Perform Calculations'),
@@ -374,56 +406,48 @@ class _BackgroundSelect extends ConsumerWidget {
         ],
       );
     } else if (!name.contains(bgTag)) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          image != null ? SelectedImage(image: image) : Container(),
-          const Text(
-            'Select the region of highest background signal.',
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 16.0),
-          ),
-          const SizedBox(height: 8.0),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (image != null) {
-                      await ref.read(imagesProvider.notifier).updateSelection(image: image, selection: null);
-                    }
-                  },
-                  child: const Text('Clear Selection'),
+      return KeyboardListener(
+        autofocus: true,
+        focusNode: focusNode,
+        onKeyEvent: (event) async {
+          final key = event.logicalKey.keyLabel;
+          if (key == 'Numpad Enter' || key == 'Enter') {
+            await performBackgroundCorrection(context);
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            image != null ? SelectedImage(image: image) : Container(),
+            const Text(
+              'Select the region of highest background signal.',
+              textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 16.0),
+            ),
+            const SizedBox(height: 8.0),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (image != null) {
+                        await ref.read(imagesProvider.notifier).updateSelection(image: image, selection: null);
+                      }
+                    },
+                    child: const Text('Clear Selection'),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8.0),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      ref.read(appDataProvider.notifier).setLoadingTrue();
-                      await ref.read(convexHullImageSetsProvider.notifier).backgroundSelect();
-                    } catch (err, stack) {
-                      logger.e(err, stackTrace: stack);
-                      final snackBar = SnackBar(
-                        content: Text(err.toString()),
-                        action: SnackBarAction(
-                          label: 'Close',
-                          onPressed: () {},
-                        ),
-                      );
-                      if (!context.mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    } finally {
-                      ref.read(appDataProvider.notifier).setLoadingFalse();
-                    }
-                  },
-                  child: const Text('Perform Background Correction'),
-                ),
-              )
-            ],
-          ),
-        ],
+                const SizedBox(width: 8.0),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => performBackgroundCorrection(context),
+                    child: const Text('Perform Background Correction'),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       );
     } else {
       return const Text('error');

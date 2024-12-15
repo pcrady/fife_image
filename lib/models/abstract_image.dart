@@ -27,8 +27,10 @@ class AbstractImage with _$AbstractImage {
   String get url => server + imagePath;
   String get name => basename(imagePath).split('.').first;
   String get baseName => name.split('_').first;
+
   bool get isBackgroundCorrected => name.contains('bg_correct');
   XFile get xFile => XFile(imagePath);
+
   Future<Uint8List> get file async => await fileImage.file.readAsBytes();
 
   Future<bool> evict() async => await fileImage.evict();

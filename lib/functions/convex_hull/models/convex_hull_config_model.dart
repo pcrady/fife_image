@@ -15,7 +15,8 @@ class ConvexHullConfigModel with _$ConvexHullConfigModel {
     @Default({}) Map<String, String> searchPatternProteinConfig,
     @Default({}) Map<String, bool> searchPatternOverlayConfig,
     @Default({}) Map<String, int> searchPatternOverlayColorConfig,
-    @Default(width) double pixelSize,
+    @Default(defaultPixelSize) double pixelSize,
+    @Default(defaultCellSize) double cellSize,
     @Default(lengthScale) String units,
     @Default(totalChannelNumber) int channelNumber,
   }) = _ConvexHullConfigModel;

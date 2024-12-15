@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/lib/app_logger.dart';

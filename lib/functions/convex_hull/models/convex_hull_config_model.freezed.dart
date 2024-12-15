@@ -30,6 +30,7 @@ mixin _$ConvexHullConfigModel {
   Map<String, int> get searchPatternOverlayColorConfig =>
       throw _privateConstructorUsedError;
   double get pixelSize => throw _privateConstructorUsedError;
+  double get cellSize => throw _privateConstructorUsedError;
   String get units => throw _privateConstructorUsedError;
   int get channelNumber => throw _privateConstructorUsedError;
 
@@ -56,6 +57,7 @@ abstract class $ConvexHullConfigModelCopyWith<$Res> {
       Map<String, bool> searchPatternOverlayConfig,
       Map<String, int> searchPatternOverlayColorConfig,
       double pixelSize,
+      double cellSize,
       String units,
       int channelNumber});
 }
@@ -82,6 +84,7 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
     Object? searchPatternOverlayConfig = null,
     Object? searchPatternOverlayColorConfig = null,
     Object? pixelSize = null,
+    Object? cellSize = null,
     Object? units = null,
     Object? channelNumber = null,
   }) {
@@ -109,6 +112,10 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
       pixelSize: null == pixelSize
           ? _value.pixelSize
           : pixelSize // ignore: cast_nullable_to_non_nullable
+              as double,
+      cellSize: null == cellSize
+          ? _value.cellSize
+          : cellSize // ignore: cast_nullable_to_non_nullable
               as double,
       units: null == units
           ? _value.units
@@ -138,6 +145,7 @@ abstract class _$$ConvexHullConfigModelImplCopyWith<$Res>
       Map<String, bool> searchPatternOverlayConfig,
       Map<String, int> searchPatternOverlayColorConfig,
       double pixelSize,
+      double cellSize,
       String units,
       int channelNumber});
 }
@@ -162,6 +170,7 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
     Object? searchPatternOverlayConfig = null,
     Object? searchPatternOverlayColorConfig = null,
     Object? pixelSize = null,
+    Object? cellSize = null,
     Object? units = null,
     Object? channelNumber = null,
   }) {
@@ -190,6 +199,10 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
           ? _value.pixelSize
           : pixelSize // ignore: cast_nullable_to_non_nullable
               as double,
+      cellSize: null == cellSize
+          ? _value.cellSize
+          : cellSize // ignore: cast_nullable_to_non_nullable
+              as double,
       units: null == units
           ? _value.units
           : units // ignore: cast_nullable_to_non_nullable
@@ -213,7 +226,8 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       final Map<String, String> searchPatternProteinConfig = const {},
       final Map<String, bool> searchPatternOverlayConfig = const {},
       final Map<String, int> searchPatternOverlayColorConfig = const {},
-      this.pixelSize = width,
+      this.pixelSize = defaultPixelSize,
+      this.cellSize = defaultCellSize,
       this.units = lengthScale,
       this.channelNumber = totalChannelNumber})
       : _searchPatternProteinConfig = searchPatternProteinConfig,
@@ -264,6 +278,9 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   final double pixelSize;
   @override
   @JsonKey()
+  final double cellSize;
+  @override
+  @JsonKey()
   final String units;
   @override
   @JsonKey()
@@ -271,7 +288,7 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
 
   @override
   String toString() {
-    return 'ConvexHullConfigModel(leftMenuEnum: $leftMenuEnum, overlaySearchPattern: $overlaySearchPattern, searchPatternProteinConfig: $searchPatternProteinConfig, searchPatternOverlayConfig: $searchPatternOverlayConfig, searchPatternOverlayColorConfig: $searchPatternOverlayColorConfig, pixelSize: $pixelSize, units: $units, channelNumber: $channelNumber)';
+    return 'ConvexHullConfigModel(leftMenuEnum: $leftMenuEnum, overlaySearchPattern: $overlaySearchPattern, searchPatternProteinConfig: $searchPatternProteinConfig, searchPatternOverlayConfig: $searchPatternOverlayConfig, searchPatternOverlayColorConfig: $searchPatternOverlayColorConfig, pixelSize: $pixelSize, cellSize: $cellSize, units: $units, channelNumber: $channelNumber)';
   }
 
   @override
@@ -294,6 +311,8 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
                 _searchPatternOverlayColorConfig) &&
             (identical(other.pixelSize, pixelSize) ||
                 other.pixelSize == pixelSize) &&
+            (identical(other.cellSize, cellSize) ||
+                other.cellSize == cellSize) &&
             (identical(other.units, units) || other.units == units) &&
             (identical(other.channelNumber, channelNumber) ||
                 other.channelNumber == channelNumber));
@@ -309,6 +328,7 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       const DeepCollectionEquality().hash(_searchPatternOverlayConfig),
       const DeepCollectionEquality().hash(_searchPatternOverlayColorConfig),
       pixelSize,
+      cellSize,
       units,
       channelNumber);
 
@@ -337,6 +357,7 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
       final Map<String, bool> searchPatternOverlayConfig,
       final Map<String, int> searchPatternOverlayColorConfig,
       final double pixelSize,
+      final double cellSize,
       final String units,
       final int channelNumber}) = _$ConvexHullConfigModelImpl;
 
@@ -355,6 +376,8 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   Map<String, int> get searchPatternOverlayColorConfig;
   @override
   double get pixelSize;
+  @override
+  double get cellSize;
   @override
   String get units;
   @override

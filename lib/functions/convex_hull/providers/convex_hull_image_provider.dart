@@ -77,6 +77,7 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     final data = {
       'base_image_name': activeImageSetBaseName,
       'pixel_size': hullConfig.pixelSize,
+      'cell_size': hullConfig.cellSize,
       'images': imageData,
     };
 

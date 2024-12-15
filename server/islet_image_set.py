@@ -35,7 +35,7 @@ class IsletImageData:
 class IsletImageSet:
     lower_threshold = 10
     upper_threshold = 255
-    islet_outlier_size = 5
+    #islet_outlier_size = 5
     RED =   [255, 0, 0]
     BLUE =  [0, 0, 255]
     BLACK = [0, 0, 0]
@@ -45,10 +45,13 @@ class IsletImageSet:
     # all these images have already been background corrected
     def __init__(self,
                  pixel_size: float,
+                 cell_size: float,
                  image_data: dict,
                  unscaled_crop_region: np.ndarray,
                  ):
         self.pixel_size = pixel_size
+        self.cell_size = cell_size
+        self.cell_size_pixels = int(cell_size / (pixel_size ** 2))
         self.image_data = image_data
         self.unscaled_crop_region = unscaled_crop_region
 
@@ -123,9 +126,8 @@ class IsletImageSet:
     def _remove_small_objects_and_holes(
             self, 
             mask: np.ndarray) -> np.ndarray:
-        object_size = self.islet_outlier_size ** self.islet_outlier_size * 3.14
-        cleaned_image = morphology.remove_small_objects(mask, object_size)
-        cleaned_image = morphology.remove_small_holes(cleaned_image, object_size * 4)
+        cleaned_image = morphology.remove_small_objects(mask, self.cell_size_pixels)
+        cleaned_image = morphology.remove_small_holes(cleaned_image, self.cell_size_pixels * 4)
         return cleaned_image
 
 
@@ -281,18 +283,10 @@ class IsletImageSet:
         int_region = rounded_region.astype(np.int32)
         cv2.fillPoly(mask, pts=[int_region], color=IsletImageSet.WHITE)
         boolean_mask = np.all(mask == IsletImageSet.WHITE, axis=-1)
-        print(image[0])
-        gray_image = color.rgb2gray(image)
-        subtraction_value = np.mean(image[boolean_mask], axis=0) + 3 * np.std(image[boolean_mask], axis=0) 
-        print('')
-        print('Mean:')
-        print(np.mean(image[boolean_mask], axis=0))
-        print('Standard Deviation:')
-        print(np.std(image[boolean_mask], axis=0))
-        print('Subtraction Value:')
-        print(subtraction_value)
-        print('')
-        modified_image = image - subtraction_value
+        gray_image = np.mean(image, axis=2)
+        subtraction_value = np.mean(gray_image[boolean_mask]) + 3 * np.std(gray_image[boolean_mask]) 
+        print(np.mean(gray_image[boolean_mask]) )
+        modified_image = gray_image - subtraction_value
         return np.clip(modified_image, 0, 255).astype(np.uint8)
  
 

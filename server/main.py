@@ -199,11 +199,13 @@ def convex_hull_calculation():
     data = request.get_json()
     base_image_name = data['base_image_name']
     pixel_size = data['pixel_size']
+    cell_size = data['cell_size']
     images = data['images']
     unscaled_crop_region = images['overlay']['relative_selection_coordinates']
 
     image_set = IsletImageSet(
             pixel_size=pixel_size,
+            cell_size=cell_size,
             image_data=images,
             unscaled_crop_region=unscaled_crop_region,
             )

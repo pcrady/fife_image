@@ -30,7 +30,8 @@ _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
                 (k, e) => MapEntry(k, (e as num).toInt()),
               ) ??
               const {},
-      pixelSize: (json['pixel_size'] as num?)?.toDouble() ?? width,
+      pixelSize: (json['pixel_size'] as num?)?.toDouble() ?? defaultPixelSize,
+      cellSize: (json['cell_size'] as num?)?.toDouble() ?? defaultCellSize,
       units: json['units'] as String? ?? lengthScale,
       channelNumber:
           (json['channel_number'] as num?)?.toInt() ?? totalChannelNumber,
@@ -46,6 +47,7 @@ Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
       'search_pattern_overlay_color_config':
           instance.searchPatternOverlayColorConfig,
       'pixel_size': instance.pixelSize,
+      'cell_size': instance.cellSize,
       'units': instance.units,
       'channel_number': instance.channelNumber,
     };
