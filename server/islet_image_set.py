@@ -78,7 +78,7 @@ class IsletImageSet:
         self.hull_mask = self._create_convex_hull_mask()
 
         # color image of cropped cd4 and cd8 with convex hull superimposed on top
-        self.combined_cd4_cd8_hull = self._create_color_cd4_cd8_convex_hull()
+        # self.combined_cd4_cd8_hull = self._create_color_cd4_cd8_convex_hull()
 
         # custom hull image with colors
         self.combined_custom_hull = self._create_color_convex_hull()
@@ -127,7 +127,7 @@ class IsletImageSet:
             self, 
             mask: np.ndarray) -> np.ndarray:
         cleaned_image = morphology.remove_small_objects(mask, self.cell_size_pixels)
-        cleaned_image = morphology.remove_small_holes(cleaned_image, self.cell_size_pixels * 4)
+        #cleaned_image = morphology.remove_small_holes(cleaned_image, self.cell_size_pixels * 4)
         return cleaned_image
 
 
@@ -285,7 +285,6 @@ class IsletImageSet:
         boolean_mask = np.all(mask == IsletImageSet.WHITE, axis=-1)
         gray_image = np.mean(image, axis=2)
         subtraction_value = np.mean(gray_image[boolean_mask]) + 3 * np.std(gray_image[boolean_mask]) 
-        print(np.mean(gray_image[boolean_mask]) )
         modified_image = gray_image - subtraction_value
         return np.clip(modified_image, 0, 255).astype(np.uint8)
  

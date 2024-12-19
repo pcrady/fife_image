@@ -1,6 +1,6 @@
-import 'package:fife_image/lib/app_logger.dart';
+import 'package:dio/dio.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
-import 'package:fife_image/models/app_info.dart';
+import 'package:fife_image/lib/fife_image_helpers.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/app_info_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
@@ -20,7 +20,7 @@ class FifeImageAppBar extends ConsumerStatefulWidget implements PreferredSizeWid
   ConsumerState<FifeImageAppBar> createState() => _FifeImageAppBarState();
 }
 
-class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
+class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> with FifeImageHelpers {
   late List<FunctionsEnum> dropdownValues;
   late FunctionsEnum dropdownValue;
 
@@ -100,24 +100,28 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> {
       leading: IconButton(
         onPressed: () async {
           try {
+            ref.read(appDataProvider.notifier).setLoadingTrue();
             FilePickerResult? result = await FilePicker.platform.pickFiles(
               allowMultiple: true,
               withData: true,
             );
             if (result == null) return;
-            ref.read(appDataProvider.notifier).setLoadingTrue();
             await ref.read(imagesProvider.notifier).uploadImages(filePickerResult: result);
-          } catch (err, stack) {
-            logger.e(err, stackTrace: stack);
-            final snackBar = SnackBar(
-              content: Text(err.toString()),
-              action: SnackBarAction(
-                label: 'Close',
-                onPressed: () {},
-              ),
-            );
             if (!context.mounted) return;
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          } on DioException catch (err, stack) {
+            fifeImageSnackBar(
+              context: context,
+              message: err.response?.data.toString() ?? 'An error has occurred',
+              dioErr: err,
+              stack: stack,
+            );
+          } catch (err, stack) {
+            fifeImageSnackBar(
+              context: context,
+              message: err.toString(),
+              err: err,
+              stack: stack,
+            );
           } finally {
             ref.read(appDataProvider.notifier).setLoadingFalse();
           }

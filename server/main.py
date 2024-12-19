@@ -113,13 +113,16 @@ def upload_files():
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
-    if file and file.filename != None:
-        filepath = os.path.join(UPLOAD_FOLDER, file.filename)
-        file.save(filepath)
-        ImageUtils.convert_to_png(filepath, OUTPUT_FOLDER)
-        return redirect('/')
-    else:
-        return jsonify({"error": "Invalid file type"}), 400
+    try:
+        if file and file.filename != None:
+            filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+            file.save(filepath)
+            ImageUtils.convert_to_png(filepath, OUTPUT_FOLDER)
+            return redirect('/')
+        else:
+            return jsonify({"error": "Invalid file type"}), 400
+    except Exception as error:
+        return jsonify({'error': str(error)}), 400
 
 
 @app.route('/delete', methods=['POST'])
@@ -176,21 +179,25 @@ def download_file(filename):
 
 @app.route('/background_correction', methods=['POST'])
 def background_correction():
-    file_path_parameter = 'file_image'
-    selected_region_parameter = 'relative_selection_coordinates'
-    data = request.get_json()
-    if file_path_parameter not in data:
-        return jsonify({"error": "No filepath provided"}), 400
+    try:
+        file_path_parameter = 'file_image'
+        selected_region_parameter = 'relative_selection_coordinates'
+        data = request.get_json()
+        if file_path_parameter not in data:
+            return jsonify({"error": "No filepath provided"}), 400
 
-    if selected_region_parameter not in data:
-        return jsonify({"error": "No selection region provided"}), 400
+        if selected_region_parameter not in data:
+            return jsonify({"error": "No selection region provided"}), 400
 
-    file_path = data[file_path_parameter]
-    image = io.imread(file_path)
-    selected_region = data[selected_region_parameter]
-    corrected_image = IsletImageSet.subtract_background(image, selected_region)
-    corrected_image_name = (file_path.split('.')[0] + '_bg_correct.png').split('/')[-1]
-    ImageUtils.save_bgr_image(corrected_image, OUTPUT_FOLDER, corrected_image_name)
+        file_path = data[file_path_parameter]
+        image = io.imread(file_path)
+        selected_region = data[selected_region_parameter]
+        corrected_image = IsletImageSet.subtract_background(image, selected_region)
+        corrected_image_name = (file_path.split('.')[0] + '_bg_correct.png').split('/')[-1]
+        ImageUtils.save_bgr_image(corrected_image, OUTPUT_FOLDER, corrected_image_name)
+    except Exception as error:
+        return jsonify({'error': str(error)}), 400
+ 
     return converted_paths()
 
 
@@ -202,19 +209,20 @@ def convex_hull_calculation():
     cell_size = data['cell_size']
     images = data['images']
     unscaled_crop_region = images['overlay']['relative_selection_coordinates']
-
-    image_set = IsletImageSet(
+    
+    try:
+        image_set = IsletImageSet(
             pixel_size=pixel_size,
             cell_size=cell_size,
             image_data=images,
             unscaled_crop_region=unscaled_crop_region,
             )
-    
-    if image_set.combined_cd4_cd8_hull is not None:
-        ImageUtils.save_bgr_image(image_set.combined_cd4_cd8_hull, OUTPUT_FOLDER, base_image_name + '_inflammation.png')
+    except Exception as error:
+        return jsonify({'error': str(error)}), 400
+   
     if image_set.combined_custom_hull is not None:
         ImageUtils.save_bgr_image(image_set.combined_custom_hull, OUTPUT_FOLDER, base_image_name + '_custom_infiltration.png')
-    ImageUtils.save_bgr_image(image_set.dimmed_hull, OUTPUT_FOLDER, base_image_name + '_simplex.png')
+    ImageUtils.save_bgr_image(image_set.dimmed_hull, OUTPUT_FOLDER, base_image_name + '_convex_hull.png')
 
     area_data = image_set.areas
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:fife_image/lib/fife_image_helpers.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
@@ -21,7 +23,7 @@ class ImageThumbnailCard extends ConsumerStatefulWidget {
   ConsumerState<ImageThumbnailCard> createState() => _ImageThumbnailCardState();
 }
 
-class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
+class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> with FifeImageHelpers {
   bool mouseHover = false;
 
 
@@ -75,12 +77,31 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> {
                             size: 18.0,
                           ),
                           onTap: () async {
-                            await ref.read(imagesProvider.notifier).deleteImageFromServer(
-                                  image: widget.image,
-                                );
-                            final deleteCallback = widget.deleteCallback;
-                            if (deleteCallback != null) {
-                              deleteCallback();
+                            try {
+                              await ref.read(imagesProvider.notifier).deleteImageFromServer(
+                                image: widget.image,
+                              );
+                              final deleteCallback = widget.deleteCallback;
+                              if (deleteCallback != null) {
+                                deleteCallback();
+                              }
+                              if (!context.mounted) return;
+                            } on DioException catch (err, stack) {
+                              fifeImageSnackBar(
+                                context: context,
+                                message: err.response?.data.toString() ?? 'An error has occurred',
+                                dioErr: err,
+                                stack: stack,
+                              );
+                            } catch (err, stack) {
+                              fifeImageSnackBar(
+                                context: context,
+                                message: err.toString(),
+                                err: err,
+                                stack: stack,
+                              );
+                            } finally {
+                              ref.read(appDataProvider.notifier).setLoadingFalse();
                             }
                           },
                         ),

@@ -187,7 +187,7 @@ class _ImageSetWidget extends ConsumerWidget {
         );
       }
     }
-    final simplexIndex = images.indexWhere((image) => image.name.endsWith('simplex'));
+    final simplexIndex = images.indexWhere((image) => image.name.endsWith('convex_hull'));
     final inflammationIndex = images.indexWhere((image) => image.name.endsWith('inflammation'));
     final infiltrationIndex = images.indexWhere((image) => image.name.endsWith('custom_infiltration'));
 

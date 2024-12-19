@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
@@ -6,6 +8,7 @@ import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_pr
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_data_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
+import 'package:fife_image/lib/fife_image_helpers.dart';
 import 'package:fife_image/models/app_data_store.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -188,7 +191,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                       ],
                     ),
                     ...proteins.entries.map((entry) {
-                      final color =  entry.value['validation_color'] != null ? Color(entry.value['validation_color']) : null;
+                      final color = entry.value['validation_color'] != null ? Color(entry.value['validation_color']) : null;
                       return TableRow(children: [
                         _TableEntry(
                           text: entry.key,
@@ -312,7 +315,7 @@ class _BackgroundSelect extends ConsumerStatefulWidget {
   ConsumerState createState() => __BackgroundSelectState();
 }
 
-class __BackgroundSelectState extends ConsumerState<_BackgroundSelect> {
+class __BackgroundSelectState extends ConsumerState<_BackgroundSelect> with FifeImageHelpers {
   late FocusNode focusNode;
 
   @override
@@ -326,18 +329,23 @@ class __BackgroundSelectState extends ConsumerState<_BackgroundSelect> {
     try {
       ref.read(appDataProvider.notifier).setLoadingTrue();
       await ref.read(convexHullImageSetsProvider.notifier).backgroundSelect();
-    } catch (err, stack) {
-      logger.e(err, stackTrace: stack);
-      final snackBar = SnackBar(
-        content: Text(err.toString()),
-        action: SnackBarAction(
-          label: 'Close',
-          onPressed: () {},
-        ),
-      );
       if (!context.mounted) return;
+    } on DioException catch (err, stack) {
+      fifeImageSnackBar(
+        context: context,
+        message: err.response?.data.toString() ?? 'An error has occurred',
+        dioErr: err,
+        stack: stack,
+      );
+    } catch (err, stack) {
+      fifeImageSnackBar(
+        context: context,
+        message: err.toString(),
+        err: err,
+        stack: stack,
+      );
+    } finally {
       ref.read(appDataProvider.notifier).setLoadingFalse();
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -384,18 +392,23 @@ class __BackgroundSelectState extends ConsumerState<_BackgroundSelect> {
                     try {
                       ref.read(appDataProvider.notifier).setLoadingTrue();
                       await ref.read(convexHullImageSetsProvider.notifier).performCalculation();
-                    } catch (err, stack) {
-                      logger.e(err, stackTrace: stack);
-                      final snackBar = SnackBar(
-                        content: Text(err.toString()),
-                        action: SnackBarAction(
-                          label: 'Close',
-                          onPressed: () {},
-                        ),
-                      );
                       if (!context.mounted) return;
+                    } on DioException catch (err, stack) {
+                      fifeImageSnackBar(
+                        context: context,
+                        message: err.response?.data.toString() ?? 'An error has occurred',
+                        dioErr: err,
+                        stack: stack,
+                      );
+                    } catch (err, stack) {
+                      fifeImageSnackBar(
+                        context: context,
+                        message: err.toString(),
+                        err: err,
+                        stack: stack,
+                      );
+                    } finally {
                       ref.read(appDataProvider.notifier).setLoadingFalse();
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
                   child: const Text('Perform Calculations'),

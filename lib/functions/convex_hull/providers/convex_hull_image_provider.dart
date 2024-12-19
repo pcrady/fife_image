@@ -44,6 +44,11 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     final image = appData.selectedImage;
     if (image == null) return;
 
+    final selectionArea = image.relativeSelectionCoordinates;
+    if (selectionArea == null || selectionArea.isEmpty) {
+      throw 'You must select an area';
+    }
+
     await _dio.post(
       '${server}background_correction',
       data: image.toJson(),
@@ -62,6 +67,11 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       throw 'Something has gone wrong';
     }
 
+    final selectionArea = overlayImage.relativeSelectionCoordinates;
+    if (selectionArea == null || selectionArea.isEmpty) {
+      throw 'You must select the islet area';
+    }
+
     final activeImageSet = state[imageSetIndex];
     final imageData = activeImageSet.toJsonForCalc(hullConfig: hullConfig, overlayImage: overlayImage);
     final proteinNames = imageData.keys;
@@ -73,6 +83,8 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     if (!proteinNames.contains(insulin) || !proteinNames.contains(glucagon)) {
       throw 'You must include Insulin and Glucagon';
     }
+
+
 
     final data = {
       'base_image_name': activeImageSetBaseName,

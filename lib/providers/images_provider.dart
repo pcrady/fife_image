@@ -41,10 +41,13 @@ class Images extends _$Images {
     }
 
     List<Future> futures = [];
-    for (final image in images) {
-      futures.add(_uploadImage(image: image));
+
+    for (int i = 0; i < images.length; i++) {
+      futures.add(_uploadImage(image: images[i]));
+      if (i.remainder(50) == 0) {
+        await Future.wait(futures);
+      }
     }
-    await Future.wait(futures);
     ref.invalidateSelf();
   }
 
