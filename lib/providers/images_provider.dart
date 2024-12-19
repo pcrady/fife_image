@@ -19,13 +19,11 @@ class Images extends _$Images {
   @override
   Future<List<AbstractImage>> build() async {
     ref.watch(workingDirProvider);
-    Stopwatch stopwatch =  Stopwatch()..start();
     final response = await _dio.get(server);
     final data = List<Map<String, dynamic>>.from(response.data);
     var images = data.map((fileData) => AbstractImage.fromJson(fileData)).toList();
     images.sort((a, b) => a.imagePath.compareTo(b.imagePath));
     ref.read(appDataProvider.notifier).setLoadingFalse();
-    logger.i(stopwatch.elapsed);
     return images;
   }
 
@@ -43,7 +41,7 @@ class Images extends _$Images {
     }
 
     List<Future> futures = [];
-    const batchSize = 10;
+    const batchSize = 50;
     for (int i = 0; i < images.length; i++) {
       futures.add(_uploadImage(image: images[i]));
       if (i != 0 && i.remainder(batchSize) == 0) {

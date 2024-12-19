@@ -48,11 +48,9 @@ def converted_paths():
     for filename in converted_files:
         thumbnail = os.path.join(OUTPUT_FOLDER, 'thumbnail_' + filename)
         file_path = os.path.join(OUTPUT_FOLDER, filename)
-        md5_hash = _calculate_md5(file_path)
         converted_paths_with_hashes.append({
             'file_image': file_path,
             'thumbnail': thumbnail,
-            'md5_hash': md5_hash,
         })
     return jsonify(converted_paths_with_hashes)
 

@@ -11,7 +11,6 @@ import 'package:path/path.dart';
 part 'abstract_image.freezed.dart';
 part 'abstract_image.g.dart';
 
-
 @freezed
 class AbstractImage with _$AbstractImage {
   const AbstractImage._();
@@ -20,7 +19,6 @@ class AbstractImage with _$AbstractImage {
   const factory AbstractImage({
     @FileImageConverter() required FileImage fileImage,
     @NullableFileImageConverter() FileImage? thumbnail,
-    String? md5Hash,
     @OffsetListConverter() List<Offset>? relativeSelectionCoordinates,
   }) = _AbstractImage;
 
@@ -50,7 +48,15 @@ class AbstractImage with _$AbstractImage {
 
   Future<Uint8List> get file async => await fileImage.file.readAsBytes();
 
-  Future<bool> evict() async => await fileImage.evict();
+  Future<bool> evict() async {
+    final ass = await fileImage.evict();
+    logger.wtf(ass);
+    if (thumbnail != null) {
+      final what = await thumbnail?.evict();
+      logger.wtf(what);
+    }
+    return true;
+  }
 
   factory AbstractImage.fromJson(Map<String, dynamic> json) => _$AbstractImageFromJson(json);
 }

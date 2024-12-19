@@ -40,7 +40,6 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
               itemCount: convexHullImages.length,
               itemBuilder: (context, index) {
                 String? name = convexHullImages[index].baseName(convexHullConfig);
-                logger.i(stopwatch.elapsed);
                 return Column(
                   children: [
                     _ImageSetWidget(

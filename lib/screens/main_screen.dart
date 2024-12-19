@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/models/abstract_image.dart';
@@ -39,6 +41,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       final newImages = next.value;
       if (newImages == null || previousImages == null) return;
 
+      // TODO this is not evicting
       for (AbstractImage image in previousImages) {
         if (!newImages.contains(image)) {
           await image.evict();
