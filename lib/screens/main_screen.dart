@@ -21,6 +21,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   bool loading = true;
   late ScrollController leftController;
   late ScrollController rightController;
+  late Provider<FunctionsEnum> functionProvider;
 
   @override
   void initState() {
@@ -44,6 +45,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         }
       }
     });
+
+    functionProvider = Provider<FunctionsEnum>((ref) {
+      final settings = ref.watch(appDataProvider);
+      return settings.function;
+    });
+
     super.initState();
   }
 
@@ -56,9 +63,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final settings = ref.watch(appDataProvider);
+    final functionEnum = ref.watch(functionProvider);
     final function = imageFunctions.singleWhere(
-      (function) => function.imageFunction == settings.function,
+      (function) => function.imageFunction == functionEnum,
     );
     final leftSide = function.leftSide;
     final rightSide = function.rightSide;

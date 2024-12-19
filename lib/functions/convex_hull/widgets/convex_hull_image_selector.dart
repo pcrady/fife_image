@@ -13,7 +13,7 @@ import 'package:fife_image/widgets/image_thumbnail_card.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+// TODO make this whole thing widgets instead of funcitons
 class ConvexHullImageSelector extends ConsumerStatefulWidget {
   const ConvexHullImageSelector({super.key});
 
@@ -39,11 +39,12 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
               shrinkWrap: true,
               itemCount: convexHullImages.length,
               itemBuilder: (context, index) {
-                final baseName = convexHullImages[index].baseName;
+                String? name = convexHullImages[index].baseName(convexHullConfig);
+                logger.i(stopwatch.elapsed);
                 return Column(
                   children: [
                     _ImageSetWidget(
-                      key: baseName != null ? Key(baseName) : UniqueKey(),
+                      key: name != null ? Key(name) : UniqueKey(),
                       imageSet: convexHullImages[index],
                       convexHullConfig: convexHullConfig,
                       cardSize: cardSize,
@@ -102,6 +103,7 @@ class _ImageSetWidget extends ConsumerWidget {
   List<Widget> buildImageRow({
     required List<String> searchPatterns,
     required ConvexHullImageSet imageSet,
+    required ConvexHullConfigModel model,
     required WidgetRef ref,
   }) {
     final images = imageSet.images ?? [];
@@ -111,7 +113,7 @@ class _ImageSetWidget extends ConsumerWidget {
         child: RotatedBox(
           quarterTurns: 3,
           child: Text(
-            imageSet.baseName ?? '',
+            imageSet.baseName(model) ?? '',
             textAlign: TextAlign.center,
           ),
         ),
@@ -187,9 +189,8 @@ class _ImageSetWidget extends ConsumerWidget {
         );
       }
     }
-    final simplexIndex = images.indexWhere((image) => image.name.endsWith('convex_hull'));
-    final inflammationIndex = images.indexWhere((image) => image.name.endsWith('inflammation'));
-    final infiltrationIndex = images.indexWhere((image) => image.name.endsWith('custom_infiltration'));
+    final simplexIndex = images.indexWhere((image) => image.name.endsWith(convexHullTag));
+    final infiltrationIndex = images.indexWhere((image) => image.name.endsWith(infiltrationTag));
 
     AbstractImage? simplex;
     AbstractImage? inflammation;
@@ -198,9 +199,7 @@ class _ImageSetWidget extends ConsumerWidget {
     if (simplexIndex != -1) {
       simplex = images[simplexIndex];
     }
-    if (inflammationIndex != -1) {
-      inflammation = images[inflammationIndex];
-    }
+
     if (infiltrationIndex != -1) {
       infiltration = images[infiltrationIndex];
     }
@@ -247,8 +246,7 @@ class _ImageSetWidget extends ConsumerWidget {
 
     return asyncValue.when(
       data: (data) {
-        Map<String, dynamic> imageData = Map<String, dynamic>.from(data[imageSet.baseName] ?? {});
-
+        Map<String, dynamic> imageData = Map<String, dynamic>.from(data[imageSet.baseName(convexHullConfig)] ?? {});
         return SizedBox(
           width: width,
           child: ScrollConfiguration(
@@ -269,6 +267,7 @@ class _ImageSetWidget extends ConsumerWidget {
                     children: buildImageRow(
                       searchPatterns: searchPatterns,
                       imageSet: imageSet,
+                      model: convexHullConfig,
                       ref: ref,
                     ),
                   ),

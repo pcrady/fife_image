@@ -62,10 +62,10 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> with Fi
             child: Stack(
               clipBehavior: Clip.antiAlias,
               children: [
-                Image(
+                widget.image.thumbnail != null ? Image(
                   key: UniqueKey(),
-                  image: widget.image.fileImage,
-                ),
+                  image: widget.image.thumbnail!,
+                ) : Container(),
                 mouseHover
                     ? Positioned(
                         right: 4.0,

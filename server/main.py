@@ -44,12 +44,14 @@ def converted_paths():
 
     converted_files = os.listdir(OUTPUT_FOLDER)
     converted_paths_with_hashes = []
-
+    converted_files = [image for image in converted_files if 'thumbnail' not in image]
     for filename in converted_files:
+        thumbnail = os.path.join(OUTPUT_FOLDER, 'thumbnail_' + filename)
         file_path = os.path.join(OUTPUT_FOLDER, filename)
         md5_hash = _calculate_md5(file_path)
         converted_paths_with_hashes.append({
             'file_image': file_path,
+            'thumbnail': thumbnail,
             'md5_hash': md5_hash,
         })
     return jsonify(converted_paths_with_hashes)
@@ -135,10 +137,14 @@ def delete_image():
     filename = data['filename']
     tif_filename = os.path.splitext(filename)[0] + '.tif'
     tiff_path = os.path.join(UPLOAD_FOLDER, tif_filename)
+
     png_filename = os.path.splitext(filename)[0] + '.png'
     png_path = os.path.join(OUTPUT_FOLDER, png_filename)
     base_image_name = png_filename.split('_')[0]
 
+    thumb_filename = 'thumbnail_' + png_filename
+    thumb_path = os.path.join(OUTPUT_FOLDER, thumb_filename)
+    
     tiff_deleted = False
     png_deleted = False
 
@@ -149,6 +155,9 @@ def delete_image():
     if os.path.exists(png_path):
         os.remove(png_path)
         png_deleted = True
+
+    if os.path.exists(thumb_path):
+        os.remove(thumb_path)
 
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
     if os.path.exists(data_file_path):

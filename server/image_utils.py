@@ -6,6 +6,16 @@ from islet_image_set import IsletImageSet
 
 class ImageUtils:
     @staticmethod
+    def save_scaled_image(image: np.ndarray, location: str, image_name: str, width: int = 300):
+        original_height, original_width = image.shape[:2]
+        scale_factor = width / original_width
+        new_height = int(original_height * scale_factor)
+        scaled_image = cv2.resize(image, (width, new_height), interpolation=cv2.INTER_AREA)
+        file_path = os.path.join(location, image_name)
+        cv2.imwrite(file_path, scaled_image)
+
+
+    @staticmethod
     def save_bgr_image(
             image: np.ndarray,
             location: str,
@@ -13,6 +23,7 @@ class ImageUtils:
         image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         file_path = os.path.join(location, image_name)
         cv2.imwrite(file_path, image_bgr)
+        ImageUtils.save_scaled_image(image, location, 'thumbnail_' + image_name)
 
 
     @staticmethod
@@ -21,6 +32,7 @@ class ImageUtils:
                        image_name: str):
         file_path = os.path.join(location, image_name)
         cv2.imwrite(file_path, image)
+        ImageUtils.save_scaled_image(image, location, 'thumbnail_' + image_name)
 
 
     @staticmethod

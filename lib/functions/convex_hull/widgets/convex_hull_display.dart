@@ -140,7 +140,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
             : Container(),
         asyncData.when(
           data: (data) {
-            final areaData = data[results.simplex?.baseName];
+            final areaData = data[results.simplex?.baseName(config)];
             if (areaData == null) {
               return Container();
             }

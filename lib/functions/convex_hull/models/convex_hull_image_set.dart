@@ -1,5 +1,6 @@
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -20,10 +21,10 @@ class ConvexHullImageSet with _$ConvexHullImageSet {
     return images?.map((image) => image.name).toList() ?? [];
   }
 
-  String? get baseName {
+  String? baseName(ConvexHullConfigModel model) {
     if (images == null) return null;
-    assert(images!.map((image) => image.baseName).toSet().length == 1);
-    return images?.first.baseName;
+    assert(images!.map((image) => image.baseName(model)).toSet().length == 1);
+    return images?.first.baseName(model);
   }
 
   bool bgCorrectComplete(ConvexHullConfigModel config) {

@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui';
 import 'package:cross_file/cross_file.dart';
 import 'package:fife_image/constants.dart';
+import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/json_converters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -19,6 +19,7 @@ class AbstractImage with _$AbstractImage {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
   const factory AbstractImage({
     @FileImageConverter() required FileImage fileImage,
+    @NullableFileImageConverter() FileImage? thumbnail,
     String? md5Hash,
     @OffsetListConverter() List<Offset>? relativeSelectionCoordinates,
   }) = _AbstractImage;
@@ -26,7 +27,23 @@ class AbstractImage with _$AbstractImage {
   String get imagePath => fileImage.file.path;
   String get url => server + imagePath;
   String get name => basename(imagePath).split('.').first;
-  String get baseName => name.split('_').first;
+
+  // TODO this is sketchy
+  String baseName(ConvexHullConfigModel model) {
+    var trimmedName = name;
+    for (final key in model.searchPatternProteinConfig.keys) {
+      trimmedName = trimmedName.replaceAll(key, '').trim();
+    }
+    trimmedName = trimmedName.replaceAll(model.overlaySearchPattern, '').trim();
+    for (final tag in tags) {
+      trimmedName = trimmedName.replaceAll(tag, '').trim();
+    }
+    // Remove all trailing underscores
+    while (trimmedName.endsWith('_')) {
+      trimmedName = trimmedName.substring(0, trimmedName.length - 1);
+    }
+    return trimmedName;
+  }
 
   bool get isBackgroundCorrected => name.contains('bg_correct');
   XFile get xFile => XFile(imagePath);

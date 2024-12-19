@@ -18,6 +18,7 @@ class Uint8ListConverter implements JsonConverter<Uint8List?, List<int>?> {
   }
 }
 
+
 class FileImageConverter implements JsonConverter<FileImage, String> {
   const FileImageConverter();
 
@@ -31,6 +32,24 @@ class FileImageConverter implements JsonConverter<FileImage, String> {
     return object.file.path;
   }
 }
+
+
+class NullableFileImageConverter implements JsonConverter<FileImage?, String?> {
+  const NullableFileImageConverter();
+
+  @override
+  FileImage? fromJson(String? json) {
+    if (json == null) return null;
+    return FileImage(File(json));
+  }
+
+  @override
+  String? toJson(FileImage? object) {
+    if (object == null) return null;
+    return object.file.path;
+  }
+}
+
 
 class OffsetListConverter implements JsonConverter<List<Offset>?, List<List<double>>?> {
   const OffsetListConverter();

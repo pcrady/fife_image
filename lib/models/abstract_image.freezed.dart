@@ -22,6 +22,8 @@ AbstractImage _$AbstractImageFromJson(Map<String, dynamic> json) {
 mixin _$AbstractImage {
   @FileImageConverter()
   FileImage get fileImage => throw _privateConstructorUsedError;
+  @NullableFileImageConverter()
+  FileImage? get thumbnail => throw _privateConstructorUsedError;
   String? get md5Hash => throw _privateConstructorUsedError;
   @OffsetListConverter()
   List<Offset>? get relativeSelectionCoordinates =>
@@ -45,6 +47,7 @@ abstract class $AbstractImageCopyWith<$Res> {
   @useResult
   $Res call(
       {@FileImageConverter() FileImage fileImage,
+      @NullableFileImageConverter() FileImage? thumbnail,
       String? md5Hash,
       @OffsetListConverter() List<Offset>? relativeSelectionCoordinates});
 }
@@ -65,6 +68,7 @@ class _$AbstractImageCopyWithImpl<$Res, $Val extends AbstractImage>
   @override
   $Res call({
     Object? fileImage = null,
+    Object? thumbnail = freezed,
     Object? md5Hash = freezed,
     Object? relativeSelectionCoordinates = freezed,
   }) {
@@ -73,6 +77,10 @@ class _$AbstractImageCopyWithImpl<$Res, $Val extends AbstractImage>
           ? _value.fileImage
           : fileImage // ignore: cast_nullable_to_non_nullable
               as FileImage,
+      thumbnail: freezed == thumbnail
+          ? _value.thumbnail
+          : thumbnail // ignore: cast_nullable_to_non_nullable
+              as FileImage?,
       md5Hash: freezed == md5Hash
           ? _value.md5Hash
           : md5Hash // ignore: cast_nullable_to_non_nullable
@@ -95,6 +103,7 @@ abstract class _$$AbstractImageImplCopyWith<$Res>
   @useResult
   $Res call(
       {@FileImageConverter() FileImage fileImage,
+      @NullableFileImageConverter() FileImage? thumbnail,
       String? md5Hash,
       @OffsetListConverter() List<Offset>? relativeSelectionCoordinates});
 }
@@ -113,6 +122,7 @@ class __$$AbstractImageImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? fileImage = null,
+    Object? thumbnail = freezed,
     Object? md5Hash = freezed,
     Object? relativeSelectionCoordinates = freezed,
   }) {
@@ -121,6 +131,10 @@ class __$$AbstractImageImplCopyWithImpl<$Res>
           ? _value.fileImage
           : fileImage // ignore: cast_nullable_to_non_nullable
               as FileImage,
+      thumbnail: freezed == thumbnail
+          ? _value.thumbnail
+          : thumbnail // ignore: cast_nullable_to_non_nullable
+              as FileImage?,
       md5Hash: freezed == md5Hash
           ? _value.md5Hash
           : md5Hash // ignore: cast_nullable_to_non_nullable
@@ -140,6 +154,7 @@ class __$$AbstractImageImplCopyWithImpl<$Res>
 class _$AbstractImageImpl extends _AbstractImage {
   const _$AbstractImageImpl(
       {@FileImageConverter() required this.fileImage,
+      @NullableFileImageConverter() this.thumbnail,
       this.md5Hash,
       @OffsetListConverter() final List<Offset>? relativeSelectionCoordinates})
       : _relativeSelectionCoordinates = relativeSelectionCoordinates,
@@ -151,6 +166,9 @@ class _$AbstractImageImpl extends _AbstractImage {
   @override
   @FileImageConverter()
   final FileImage fileImage;
+  @override
+  @NullableFileImageConverter()
+  final FileImage? thumbnail;
   @override
   final String? md5Hash;
   final List<Offset>? _relativeSelectionCoordinates;
@@ -167,7 +185,7 @@ class _$AbstractImageImpl extends _AbstractImage {
 
   @override
   String toString() {
-    return 'AbstractImage(fileImage: $fileImage, md5Hash: $md5Hash, relativeSelectionCoordinates: $relativeSelectionCoordinates)';
+    return 'AbstractImage(fileImage: $fileImage, thumbnail: $thumbnail, md5Hash: $md5Hash, relativeSelectionCoordinates: $relativeSelectionCoordinates)';
   }
 
   @override
@@ -177,6 +195,8 @@ class _$AbstractImageImpl extends _AbstractImage {
             other is _$AbstractImageImpl &&
             (identical(other.fileImage, fileImage) ||
                 other.fileImage == fileImage) &&
+            (identical(other.thumbnail, thumbnail) ||
+                other.thumbnail == thumbnail) &&
             (identical(other.md5Hash, md5Hash) || other.md5Hash == md5Hash) &&
             const DeepCollectionEquality().equals(
                 other._relativeSelectionCoordinates,
@@ -185,7 +205,7 @@ class _$AbstractImageImpl extends _AbstractImage {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, fileImage, md5Hash,
+  int get hashCode => Object.hash(runtimeType, fileImage, thumbnail, md5Hash,
       const DeepCollectionEquality().hash(_relativeSelectionCoordinates));
 
   /// Create a copy of AbstractImage
@@ -207,6 +227,7 @@ class _$AbstractImageImpl extends _AbstractImage {
 abstract class _AbstractImage extends AbstractImage {
   const factory _AbstractImage(
       {@FileImageConverter() required final FileImage fileImage,
+      @NullableFileImageConverter() final FileImage? thumbnail,
       final String? md5Hash,
       @OffsetListConverter()
       final List<Offset>? relativeSelectionCoordinates}) = _$AbstractImageImpl;
@@ -218,6 +239,9 @@ abstract class _AbstractImage extends AbstractImage {
   @override
   @FileImageConverter()
   FileImage get fileImage;
+  @override
+  @NullableFileImageConverter()
+  FileImage? get thumbnail;
   @override
   String? get md5Hash;
   @override

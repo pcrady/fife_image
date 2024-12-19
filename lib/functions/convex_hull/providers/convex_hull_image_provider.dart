@@ -18,14 +18,15 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
   @override
   List<ConvexHullImageSet> build() {
     final imagesAsyncValue = ref.watch(imagesProvider);
+    final convexHullConfigModel = ref.watch(convexHullConfigProvider);
 
     return imagesAsyncValue.when(
       data: (images) {
-        List<String> uniqueBaseNames = images.map((image) => image.baseName).toSet().toList();
+        List<String> uniqueBaseNames = images.map((image) => image.baseName(convexHullConfigModel)).toSet().toList();
         List<ConvexHullImageSet> sets = [];
 
-        for (final baseName in uniqueBaseNames) {
-          final imageList = images.where((image) => image.baseName == baseName).toList();
+        for (final name in uniqueBaseNames) {
+          final imageList = images.where((image) => (image.baseName(convexHullConfigModel) == name)).toList();
           final convexHullImageSet = ConvexHullImageSet(images: imageList);
           sets.add(convexHullImageSet);
         }
@@ -59,9 +60,9 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
   Future<void> performCalculation() async {
     final hullConfig = ref.read(convexHullConfigProvider);
     final appData = ref.read(appDataProvider);
-    final activeImageSetBaseName = appData.selectedImage?.baseName;
+    String? activeImageSetBaseName = appData.selectedImage?.baseName(hullConfig);
     final overlayImage = ref.read(appDataProvider).selectedImage;
-    final imageSetIndex = state.indexWhere((set) => set.baseName == activeImageSetBaseName);
+    final imageSetIndex = state.indexWhere((set) => set.baseName(hullConfig) == activeImageSetBaseName);
 
     if (overlayImage == null || imageSetIndex == -1) {
       throw 'Something has gone wrong';
