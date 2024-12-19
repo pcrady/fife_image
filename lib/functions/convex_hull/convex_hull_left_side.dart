@@ -14,20 +14,53 @@ class ConvexHullLeftSide extends ConsumerStatefulWidget {
 }
 
 class _ConvexHullLeftSideState extends ConsumerState<ConvexHullLeftSide> {
+  late ScrollController scrollController;
+
+  @override
+  void initState() {
+    scrollController = ScrollController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final settings = ref.watch(convexHullConfigProvider);
     final leftMenu = settings.leftMenuEnum;
 
-    return Column(
+    if (leftMenu == LeftMenuEnum.functionSettings) {
+      return RawScrollbar(
+        thumbColor: Colors.white30,
+        controller: scrollController,
+        radius: const Radius.circular(20),
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Column(
+            children: [
+              const SizedBox(height: 4.0),
+              const ConvexHullTopButtons(),
+              const SizedBox(height: 8.0),
+              switch (leftMenu) {
+                LeftMenuEnum.functionSettings => const ConvexHullSettings(),
+                LeftMenuEnum.functionImageSelection => const Expanded(child: ConvexHullImageSelector()),
+              }
+            ],
+          ),
+        ),
+      );
+    }
+
+    return const Column(
       children: [
-        const SizedBox(height: 4.0),
-        const ConvexHullTopButtons(),
-        const SizedBox(height: 8.0),
-        switch (leftMenu) {
-          LeftMenuEnum.functionSettings => const ConvexHullSettings(),
-          LeftMenuEnum.functionImageSelection => const ConvexHullImageSelector(),
-        }
+        SizedBox(height: 4.0),
+        ConvexHullTopButtons(),
+        SizedBox(height: 8.0),
+        Expanded(child: ConvexHullImageSelector()),
       ],
     );
   }

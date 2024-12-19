@@ -22,6 +22,19 @@ class ConvexHullImageSelector extends ConsumerStatefulWidget {
 }
 
 class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
+  late ScrollController scrollController;
+  @override
+  void initState() {
+    scrollController = ScrollController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final convexHullImages = ref.watch(convexHullImageSetsProvider);
@@ -33,28 +46,29 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
 
       return SizedBox(
         width: width,
-        child: Column(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: convexHullImages.length,
-              itemBuilder: (context, index) {
-                String? name = convexHullImages[index].baseName(convexHullConfig);
-                return Column(
-                  children: [
-                    _ImageSetWidget(
-                      key: name != null ? Key(name) : UniqueKey(),
-                      imageSet: convexHullImages[index],
-                      convexHullConfig: convexHullConfig,
-                      cardSize: cardSize,
-                      width: width,
-                    ),
-                    index < convexHullImages.length - 1 ? const Divider(color: Colors.white) : Container(),
-                  ],
-                );
-              },
-            ),
-          ],
+        child: RawScrollbar(
+          thumbColor: Colors.white30,
+          controller: scrollController,
+          radius: const Radius.circular(20),
+          child: ListView.builder(
+            controller: scrollController,
+            itemCount: convexHullImages.length,
+            itemBuilder: (context, index) {
+              String? name = convexHullImages[index].baseName(convexHullConfig);
+              return Column(
+                children: [
+                  _ImageSetWidget(
+                    key: name != null ? Key(name) : UniqueKey(),
+                    imageSet: convexHullImages[index],
+                    convexHullConfig: convexHullConfig,
+                    cardSize: cardSize,
+                    width: width,
+                  ),
+                  index < convexHullImages.length - 1 ? const Divider(color: Colors.white) : Container(),
+                ],
+              );
+            },
+          ),
         ),
       );
     });

@@ -21,13 +21,11 @@ class MainScreen extends ConsumerStatefulWidget {
 
 class _MainScreenState extends ConsumerState<MainScreen> {
   bool loading = true;
-  late ScrollController leftController;
   late ScrollController rightController;
   late Provider<FunctionsEnum> functionProvider;
 
   @override
   void initState() {
-    leftController = ScrollController();
     rightController = ScrollController();
 
     ref.listenManual(heartbeatProvider, (previous, next) {
@@ -42,6 +40,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       if (newImages == null || previousImages == null) return;
 
       // TODO this is not evicting
+      // Build order might be fucked up here. like image selector rebuilds before the eviction
+      // Try to figure out a way to move this into the providder
       for (AbstractImage image in previousImages) {
         if (!newImages.contains(image)) {
           await image.evict();
@@ -59,7 +59,6 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   void dispose() {
-    leftController.dispose();
     rightController.dispose();
     super.dispose();
   }
@@ -85,15 +84,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RawScrollbar(
-                    thumbColor: Colors.white30,
-                    controller: leftController,
-                    radius: const Radius.circular(20),
-                    child: SingleChildScrollView(
-                      controller: leftController,
-                      child: leftSide,
-                    ),
-                  ),
+                  child: leftSide,
                 ),
               ),
               Expanded(

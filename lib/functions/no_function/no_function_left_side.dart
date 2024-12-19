@@ -12,7 +12,9 @@ class NoFunctionLeftSide extends ConsumerWidget {
       children: [
         WorkingDirectorySelector(),
         SizedBox(height: 8.0),
-        ImageList(),
+        Expanded(
+          child: ImageList(),
+        ),
       ],
     );
   }
