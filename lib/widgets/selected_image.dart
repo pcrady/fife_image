@@ -24,7 +24,7 @@ class SelectedImage extends ConsumerStatefulWidget {
 
 class _SelectedImageState extends ConsumerState<SelectedImage> {
   final GlobalKey _repaintBoundaryKey = GlobalKey();
-  Color _color = Colors.white;
+  final Color _color = Colors.white;
 
   Future<void> _saveImage() async {
     try {
@@ -80,7 +80,7 @@ class _SelectedImageState extends ConsumerState<SelectedImage> {
             ),
           ),
         ),
-        Text(
+        SelectableText(
           widget.image.name,
           style: const TextStyle(
             fontSize: 24.0,

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
-import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
@@ -15,8 +14,9 @@ part 'images_provider.g.dart';
 @riverpod
 class Images extends _$Images {
   final _dio = Dio();
-  List<AbstractImage>? _previousState;
 
+  // TODO this does not work
+  List<AbstractImage>? _previousState;
   Future<void> _evict(
     List<AbstractImage>? newImages,
     List<AbstractImage>? previousImages,
@@ -24,7 +24,6 @@ class Images extends _$Images {
     if (newImages == null || previousImages == null) return;
     for (AbstractImage image in previousImages) {
       if (!newImages.contains(image)) {
-        logger.i('evict');
         await image.evict();
       }
     }
@@ -38,8 +37,8 @@ class Images extends _$Images {
     var images = data.map((fileData) => AbstractImage.fromJson(fileData)).toList();
     images.sort((a, b) => a.imagePath.compareTo(b.imagePath));
     ref.read(appDataProvider.notifier).setLoadingFalse();
-    await _evict(images, _previousState);
-    _previousState = images;
+    imageCache.clear();
+    imageCache.clearLiveImages();
     return images;
   }
 

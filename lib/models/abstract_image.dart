@@ -2,7 +2,6 @@ import 'dart:typed_data';
 import 'package:cross_file/cross_file.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
-import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/json_converters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -48,14 +47,14 @@ class AbstractImage with _$AbstractImage {
 
   Future<Uint8List> get file async => await fileImage.file.readAsBytes();
 
+  // TODO this does not work
   Future<bool> evict() async {
-    final ass = await fileImage.evict();
-    logger.wtf(ass);
+    final large = await fileImage.evict();
+    var small = true;
     if (thumbnail != null) {
-      var what = await thumbnail?.evict();
-      logger.wtf(what);
+      small = await thumbnail!.evict();
     }
-    return true;
+    return large && small;
   }
 
   factory AbstractImage.fromJson(Map<String, dynamic> json) => _$AbstractImageFromJson(json);

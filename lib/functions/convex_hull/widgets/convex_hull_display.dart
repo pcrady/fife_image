@@ -140,7 +140,8 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
             : Container(),
         asyncData.when(
           data: (data) {
-            final areaData = data[results.simplex?.baseName(config)];
+            final baseName = results.simplex?.baseName(config) ?? '';
+            final areaData = data[baseName];
             if (areaData == null) {
               return Container();
             }
@@ -158,6 +159,13 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SelectableText(
+                  baseName,
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 8.0),
                 Table(
                   border: TableBorder.all(color: Colors.white),
