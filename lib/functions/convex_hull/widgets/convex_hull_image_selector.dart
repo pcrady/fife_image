@@ -23,6 +23,7 @@ class ConvexHullImageSelector extends ConsumerStatefulWidget {
 
 class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
   late ScrollController scrollController;
+
   @override
   void initState() {
     scrollController = ScrollController();

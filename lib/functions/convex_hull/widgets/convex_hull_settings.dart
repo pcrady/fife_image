@@ -260,6 +260,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                                 menuChildren: _buildMenuChildren(searchPatternControllers[index].text),
                                 style: MenuStyle(
                                   backgroundColor: WidgetStateProperty.all(Colors.deepPurple),
+                                  maximumSize:  WidgetStateProperty.all(const Size(400, 600)),
                                 ),
                                 builder: (BuildContext context, MenuController controller, Widget? child) {
                                   return TextFormField(

@@ -52,7 +52,7 @@ class AbstractImage with _$AbstractImage {
     final ass = await fileImage.evict();
     logger.wtf(ass);
     if (thumbnail != null) {
-      final what = await thumbnail?.evict();
+      var what = await thumbnail?.evict();
       logger.wtf(what);
     }
     return true;

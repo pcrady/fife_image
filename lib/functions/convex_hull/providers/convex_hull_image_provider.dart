@@ -1,9 +1,11 @@
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_image_set.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_data_provider.dart';
 import 'package:fife_image/lib/app_logger.dart';
+import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,15 +24,8 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
 
     return imagesAsyncValue.when(
       data: (images) {
-        List<String> uniqueBaseNames = images.map((image) => image.baseName(convexHullConfigModel)).toSet().toList();
-        List<ConvexHullImageSet> sets = [];
-
-        for (final name in uniqueBaseNames) {
-          final imageList = images.where((image) => (image.baseName(convexHullConfigModel) == name)).toList();
-          final convexHullImageSet = ConvexHullImageSet(images: imageList);
-          sets.add(convexHullImageSet);
-        }
-        return sets;
+        final groupedImages = groupBy<AbstractImage, String>(images, (image) => image.baseName(convexHullConfigModel));
+        return groupedImages.values.map((imageList) => ConvexHullImageSet(images: imageList)).toList();
       },
       error: (err, stack) {
         logger.e(err, stackTrace: stack);
@@ -84,8 +79,6 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     if (!proteinNames.contains(insulin) || !proteinNames.contains(glucagon)) {
       throw 'You must include Insulin and Glucagon';
     }
-
-
 
     final data = {
       'base_image_name': activeImageSetBaseName,

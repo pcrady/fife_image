@@ -15,6 +15,20 @@ part 'images_provider.g.dart';
 @riverpod
 class Images extends _$Images {
   final _dio = Dio();
+  List<AbstractImage>? _previousState;
+
+  Future<void> _evict(
+    List<AbstractImage>? newImages,
+    List<AbstractImage>? previousImages,
+  ) async {
+    if (newImages == null || previousImages == null) return;
+    for (AbstractImage image in previousImages) {
+      if (!newImages.contains(image)) {
+        logger.i('evict');
+        await image.evict();
+      }
+    }
+  }
 
   @override
   Future<List<AbstractImage>> build() async {
@@ -24,6 +38,8 @@ class Images extends _$Images {
     var images = data.map((fileData) => AbstractImage.fromJson(fileData)).toList();
     images.sort((a, b) => a.imagePath.compareTo(b.imagePath));
     ref.read(appDataProvider.notifier).setLoadingFalse();
+    await _evict(images, _previousState);
+    _previousState = images;
     return images;
   }
 

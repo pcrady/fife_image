@@ -34,21 +34,6 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       });
     });
 
-    ref.listenManual(imagesProvider, (previous, next) async {
-      final previousImages = previous?.value;
-      final newImages = next.value;
-      if (newImages == null || previousImages == null) return;
-
-      // TODO this is not evicting
-      // Build order might be fucked up here. like image selector rebuilds before the eviction
-      // Try to figure out a way to move this into the providder
-      for (AbstractImage image in previousImages) {
-        if (!newImages.contains(image)) {
-          await image.evict();
-        }
-      }
-    });
-
     functionProvider = Provider<FunctionsEnum>((ref) {
       final settings = ref.watch(appDataProvider);
       return settings.function;
@@ -69,8 +54,6 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     final function = imageFunctions.singleWhere(
       (function) => function.imageFunction == functionEnum,
     );
-    final leftSide = function.leftSide;
-    final rightSide = function.rightSide;
 
     return Opacity(
       opacity: loading ? 0.5 : 1.0,
@@ -84,7 +67,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: leftSide,
+                  child: function.leftSide,
                 ),
               ),
               Expanded(
@@ -96,7 +79,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     controller: rightController,
                     child: SingleChildScrollView(
                       controller: rightController,
-                      child: rightSide,
+                      child: function.rightSide,
                     ),
                   ),
                 ),
