@@ -1,11 +1,9 @@
 import 'dart:ui' as ui;
-import 'package:cross_file/cross_file.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
 import 'package:fife_image/widgets/selected_image_paint.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';

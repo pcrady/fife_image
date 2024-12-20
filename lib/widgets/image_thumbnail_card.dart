@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fife_image/lib/fife_image_helpers.dart';
 import 'package:fife_image/models/abstract_image.dart';

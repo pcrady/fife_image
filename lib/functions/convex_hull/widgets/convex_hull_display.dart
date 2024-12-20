@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
@@ -317,7 +316,7 @@ class _TableEntry extends StatelessWidget {
 }
 
 class _BackgroundSelect extends ConsumerStatefulWidget {
-  const _BackgroundSelect({super.key});
+  const _BackgroundSelect();
 
   @override
   ConsumerState createState() => __BackgroundSelectState();
