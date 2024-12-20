@@ -191,35 +191,41 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     ),
                     const SizedBox(width: 8.0),
                     Expanded(
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
-                            return 'Please enter a numerical value';
-                          }
-                          return null;
-                        },
-                        controller: pixelSizeController,
-                        decoration: const InputDecoration(
-                          hintText: 'Pixel Size',
-                          border: OutlineInputBorder(),
-                          labelText: 'Pixel Size',
+                      child: Tooltip(
+                        message: 'The size of a pixel in actual units of length.\n Usually available from microscope data.',
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
+                              return 'Please enter a numerical value';
+                            }
+                            return null;
+                          },
+                          controller: pixelSizeController,
+                          decoration: const InputDecoration(
+                            hintText: 'Pixel Size',
+                            border: OutlineInputBorder(),
+                            labelText: 'Pixel Size',
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(width: 8.0),
                     Expanded(
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
-                            return 'Please enter a numerical value';
-                          }
-                          return null;
-                        },
-                        controller: cellSizeController,
-                        decoration: InputDecoration(
-                          hintText: 'Cell Size',
-                          border: const OutlineInputBorder(),
-                          labelText: 'Cell Size ${unitsController.text}^2',
+                      child: Tooltip(
+                        message: 'The smallest contiguous value that will be \nincluded in the convex hull calculation',
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty || (double.tryParse(value) == null)) {
+                              return 'Please enter a numerical value';
+                            }
+                            return null;
+                          },
+                          controller: cellSizeController,
+                          decoration: InputDecoration(
+                            hintText: 'Size Threshold',
+                            border: const OutlineInputBorder(),
+                            labelText: 'Size Threshold ${unitsController.text}^2',
+                          ),
                         ),
                       ),
                     ),
@@ -341,9 +347,8 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                                         ),
                                         actions: <Widget>[
                                           ElevatedButton(
-                                            child: const Text('Got it'),
+                                            child: const Text('Select'),
                                             onPressed: () {
-                                              //setState(() => currentColor = pickerColor);
                                               Navigator.of(context).pop();
                                             },
                                           ),

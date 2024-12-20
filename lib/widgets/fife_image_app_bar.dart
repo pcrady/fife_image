@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/lib/fife_image_helpers.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -106,6 +107,7 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> with FifeImag
               withData: true,
             );
             if (result == null) return;
+            logger.i(result.files.length);
             await ref.read(imagesProvider.notifier).uploadImages(filePickerResult: result);
             if (!context.mounted) return;
           } on DioException catch (err, stack) {

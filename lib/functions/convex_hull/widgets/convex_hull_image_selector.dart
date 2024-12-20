@@ -253,7 +253,7 @@ class _ImageSetWidget extends ConsumerWidget {
         return Colors.white;
       }
     }).toList();
-    Map<int, TableColumnWidth> columnWidths = {0: const FixedColumnWidth(32)};
+    Map<int, TableColumnWidth> columnWidths = {0: const FixedColumnWidth(40)};
     for (int i = 1; i <= proteinNames.length; i++) {
       columnWidths[i] = const IntrinsicColumnWidth();
     }
