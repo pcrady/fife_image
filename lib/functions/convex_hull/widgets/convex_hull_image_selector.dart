@@ -14,8 +14,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-// TODO make this whole thing widgets instead of funcitons
 class ConvexHullImageSelector extends ConsumerStatefulWidget {
   const ConvexHullImageSelector({super.key});
 
@@ -25,27 +23,40 @@ class ConvexHullImageSelector extends ConsumerStatefulWidget {
 
 class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
   late ScrollController scrollController;
+  late TextEditingController searchController;
 
   @override
   void initState() {
     scrollController = ScrollController();
+    searchController = TextEditingController();
+    searchController.addListener(() {
+      setState(() {});
+    });
     super.initState();
   }
 
   @override
   void dispose() {
     scrollController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final convexHullImages = ref.watch(convexHullImageSetsProvider);
     final convexHullConfig = ref.watch(convexHullConfigProvider);
+    late List<ConvexHullImageSet> convexHullImages;
+    if (searchController.text.trim().isEmpty) {
+      convexHullImages = ref.watch(convexHullImageSetsProvider);
+    } else {
+      convexHullImages = ref
+          .watch(convexHullImageSetsProvider)
+          .where((set) => (set.baseName(convexHullConfig) ?? '').contains(searchController.text.trim()))
+          .toList();
+    }
 
     return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.widthConstraints().maxWidth;
-      const cardSize = 150.0;
 
       return SizedBox(
         width: width,
@@ -53,24 +64,44 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
           thumbColor: Colors.white30,
           controller: scrollController,
           radius: const Radius.circular(20),
-          child: ListView.builder(
-            controller: scrollController,
-            itemCount: convexHullImages.length,
-            itemBuilder: (context, index) {
-              String? name = convexHullImages[index].baseName(convexHullConfig);
-              return Column(
-                children: [
-                  _ImageSetWidget(
-                    key: name != null ? Key(name) : UniqueKey(),
-                    imageSet: convexHullImages[index],
-                    convexHullConfig: convexHullConfig,
-                    cardSize: cardSize,
-                    width: width,
-                  ),
-                  index < convexHullImages.length - 1 ? const Divider(color: Colors.white) : Container(),
-                ],
-              );
-            },
+          child: Column(
+            children: [
+              const SizedBox(height: 8.0),
+              TextField(
+                controller: searchController,
+                decoration: const InputDecoration(
+                  hintText: 'Search Filter',
+                  border: OutlineInputBorder(),
+                  labelText: 'Search Filter',
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              Expanded(
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: convexHullImages.length,
+                  itemBuilder: (context, index) {
+                    String? name = convexHullImages[index].baseName(convexHullConfig);
+                    return Column(
+                      children: [
+                        Stack(
+                          children: [
+                            const SizedBox(height: 324.0),
+                            _ImageSetWidget(
+                              key: name != null ? Key(name) : UniqueKey(),
+                              imageSet: convexHullImages[index],
+                              convexHullConfig: convexHullConfig,
+                              width: width,
+                            ),
+                          ],
+                        ),
+                        index < convexHullImages.length - 1 ? const Divider(color: Colors.white) : Container(),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       );
@@ -81,163 +112,16 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
 class _ImageSetWidget extends ConsumerWidget {
   final ConvexHullImageSet imageSet;
   final ConvexHullConfigModel convexHullConfig;
-  final double cardSize;
   final double width;
 
   const _ImageSetWidget({
     required this.imageSet,
     required this.convexHullConfig,
-    required this.cardSize,
     required this.width,
     super.key,
   });
 
-  List<Widget> buildNameRow({
-    required List<String> proteinNames,
-    required List<Color> proteinColors,
-  }) {
-    List<Widget> names = [];
-
-    for (int i = 0; i < proteinNames.length; i++) {
-      names.add(Text(
-        proteinNames[i],
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: proteinColors[i],
-          fontWeight: FontWeight.w500,
-        ),
-      ));
-    }
-
-    names.insert(
-      0,
-      const SizedBox(width: 8.0),
-    );
-    return names;
-  }
-
-  List<Widget> buildImageRow({
-    required List<String> searchPatterns,
-    required ConvexHullImageSet imageSet,
-    required ConvexHullConfigModel model,
-    required WidgetRef ref,
-  }) {
-    final images = imageSet.images ?? [];
-    List<Widget> widgets = [
-      SizedBox(
-        height: cardSize,
-        child: RotatedBox(
-          quarterTurns: 3,
-          child: Text(
-            imageSet.baseName(model) ?? '',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    ];
-    for (final pattern in searchPatterns) {
-      final index = images.indexWhere((image) => image.name.contains(pattern) && !image.name.contains('bg_correct'));
-      if (index >= 0) {
-        widgets.add(
-          SizedBox(
-            height: cardSize,
-            width: cardSize,
-            child: ImageThumbnailCard(
-              key: Key(images[index].hashCode.toString()),
-              image: images[index],
-              callback: () {
-                ref.read(appDataProvider.notifier).selectImage(image: images[index]);
-              },
-            ),
-          ),
-        );
-      } else {
-        widgets.add(SizedBox(
-          height: cardSize,
-          width: cardSize,
-        ));
-      }
-    }
-    return widgets;
-  }
-
-  List<Widget> buildResultsRow({
-    required List<String> searchPatterns,
-    required ConvexHullImageSet imageSet,
-    required Map<String, dynamic>? data,
-    required WidgetRef ref,
-  }) {
-    final images = imageSet.images ?? [];
-    List<Widget> widgets = [
-      SizedBox(
-        height: cardSize,
-        child: const RotatedBox(
-          quarterTurns: 3,
-          child: Text(
-            'Results',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    ];
-    for (final pattern in searchPatterns) {
-      final index = images.indexWhere((image) => image.name.contains(pattern) && image.name.contains(bgTag));
-      if (index >= 0) {
-        widgets.add(
-          SizedBox(
-            height: cardSize,
-            width: cardSize,
-            child: ImageThumbnailCard(
-              key: Key(images[index].hashCode.toString()),
-              image: images[index],
-              callback: () {
-                ref.read(appDataProvider.notifier).selectImage(image: images[index]);
-              },
-            ),
-          ),
-        );
-      } else {
-        widgets.add(
-          SizedBox(
-            height: cardSize,
-            width: cardSize,
-          ),
-        );
-      }
-    }
-    final simplexIndex = images.indexWhere((image) => image.name.endsWith(convexHullTag));
-    final infiltrationIndex = images.indexWhere((image) => image.name.endsWith(infiltrationTag));
-
-    AbstractImage? simplex;
-    AbstractImage? inflammation;
-    AbstractImage? infiltration;
-
-    if (simplexIndex != -1) {
-      simplex = images[simplexIndex];
-    }
-
-    if (infiltrationIndex != -1) {
-      infiltration = images[infiltrationIndex];
-    }
-    if (simplex != null) {
-      widgets.removeLast();
-      final results = ConvexHullResults(
-        simplex: simplex,
-        inflammation: inflammation,
-        infiltration: infiltration,
-        data: data,
-      );
-      widgets.add(
-        SizedBox(
-          height: cardSize,
-          width: cardSize,
-          child: ConvexHullCard(results: results),
-        ),
-      );
-    }
-
-    return widgets;
-  }
+  static const cardSize = 150.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -262,7 +146,25 @@ class _ImageSetWidget extends ConsumerWidget {
 
     return asyncValue.when(
       data: (data) {
+        final images = imageSet.images ?? [];
+        final simplexIndex = images.indexWhere((image) => image.name.endsWith(convexHullTag));
+        final infiltrationIndex = images.indexWhere((image) => image.name.endsWith(infiltrationTag));
+        AbstractImage? simplex;
+        AbstractImage? infiltration;
+        if (simplexIndex != -1) {
+          simplex = images[simplexIndex];
+        }
+        if (infiltrationIndex != -1) {
+          infiltration = images[infiltrationIndex];
+        }
         Map<String, dynamic> imageData = Map<String, dynamic>.from(data[imageSet.baseName(convexHullConfig)] ?? {});
+
+        ConvexHullResults? results = ((simplex ?? infiltration) == null) ? null : ConvexHullResults(
+          simplex: simplex,
+          infiltration: infiltration,
+          data: imageData,
+        );
+
         return SizedBox(
           width: width,
           child: ScrollConfiguration(
@@ -274,26 +176,104 @@ class _ImageSetWidget extends ConsumerWidget {
                 columnWidths: columnWidths,
                 children: [
                   TableRow(
-                    children: buildNameRow(
-                      proteinNames: proteinNames,
-                      proteinColors: proteinColors,
-                    ),
+                    children: [
+                      const SizedBox(width: 8.0),
+                      ...List<Widget>.generate(
+                        proteinNames.length,
+                        (index) => Text(
+                          proteinNames[index],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: proteinColors[index],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   TableRow(
-                    children: buildImageRow(
-                      searchPatterns: searchPatterns,
-                      imageSet: imageSet,
-                      model: convexHullConfig,
-                      ref: ref,
-                    ),
+                    children: [
+                      SizedBox(
+                        height: cardSize,
+                        child: RotatedBox(
+                          quarterTurns: 3,
+                          child: Text(
+                            imageSet.baseName(convexHullConfig) ?? '',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      ...List<Widget>.generate(
+                        searchPatterns.length,
+                        (i) {
+                          final index =
+                              images.indexWhere((image) => image.name.contains(searchPatterns[i]) && !image.name.contains('bg_correct'));
+                          if (index >= 0) {
+                            return SizedBox(
+                              height: cardSize,
+                              width: cardSize,
+                              child: ImageThumbnailCard(
+                                key: Key(images[index].hashCode.toString()),
+                                image: images[index],
+                                callback: () {
+                                  ref.read(appDataProvider.notifier).selectImage(image: images[index]);
+                                },
+                              ),
+                            );
+                          } else {
+                            return const SizedBox(
+                              height: cardSize,
+                              width: cardSize,
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
                   TableRow(
-                    children: buildResultsRow(
-                      searchPatterns: searchPatterns,
-                      imageSet: imageSet,
-                      data: imageData,
-                      ref: ref,
-                    ),
+                    children: [
+                      const SizedBox(
+                        height: cardSize,
+                        child: RotatedBox(
+                          quarterTurns: 3,
+                          child: Text(
+                            'Results',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      ...List<Widget>.generate(
+                        searchPatterns.length,
+                        (i) {
+                          final index = images.indexWhere((image) => image.name.contains(searchPatterns[i]) && image.name.contains(bgTag));
+                          if (index >= 0) {
+                            return SizedBox(
+                              height: cardSize,
+                              width: cardSize,
+                              child: ImageThumbnailCard(
+                                key: Key(images[index].hashCode.toString()),
+                                image: images[index],
+                                callback: () {
+                                  ref.read(appDataProvider.notifier).selectImage(image: images[index]);
+                                },
+                              ),
+                            );
+                          } else {
+                            if (i == searchPatterns.length - 1 && results != null) {
+                              return SizedBox(
+                                height: cardSize,
+                                width: cardSize,
+                                child: ConvexHullCard(results: results),
+                              );
+                            }
+                            return const SizedBox(
+                              height: cardSize,
+                              width: cardSize,
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
