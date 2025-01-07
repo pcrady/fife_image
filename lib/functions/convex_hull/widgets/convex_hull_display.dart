@@ -147,6 +147,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
             final totalArea = areaData['total_image_area'];
             final totalIsletArea = areaData['total_islet_area'];
             final proteins = areaData['proteins'];
+            Map colocalization = areaData['colocalization'];
             final units = config.units;
 
             if (totalIsletArea == null || totalIsletArea == null || proteins == null) {
@@ -197,7 +198,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    ...proteins.entries.map((entry) {
+                    ...{...proteins, ...colocalization}.entries.map((entry) {
                       final color = entry.value['validation_color'] != null ? Color(entry.value['validation_color']) : null;
                       return TableRow(children: [
                         _TableEntry(

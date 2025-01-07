@@ -215,6 +215,7 @@ def convex_hull_calculation():
     pixel_size = data['pixel_size']
     cell_size = data['cell_size']
     images = data['images']
+    colocalization_config = data['colocalization_config']
     unscaled_crop_region = images['overlay']['relative_selection_coordinates']
     
     try:
@@ -223,6 +224,7 @@ def convex_hull_calculation():
             cell_size=cell_size,
             image_data=images,
             unscaled_crop_region=unscaled_crop_region,
+            colocalization_config=colocalization_config,
             )
     except Exception as error:
         return jsonify({'error': str(error)}), 400
@@ -258,6 +260,18 @@ def convex_hull_calculation():
                 **protein_data,
             }
             rows.append(row)
+
+        if "colocalization" in image_data:
+            for proteins, data in image_data["colocalization"].items():
+                row = {
+                    "Image": image_id,
+                    "Total Image Area": total_image_area,
+                    "Total Islet Area": total_islet_area,
+                    "Protein": proteins,
+                    **data,
+                }
+                rows.append(row)
+           
 
     df = pd.DataFrame(rows)
     df.to_csv(data_file_csv_path, encoding='utf-8', index=False)

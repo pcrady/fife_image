@@ -19,6 +19,7 @@ class ConvexHullConfigModel with _$ConvexHullConfigModel {
     @Default(defaultCellSize) double cellSize,
     @Default(lengthScale) String units,
     @Default(totalChannelNumber) int channelNumber,
+    @Default([]) List<Map<String, bool>> colocalizationConfig,
   }) = _ConvexHullConfigModel;
 
   factory ConvexHullConfigModel.fromJson(Map<String, dynamic> json) => _$ConvexHullConfigModelFromJson(json);

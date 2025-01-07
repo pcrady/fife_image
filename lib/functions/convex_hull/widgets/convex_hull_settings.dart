@@ -1,5 +1,6 @@
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
+import 'package:fife_image/functions/convex_hull/widgets/colocalization_dialog.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/enums.dart';
 import 'package:fife_image/providers/images_provider.dart';
@@ -32,6 +33,11 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
   bool insulinAndGlucagon = true;
   static const defaultColor = Colors.white;
   List<String> imageNames = [];
+  List<Map<String, bool>> colocalizationConfig = [];
+
+  void setColocalizationConfig(List<Map<String, bool>> config) {
+    colocalizationConfig = config;
+  }
 
   String? validator(String? value) {
     if (value == null || value.isEmpty) {
@@ -71,7 +77,9 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
         intValue = 1;
         channelNumberController.text = '1';
       }
+
       setState(() {
+        colocalizationConfig = [];
         if (intValue > searchPatternControllers.length) {
           for (int i = searchPatternControllers.length; i < intValue; i++) {
             searchPatternControllers.add(TextEditingController(text: generateDefaultSearchString(i)));
@@ -122,6 +130,12 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
     cellSizeController = TextEditingController(text: convexHullConfig.cellSize.toString());
     overlayController = TextEditingController(text: convexHullConfig.overlaySearchPattern.toString());
     imageNames = ref.read(imagesProvider).value?.map((image) => image.name).toList() ?? [];
+    colocalizationConfig = convexHullConfig.colocalizationConfig;
+    for (final config in colocalizationConfig) {
+      if (config.entries.length != searchPatternControllers.length) {
+        colocalizationConfig = [];
+      }
+    }
     imageNames.sort();
     imageNames
         .removeWhere((name) => name.endsWith('_bg_correct') || name.endsWith('_inflammation') || name.endsWith('_custom_infiltration'));
@@ -266,7 +280,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                                 menuChildren: _buildMenuChildren(searchPatternControllers[index].text),
                                 style: MenuStyle(
                                   backgroundColor: WidgetStateProperty.all(Colors.deepPurple),
-                                  maximumSize:  WidgetStateProperty.all(const Size(400, 600)),
+                                  maximumSize: WidgetStateProperty.all(const Size(400, 600)),
                                 ),
                                 builder: (BuildContext context, MenuController controller, Widget? child) {
                                   return TextFormField(
@@ -434,6 +448,27 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                     SizedBox(
                       width: 200,
                       child: ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              final proteins = proteinNameControllers.map((controller) => controller.text).toList();
+
+                              return ColocalizationDialog(
+                                proteins: proteins,
+                                config: colocalizationConfig,
+                                callback: setColocalizationConfig,
+                              );
+                            },
+                          );
+                        },
+                        child: const Text('Colocalization'),
+                      ),
+                    ),
+                    const SizedBox(width: 8.0),
+                    SizedBox(
+                      width: 200,
+                      child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             final proteins = proteinNameControllers.map((controller) => controller.text).toList();
@@ -465,6 +500,7 @@ class _ConvexHullSettingsState extends ConsumerState<ConvexHullSettings> {
                               searchPatternOverlayConfig: searchPatternOverlayConfig,
                               leftMenuEnum: LeftMenuEnum.functionImageSelection,
                               searchPatternOverlayColorConfig: searchPatternOverlayColorConfig,
+                              colocalizationConfig: colocalizationConfig,
                             );
                             try {
                               ref.read(convexHullConfigProvider.notifier).setConvexHullConfig(convexHullConfigModel: newConvexHullConfig);

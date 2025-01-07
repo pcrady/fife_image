@@ -35,6 +35,10 @@ _$ConvexHullConfigModelImpl _$$ConvexHullConfigModelImplFromJson(
       units: json['units'] as String? ?? lengthScale,
       channelNumber:
           (json['channel_number'] as num?)?.toInt() ?? totalChannelNumber,
+      colocalizationConfig: (json['colocalization_config'] as List<dynamic>?)
+              ?.map((e) => Map<String, bool>.from(e as Map))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
@@ -50,6 +54,7 @@ Map<String, dynamic> _$$ConvexHullConfigModelImplToJson(
       'cell_size': instance.cellSize,
       'units': instance.units,
       'channel_number': instance.channelNumber,
+      'colocalization_config': instance.colocalizationConfig,
     };
 
 const _$LeftMenuEnumEnumMap = {

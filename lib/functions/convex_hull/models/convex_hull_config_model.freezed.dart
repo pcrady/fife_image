@@ -33,6 +33,8 @@ mixin _$ConvexHullConfigModel {
   double get cellSize => throw _privateConstructorUsedError;
   String get units => throw _privateConstructorUsedError;
   int get channelNumber => throw _privateConstructorUsedError;
+  List<Map<String, bool>> get colocalizationConfig =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this ConvexHullConfigModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -59,7 +61,8 @@ abstract class $ConvexHullConfigModelCopyWith<$Res> {
       double pixelSize,
       double cellSize,
       String units,
-      int channelNumber});
+      int channelNumber,
+      List<Map<String, bool>> colocalizationConfig});
 }
 
 /// @nodoc
@@ -87,6 +90,7 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
     Object? cellSize = null,
     Object? units = null,
     Object? channelNumber = null,
+    Object? colocalizationConfig = null,
   }) {
     return _then(_value.copyWith(
       leftMenuEnum: null == leftMenuEnum
@@ -125,6 +129,10 @@ class _$ConvexHullConfigModelCopyWithImpl<$Res,
           ? _value.channelNumber
           : channelNumber // ignore: cast_nullable_to_non_nullable
               as int,
+      colocalizationConfig: null == colocalizationConfig
+          ? _value.colocalizationConfig
+          : colocalizationConfig // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, bool>>,
     ) as $Val);
   }
 }
@@ -147,7 +155,8 @@ abstract class _$$ConvexHullConfigModelImplCopyWith<$Res>
       double pixelSize,
       double cellSize,
       String units,
-      int channelNumber});
+      int channelNumber,
+      List<Map<String, bool>> colocalizationConfig});
 }
 
 /// @nodoc
@@ -173,6 +182,7 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
     Object? cellSize = null,
     Object? units = null,
     Object? channelNumber = null,
+    Object? colocalizationConfig = null,
   }) {
     return _then(_$ConvexHullConfigModelImpl(
       leftMenuEnum: null == leftMenuEnum
@@ -211,6 +221,10 @@ class __$$ConvexHullConfigModelImplCopyWithImpl<$Res>
           ? _value.channelNumber
           : channelNumber // ignore: cast_nullable_to_non_nullable
               as int,
+      colocalizationConfig: null == colocalizationConfig
+          ? _value._colocalizationConfig
+          : colocalizationConfig // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, bool>>,
     ));
   }
 }
@@ -229,10 +243,12 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       this.pixelSize = defaultPixelSize,
       this.cellSize = defaultCellSize,
       this.units = lengthScale,
-      this.channelNumber = totalChannelNumber})
+      this.channelNumber = totalChannelNumber,
+      final List<Map<String, bool>> colocalizationConfig = const []})
       : _searchPatternProteinConfig = searchPatternProteinConfig,
         _searchPatternOverlayConfig = searchPatternOverlayConfig,
-        _searchPatternOverlayColorConfig = searchPatternOverlayColorConfig;
+        _searchPatternOverlayColorConfig = searchPatternOverlayColorConfig,
+        _colocalizationConfig = colocalizationConfig;
 
   factory _$ConvexHullConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConvexHullConfigModelImplFromJson(json);
@@ -285,10 +301,19 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
   @override
   @JsonKey()
   final int channelNumber;
+  final List<Map<String, bool>> _colocalizationConfig;
+  @override
+  @JsonKey()
+  List<Map<String, bool>> get colocalizationConfig {
+    if (_colocalizationConfig is EqualUnmodifiableListView)
+      return _colocalizationConfig;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_colocalizationConfig);
+  }
 
   @override
   String toString() {
-    return 'ConvexHullConfigModel(leftMenuEnum: $leftMenuEnum, overlaySearchPattern: $overlaySearchPattern, searchPatternProteinConfig: $searchPatternProteinConfig, searchPatternOverlayConfig: $searchPatternOverlayConfig, searchPatternOverlayColorConfig: $searchPatternOverlayColorConfig, pixelSize: $pixelSize, cellSize: $cellSize, units: $units, channelNumber: $channelNumber)';
+    return 'ConvexHullConfigModel(leftMenuEnum: $leftMenuEnum, overlaySearchPattern: $overlaySearchPattern, searchPatternProteinConfig: $searchPatternProteinConfig, searchPatternOverlayConfig: $searchPatternOverlayConfig, searchPatternOverlayColorConfig: $searchPatternOverlayColorConfig, pixelSize: $pixelSize, cellSize: $cellSize, units: $units, channelNumber: $channelNumber, colocalizationConfig: $colocalizationConfig)';
   }
 
   @override
@@ -315,7 +340,9 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
                 other.cellSize == cellSize) &&
             (identical(other.units, units) || other.units == units) &&
             (identical(other.channelNumber, channelNumber) ||
-                other.channelNumber == channelNumber));
+                other.channelNumber == channelNumber) &&
+            const DeepCollectionEquality()
+                .equals(other._colocalizationConfig, _colocalizationConfig));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -330,7 +357,8 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
       pixelSize,
       cellSize,
       units,
-      channelNumber);
+      channelNumber,
+      const DeepCollectionEquality().hash(_colocalizationConfig));
 
   /// Create a copy of ConvexHullConfigModel
   /// with the given fields replaced by the non-null parameter values.
@@ -351,15 +379,17 @@ class _$ConvexHullConfigModelImpl implements _ConvexHullConfigModel {
 
 abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   const factory _ConvexHullConfigModel(
-      {final LeftMenuEnum leftMenuEnum,
-      final String overlaySearchPattern,
-      final Map<String, String> searchPatternProteinConfig,
-      final Map<String, bool> searchPatternOverlayConfig,
-      final Map<String, int> searchPatternOverlayColorConfig,
-      final double pixelSize,
-      final double cellSize,
-      final String units,
-      final int channelNumber}) = _$ConvexHullConfigModelImpl;
+          {final LeftMenuEnum leftMenuEnum,
+          final String overlaySearchPattern,
+          final Map<String, String> searchPatternProteinConfig,
+          final Map<String, bool> searchPatternOverlayConfig,
+          final Map<String, int> searchPatternOverlayColorConfig,
+          final double pixelSize,
+          final double cellSize,
+          final String units,
+          final int channelNumber,
+          final List<Map<String, bool>> colocalizationConfig}) =
+      _$ConvexHullConfigModelImpl;
 
   factory _ConvexHullConfigModel.fromJson(Map<String, dynamic> json) =
       _$ConvexHullConfigModelImpl.fromJson;
@@ -382,6 +412,8 @@ abstract class _ConvexHullConfigModel implements ConvexHullConfigModel {
   String get units;
   @override
   int get channelNumber;
+  @override
+  List<Map<String, bool>> get colocalizationConfig;
 
   /// Create a copy of ConvexHullConfigModel
   /// with the given fields replaced by the non-null parameter values.

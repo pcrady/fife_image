@@ -5,7 +5,7 @@ from scipy.spatial import ConvexHull
 from skimage import color, morphology
 import os
 from skimage import io
-
+from typing import Dict, Any, List
 
 
 class IsletImageData:
@@ -18,17 +18,17 @@ class IsletImageData:
                  cropped_image = np.ndarray([]),
                  masked_image = np.ndarray([]),
                  ):
-        self.protein_name = protein_name
-        self.image = image
-        self.validation = validation
-        self.validation_color = validation_color
-        self.cropped_image = cropped_image
-        self.masked_image = masked_image
-        self.width = image.shape[0]
-        self.height = image.shape[1]
-        self.depth = image.shape[2]
-        self.pixel_size = pixel_size
-        self.area = self.height * self.pixel_size * self.width * self.pixel_size
+        self.protein_name: str = protein_name
+        self.image: np.ndarray = image
+        self.validation: bool = validation
+        self.validation_color: int = validation_color
+        self.cropped_image: np.ndarray = cropped_image
+        self.masked_image: np.ndarray = masked_image
+        self.width: int = image.shape[0]
+        self.height: int = image.shape[1]
+        self.depth: int = image.shape[2]
+        self.pixel_size: float = pixel_size
+        self.area: float = self.height * self.pixel_size * self.width * self.pixel_size
 
 
 
@@ -46,16 +46,18 @@ class IsletImageSet:
     def __init__(self,
                  pixel_size: float,
                  cell_size: float,
-                 image_data: dict,
+                 image_data: Dict[str, Any],
+                 colocalization_config: List[Dict[str, bool]],
                  unscaled_crop_region: np.ndarray,
                  ):
         self.pixel_size = pixel_size
         self.cell_size = cell_size
         self.cell_size_pixels = int(cell_size / (pixel_size ** 2))
         self.image_data = image_data
+        self.colocalization_config = colocalization_config
         self.unscaled_crop_region = unscaled_crop_region
 
-        self.images = [IsletImageData(
+        self.images: List[IsletImageData] = [IsletImageData(
             protein_name=protein_name,
             image=io.imread(image_data['file_image']),
             pixel_size = self.pixel_size,
@@ -189,7 +191,7 @@ class IsletImageSet:
         return dimmed_image
 
 
-    def _int_to_rgb(self, color_int):
+    def _int_to_rgb(self, color_int) -> List[int]:
         """Convert a 32-bit ARGB color integer to an RGB tuple."""
         alpha = (color_int >> 24) & 255
         red = (color_int >> 16) & 255  
@@ -198,7 +200,7 @@ class IsletImageSet:
         return [red, green, blue]
 
 
-    def _create_color_convex_hull(self):
+    def _create_color_convex_hull(self) -> np.ndarray:
         x_dim = self.images[0].masked_image.shape[0]
         y_dim = self.images[0].masked_image.shape[1]
         
@@ -232,7 +234,7 @@ class IsletImageSet:
         return dimmed_image
 
 
-    def _compute_areas(self):
+    def _compute_areas(self) -> Dict[str, Any]:
         total_image_area = self.images[0].area
         total_islet_area = (self.hull_mask.sum()/ self.hull_mask.size) * total_image_area
         data = {
@@ -271,12 +273,64 @@ class IsletImageSet:
                         'validation_color': color, 
                         }
                 data['proteins'][protein_name] = protein_data
-                                
+        
+        data['colocalization'] = self._compute_colocalization()
+
         return data
 
 
+    def _compute_colocalization(self) -> Dict[str, Dict[str, float]]:
+        colocalizations: Dict[str, Dict[str, float]] = {}
+        total_image_area = self.images[0].area
+        total_islet_area = (self.hull_mask.sum()/ self.hull_mask.size) * total_image_area
+
+        for config in self.colocalization_config:
+            colocalization_proteins = []
+
+            for protein_name, value in config.items():
+                if value:
+                    colocalization_proteins.append(protein_name)
+
+            key: str = ', '.join(colocalization_proteins)
+            subset: List[IsletImageData] = [x for x in self.images if x.protein_name in colocalization_proteins]
+
+            inside_hull = subset[0].masked_image
+            outside_hull = subset[0].masked_image
+
+            for image in subset[1:]:
+                inside_hull = np.logical_and(inside_hull, image.masked_image)
+                outside_hull = np.logical_and(outside_hull, image.masked_image)
+
+            inside_hull = np.logical_and(inside_hull, self.hull_mask)
+
+            inside_hull = (inside_hull.sum() / inside_hull.size) * total_image_area
+            outside_hull = (outside_hull.sum() / outside_hull.size) * total_image_area
+
+            inside_hull = 0.0 if np.isnan(inside_hull) else inside_hull
+            outside_hull = 0.0 if np.isnan(outside_hull) else outside_hull
+            total_area = inside_hull + outside_hull
+
+            percent_islet_area = (inside_hull / total_area) * 100
+            percent_islet_area = 0.0 if np.isnan(percent_islet_area) else percent_islet_area
+
+            percent_of_islet_with_protein = (inside_hull / total_islet_area) * 100
+            percent_of_islet_with_protein = 0.0 if np.isnan(percent_of_islet_with_protein) else percent_of_islet_with_protein
+
+            colocalizations[key] = {
+                'total_area': total_area,
+                'outside_islet_area': outside_hull,
+                'islet_area': inside_hull,
+                'percent_islet_area': percent_islet_area,
+                'percent_of_islet_with_protein': percent_of_islet_with_protein,
+            }
+
+        return colocalizations
+
+
+
+
     @staticmethod
-    def subtract_background(image: np.ndarray, region: np.ndarray):
+    def subtract_background(image: np.ndarray, region: np.ndarray) -> np.ndarray:
         scaled_region = IsletImageSet._scale_region(image, region)
         mask = np.zeros(image.shape, dtype=np.uint8)
         rounded_region = np.round(scaled_region, 0)
