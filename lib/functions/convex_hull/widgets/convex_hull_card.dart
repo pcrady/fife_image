@@ -1,4 +1,5 @@
 import 'package:fife_image/functions/convex_hull/models/convex_hull_results.dart';
+import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
@@ -29,6 +30,7 @@ class _ConvexHullCardState extends ConsumerState<ConvexHullCard> {
   @override
   Widget build(BuildContext context) {
     final appData = ref.watch(appDataProvider);
+    final convexHullConfig = ref.watch(convexHullConfigProvider);
 
     if (widget.image != null) {
       return ImageThumbnailCard(
@@ -102,9 +104,24 @@ class _ConvexHullCardState extends ConsumerState<ConvexHullCard> {
                             final simplex = widget.results?.simplex;
                             final infiltration = widget.results?.infiltration;
                             List<Future> futures = [];
-                            if (inflammation != null) futures.add(images.deleteImageFromServer(image: inflammation));
-                            if (simplex != null) futures.add(images.deleteImageFromServer(image: simplex));
-                            if (infiltration != null) futures.add(images.deleteImageFromServer(image: infiltration));
+                            if (inflammation != null) {
+                              futures.add(images.deleteImageFromServer(
+                                image: inflammation,
+                                convexHullConfig: convexHullConfig,
+                              ));
+                            }
+                            if (simplex != null) {
+                              futures.add(images.deleteImageFromServer(
+                                image: simplex,
+                                convexHullConfig: convexHullConfig,
+                              ));
+                            }
+                            if (infiltration != null) {
+                              futures.add(images.deleteImageFromServer(
+                                image: infiltration,
+                                convexHullConfig: convexHullConfig,
+                              ));
+                            }
                             await Future.wait(futures);
 
                             if (appData.activeResults == widget.results) {

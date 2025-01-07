@@ -291,6 +291,9 @@ class IsletImageSet:
                 if value:
                     colocalization_proteins.append(protein_name)
 
+            if not colocalization_proteins:
+                return colocalizations
+
             key: str = ', '.join(colocalization_proteins)
             subset: List[IsletImageData] = [x for x in self.images if x.protein_name in colocalization_proteins]
 

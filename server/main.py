@@ -138,7 +138,7 @@ def delete_image():
 
     png_filename = os.path.splitext(filename)[0] + '.png'
     png_path = os.path.join(OUTPUT_FOLDER, png_filename)
-    base_image_name = png_filename.split('_')[0]
+    base_image_name = data['basename']
 
     thumb_filename = 'thumbnail_' + png_filename
     thumb_path = os.path.join(OUTPUT_FOLDER, thumb_filename)
@@ -162,10 +162,11 @@ def delete_image():
         json_data = {}
         with open(data_file_path, 'r') as json_file:
             json_data = json.load(json_file)
-            if base_image_name in json_data and (('inflammation' in filename) or ('simplex' in filename)):
+            if base_image_name in json_data and (('convex_hull' in filename) or ('custom_infiltration' in filename)):
                 del json_data[base_image_name]
                 with open(data_file_path, 'w') as json_file:
                     json.dump(json_data, json_file, indent=4)
+                write_csv(json_data)
 
     if tiff_deleted or png_deleted:
         return jsonify({"message": "Files deleted successfully",
@@ -208,6 +209,38 @@ def background_correction():
     return converted_paths()
 
 
+def write_csv(data: dict):
+    data_file_csv_path = os.path.join(DATA_DIR, DATA_FILE_CSV)
+    rows = []
+
+    for image_id, image_data in data.items():
+        total_image_area = image_data["total_image_area"]
+        total_islet_area = image_data["total_islet_area"]
+        for protein, protein_data in image_data["proteins"].items():
+            row = {
+                "Image": image_id,
+                "Total Image Area": total_image_area,
+                "Total Islet Area": total_islet_area,
+                "Protein": protein,
+                **protein_data,
+            }
+            rows.append(row)
+
+        if "colocalization" in image_data:
+            for proteins, data in image_data["colocalization"].items():
+                row = {
+                    "Image": image_id,
+                    "Total Image Area": total_image_area,
+                    "Total Islet Area": total_islet_area,
+                    "Protein": proteins,
+                    **data,
+                }
+                rows.append(row)
+
+    df = pd.DataFrame(rows)
+    df.to_csv(data_file_csv_path, encoding='utf-8', index=False)
+ 
+
 @app.route('/convex_hull_calculation', methods=['POST'])
 def convex_hull_calculation():
     data = request.get_json()
@@ -245,37 +278,8 @@ def convex_hull_calculation():
     with open(data_file_path, 'w') as json_file:
         json.dump(data, json_file, indent=4)
 
-    data_file_csv_path = os.path.join(DATA_DIR, DATA_FILE_CSV)
+    write_csv(data)
 
-    rows = []
-    for image_id, image_data in data.items():
-        total_image_area = image_data["total_image_area"]
-        total_islet_area = image_data["total_islet_area"]
-        for protein, protein_data in image_data["proteins"].items():
-            row = {
-                "Image": image_id,
-                "Total Image Area": total_image_area,
-                "Total Islet Area": total_islet_area,
-                "Protein": protein,
-                **protein_data,
-            }
-            rows.append(row)
-
-        if "colocalization" in image_data:
-            for proteins, data in image_data["colocalization"].items():
-                row = {
-                    "Image": image_id,
-                    "Total Image Area": total_image_area,
-                    "Total Islet Area": total_islet_area,
-                    "Protein": proteins,
-                    **data,
-                }
-                rows.append(row)
-           
-
-    df = pd.DataFrame(rows)
-    df.to_csv(data_file_csv_path, encoding='utf-8', index=False)
-        
     return converted_paths()
 
 

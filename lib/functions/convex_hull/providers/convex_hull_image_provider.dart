@@ -80,8 +80,6 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       throw 'You must include Insulin and Glucagon';
     }
 
-    logger.i(hullConfig.colocalizationConfig);
-
     final data = {
       'base_image_name': activeImageSetBaseName,
       'pixel_size': hullConfig.pixelSize,

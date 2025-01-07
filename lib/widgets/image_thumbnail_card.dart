@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_provider.dart';
 import 'package:fife_image/lib/fife_image_helpers.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -25,10 +26,10 @@ class ImageThumbnailCard extends ConsumerStatefulWidget {
 class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> with FifeImageHelpers {
   bool mouseHover = false;
 
-
   @override
   Widget build(BuildContext context) {
     final data = ref.watch(appDataProvider);
+    final convexHullConfig = ref.watch(convexHullConfigProvider);
     final selectedImage = data.selectedImage;
 
     return Padding(
@@ -79,6 +80,7 @@ class _ImageThumbnailCardState extends ConsumerState<ImageThumbnailCard> with Fi
                             try {
                               await ref.read(imagesProvider.notifier).deleteImageFromServer(
                                 image: widget.image,
+                                convexHullConfig: convexHullConfig,
                               );
                               final deleteCallback = widget.deleteCallback;
                               if (deleteCallback != null) {

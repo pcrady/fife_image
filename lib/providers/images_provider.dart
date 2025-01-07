@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
+import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
@@ -92,10 +93,14 @@ class Images extends _$Images {
 
   Future<void> deleteImageFromServer({
     required AbstractImage image,
+    required ConvexHullConfigModel convexHullConfig,
   }) async {
     await _dio.post(
       '$server/delete',
-      data: {'filename': image.name},
+      data: {
+        'filename': image.name,
+        'basename': image.baseName(convexHullConfig),
+      },
     );
 
     final appData = ref.read(appDataProvider);
