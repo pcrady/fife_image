@@ -65,39 +65,41 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
       children: [
         Row(
           children: [
-            Expanded(
-              child: Container(
-                clipBehavior: Clip.antiAlias,
-                foregroundDecoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            child: Image.file(
-                              key: UniqueKey(),
-                              File(results.simplex!.imagePath),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: Image.file(
-                      key: UniqueKey(),
-                      File(results.simplex!.imagePath),
+            results.simplex != null
+                ? Expanded(
+                    child: Container(
+                      clipBehavior: Clip.antiAlias,
+                      foregroundDecoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  child: Image.file(
+                                    key: UniqueKey(),
+                                    File(results.simplex!.imagePath),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Image.file(
+                            key: UniqueKey(),
+                            File(results.simplex!.imagePath),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            ),
+                  )
+                : Container(),
             results.infiltration != null
                 ? Expanded(
                     child: Card(
