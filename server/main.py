@@ -297,7 +297,6 @@ def rename_files_in_directory(old_string, new_string, copy=False):
 
 @app.route('/copy', methods=['POST'])
 def copy_image_set():
-    # todo modify json and csv
     data = request.get_json()
     new_base_image_name = data['new_name']
     old_base_image_name = data['old_name']
@@ -322,13 +321,11 @@ def copy_image_set():
 
     write_csv(new_json_data)
 
-
     return jsonify({"status": "image set copied"}), 200
 
    
 @app.route('/rename', methods=['POST'])
 def rename_image_set():
-    # todo modify json and csv
     data = request.get_json()
     new_base_image_name = data['new_name']
     old_base_image_name = data['old_name']
