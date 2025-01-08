@@ -1,7 +1,6 @@
 from flask import Flask, request, redirect, jsonify
 from flask_cors import CORS
 import os
-import hashlib
 from islet_image_set import IsletImageSet
 from skimage import io
 import json
@@ -10,6 +9,7 @@ from image_utils import ImageUtils
 import threading
 import time
 import signal
+import shutil
 
 app = Flask(__name__)
 CORS(app)
@@ -21,14 +21,6 @@ DATA_FILE = 'convex_hull_data.json'
 DATA_FILE_CSV = 'convex_hull_data.csv'
 VERSION = '1.1.1'
 
-
-
-def _calculate_md5(file_path):
-    hash_md5 = hashlib.md5()
-    with open(file_path, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
 
 
 @app.route('/version', methods=['GET'])
@@ -281,6 +273,47 @@ def convex_hull_calculation():
     write_csv(data)
 
     return converted_paths()
+
+
+
+
+def rename_files_in_directory(old_string, new_string, copy=False):
+    try:
+        files = os.listdir(OUTPUT_FOLDER)
+        for filename in files:
+            if old_string in filename:
+                new_filename = filename.replace(old_string, new_string)
+                old_path = os.path.join(OUTPUT_FOLDER, filename)
+                new_path = os.path.join(OUTPUT_FOLDER, new_filename)
+                if copy:
+                    shutil.copy(old_path, new_path)
+                else:
+                    os.rename(old_path, new_path)
+                print(f"Renamed: {filename} -> {new_filename}")
+            else:
+                print(f"Skipped: {filename}")
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+
+@app.route('/copy', methods=['POST'])
+def copy_image_set():
+    data = request.get_json()
+    new_base_image_name = data['new_name']
+    old_base_image_name = data['old_name']
+    rename_files_in_directory(old_base_image_name, new_base_image_name, copy=True)
+    return jsonify({"status": "image set copied"}), 200
+
+   
+@app.route('/rename', methods=['POST'])
+def rename_image_set():
+    data = request.get_json()
+    new_base_image_name = data['new_name']
+    old_base_image_name = data['old_name']
+    rename_files_in_directory(old_base_image_name, new_base_image_name, copy=False)
+    return jsonify({"status": "image set renamed"}), 200
 
 
 @app.route('/heartbeat', methods=['POST'])

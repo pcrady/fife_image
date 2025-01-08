@@ -319,12 +319,15 @@ class IsletImageSet:
             percent_of_islet_with_protein = (inside_hull / total_islet_area) * 100
             percent_of_islet_with_protein = 0.0 if np.isnan(percent_of_islet_with_protein) else percent_of_islet_with_protein
 
+            color = sum([image_set.validation_color for image_set in subset if image_set.validation])
+
             colocalizations[key] = {
                 'total_area': total_area,
                 'outside_islet_area': outside_hull,
                 'islet_area': inside_hull,
                 'percent_islet_area': percent_islet_area,
                 'percent_of_islet_with_protein': percent_of_islet_with_protein,
+                'validation_color': color,
             }
 
         return colocalizations

@@ -6,6 +6,7 @@ import 'package:fife_image/functions/convex_hull/providers/convex_hull_config_pr
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_data_provider.dart';
 import 'package:fife_image/functions/convex_hull/providers/convex_hull_image_provider.dart';
 import 'package:fife_image/functions/convex_hull/widgets/convex_hull_card.dart';
+import 'package:fife_image/functions/convex_hull/widgets/edit_image_set_dialog.dart';
 import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
@@ -109,7 +110,7 @@ class _ConvexHullResultsState extends ConsumerState<ConvexHullImageSelector> {
   }
 }
 
-class _ImageSetWidget extends ConsumerWidget {
+class _ImageSetWidget extends ConsumerStatefulWidget {
   final ConvexHullImageSet imageSet;
   final ConvexHullConfigModel convexHullConfig;
   final double width;
@@ -121,16 +122,22 @@ class _ImageSetWidget extends ConsumerWidget {
     super.key,
   });
 
+  @override
+  ConsumerState createState() => __ImageSetWidgetState();
+}
+
+class __ImageSetWidgetState extends ConsumerState<_ImageSetWidget> {
   static const cardSize = 150.0;
+  bool mouseHover = false;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final config = convexHullConfig.searchPatternProteinConfig;
-    final searchPatterns = [...config.keys, convexHullConfig.overlaySearchPattern];
+  Widget build(BuildContext context) {
+    final config = widget.convexHullConfig.searchPatternProteinConfig;
+    final searchPatterns = [...config.keys, widget.convexHullConfig.overlaySearchPattern];
     final proteinNames = [...config.values, 'Overlay'];
     List<Color> proteinColors = searchPatterns.map((name) {
-      final colorConfig = convexHullConfig.searchPatternOverlayColorConfig;
-      final validation = convexHullConfig.searchPatternOverlayConfig;
+      final colorConfig = widget.convexHullConfig.searchPatternOverlayColorConfig;
+      final validation = widget.convexHullConfig.searchPatternOverlayConfig;
       if (validation[name] ?? false) {
         return Color(colorConfig[name] ?? 0);
       } else {
@@ -146,7 +153,7 @@ class _ImageSetWidget extends ConsumerWidget {
 
     return asyncValue.when(
       data: (data) {
-        final images = imageSet.images ?? [];
+        final images = widget.imageSet.images ?? [];
         final simplexIndex = images.indexWhere((image) => image.name.endsWith(convexHullTag));
         final infiltrationIndex = images.indexWhere((image) => image.name.endsWith(infiltrationTag));
         AbstractImage? simplex;
@@ -157,16 +164,18 @@ class _ImageSetWidget extends ConsumerWidget {
         if (infiltrationIndex != -1) {
           infiltration = images[infiltrationIndex];
         }
-        Map<String, dynamic> imageData = Map<String, dynamic>.from(data[imageSet.baseName(convexHullConfig)] ?? {});
+        Map<String, dynamic> imageData = Map<String, dynamic>.from(data[widget.imageSet.baseName(widget.convexHullConfig)] ?? {});
 
-        ConvexHullResults? results = ((simplex ?? infiltration) == null) ? null : ConvexHullResults(
-          simplex: simplex,
-          infiltration: infiltration,
-          data: imageData,
-        );
+        ConvexHullResults? results = ((simplex ?? infiltration) == null)
+            ? null
+            : ConvexHullResults(
+                simplex: simplex,
+                infiltration: infiltration,
+                data: imageData,
+              );
 
         return SizedBox(
-          width: width,
+          width: widget.width,
           child: ScrollConfiguration(
             behavior: DraggableScrollBehavior(),
             child: SingleChildScrollView(
@@ -193,13 +202,30 @@ class _ImageSetWidget extends ConsumerWidget {
                   ),
                   TableRow(
                     children: [
-                      SizedBox(
-                        height: cardSize,
-                        child: RotatedBox(
-                          quarterTurns: 3,
-                          child: Text(
-                            imageSet.baseName(convexHullConfig) ?? '',
-                            textAlign: TextAlign.center,
+                      MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        onEnter: (_) {
+                          setState(() => mouseHover = true);
+                        },
+                        onExit: (_) {
+                          setState(() => mouseHover = false);
+                        },
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => EditImageSetDialog(imageSet: widget.imageSet),
+                            );
+                          },
+                          child: SizedBox(
+                            height: cardSize,
+                            child: RotatedBox(
+                              quarterTurns: 3,
+                              child: Text(
+                                widget.imageSet.baseName(widget.convexHullConfig) ?? '',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           ),
                         ),
                       ),

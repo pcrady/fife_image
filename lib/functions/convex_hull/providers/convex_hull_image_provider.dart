@@ -8,6 +8,7 @@ import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // flutter pub run build_runner build
@@ -33,6 +34,39 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
       },
       loading: () => [],
     );
+  }
+
+  Future<void> copyImageSet({
+    required ConvexHullImageSet imageSet,
+    required String newName,
+    required String oldName,
+  }) async {
+    await _dio.post(
+      '${server}copy',
+      data: {
+        'new_name': newName,
+        'old_name': oldName,
+        'old_image_names': imageSet.imageNames,
+      },
+    );
+    ref.invalidate(imagesProvider);
+  }
+
+
+  Future<void> renameImageSet({
+    required ConvexHullImageSet imageSet,
+    required String newName,
+    required String oldName,
+  }) async {
+    await _dio.post(
+      '${server}rename',
+      data: {
+        'new_name': newName,
+        'old_name': oldName,
+        'old_image_names': imageSet.imageNames,
+      },
+    );
+    ref.invalidate(imagesProvider);
   }
 
   Future<void> backgroundSelect() async {
