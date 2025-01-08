@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/abstract_image.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
@@ -17,7 +18,7 @@ class Images extends _$Images {
   final _dio = Dio();
 
   // TODO this does not work
-  List<AbstractImage>? _previousState;
+  /*List<AbstractImage>? _previousState;
   Future<void> _evict(
     List<AbstractImage>? newImages,
     List<AbstractImage>? previousImages,
@@ -28,7 +29,7 @@ class Images extends _$Images {
         await image.evict();
       }
     }
-  }
+  }*/
 
   @override
   Future<List<AbstractImage>> build() async {

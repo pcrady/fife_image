@@ -49,7 +49,9 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
         'old_image_names': imageSet.imageNames,
       },
     );
+    // todo unselect image
     ref.invalidate(imagesProvider);
+    ref.invalidate(convexHullDataProvider);
   }
 
 
@@ -66,7 +68,9 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
         'old_image_names': imageSet.imageNames,
       },
     );
+    // Todo unselect image
     ref.invalidate(imagesProvider);
+    ref.invalidate(convexHullDataProvider);
   }
 
   Future<void> backgroundSelect() async {

@@ -275,8 +275,6 @@ def convex_hull_calculation():
     return converted_paths()
 
 
-
-
 def rename_files_in_directory(old_string, new_string, copy=False):
     try:
         files = os.listdir(OUTPUT_FOLDER)
@@ -297,22 +295,66 @@ def rename_files_in_directory(old_string, new_string, copy=False):
         print(f"Error: {e}")
 
 
-
 @app.route('/copy', methods=['POST'])
 def copy_image_set():
+    # todo modify json and csv
     data = request.get_json()
     new_base_image_name = data['new_name']
     old_base_image_name = data['old_name']
     rename_files_in_directory(old_base_image_name, new_base_image_name, copy=True)
+
+    json_data = {}
+    data_file_path = os.path.join(DATA_DIR, DATA_FILE)
+    if os.path.exists(data_file_path):
+        with open(data_file_path, 'r') as json_file:
+            json_data = json.load(json_file)
+
+    print(json_data)
+    new_json_data = {}
+    for key, value in json_data.items():
+        new_json_data[key] = value
+        if old_base_image_name in key:
+            new_key = key.replace(old_base_image_name, new_base_image_name)
+            new_json_data[new_key] = value
+
+    with open(data_file_path, 'w') as json_file:
+        json.dump(new_json_data, json_file, indent=4)
+
+    write_csv(new_json_data)
+
+
     return jsonify({"status": "image set copied"}), 200
 
    
 @app.route('/rename', methods=['POST'])
 def rename_image_set():
+    # todo modify json and csv
     data = request.get_json()
     new_base_image_name = data['new_name']
     old_base_image_name = data['old_name']
     rename_files_in_directory(old_base_image_name, new_base_image_name, copy=False)
+
+    json_data = {}
+    data_file_path = os.path.join(DATA_DIR, DATA_FILE)
+    if os.path.exists(data_file_path):
+        with open(data_file_path, 'r') as json_file:
+            json_data = json.load(json_file)
+
+    new_json_data = {}
+    for key, value in json_data.items():
+        if old_base_image_name in key:
+            new_key = key.replace(old_base_image_name, new_base_image_name)
+            new_json_data[new_key] = value
+        else:
+            new_json_data[key] = value
+
+    with open(data_file_path, 'w') as json_file:
+        json.dump(new_json_data, json_file, indent=4)
+
+    write_csv(new_json_data)
+
+
+
     return jsonify({"status": "image set renamed"}), 200
 
 
