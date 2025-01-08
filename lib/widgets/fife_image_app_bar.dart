@@ -107,7 +107,6 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> with FifeImag
               withData: true,
             );
             if (result == null) return;
-            logger.i(result.files.length);
             await ref.read(imagesProvider.notifier).uploadImages(filePickerResult: result);
             if (!context.mounted) return;
           } on DioException catch (err, stack) {
