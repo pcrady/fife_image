@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/lib/fife_image_helpers.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
