@@ -1,0 +1,8 @@
+image_name: WidthxHeight (upper_right_x, upper_right_y) color
+
+image_ch00.png: 300x300 (700, 700) Red
+image_ch01.png: 200x200 (900, 900) Pink
+image_ch02.png: 200x200 (800, 900) Green
+image_ch03.png: 200x200 (900, 800) Blue
+
+image_overlay: colored image overlay

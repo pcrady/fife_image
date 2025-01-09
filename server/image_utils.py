@@ -1,7 +1,15 @@
 import numpy as np
 import cv2
 import os
-from islet_image_set import IsletImageSet
+from typing import Annotated, Literal, TypeVar
+import numpy.typing as npt
+
+
+DType = TypeVar("DType", bound=np.generic)
+
+ColorImage = Annotated[npt.NDArray[DType], Literal["M", "N", 3]]
+GrayScaleImage = Annotated[npt.NDArray[DType], Literal["M", "N"]]
+BooleanMask = Annotated[npt.NDArray[np.bool_], Literal["M", "N"]]
 
 
 class ImageUtils:

@@ -1,11 +1,10 @@
 import numpy as np
 import cv2
-from numpy.core.multiarray import ndarray
 from scipy.spatial import ConvexHull
 from skimage import color, morphology
-import os
 from skimage import io
 from typing import Dict, Any, List
+from image_utils import ColorImage, GrayScaleImage, BooleanMask
 
 
 class IsletImageData:
@@ -16,7 +15,7 @@ class IsletImageData:
                  validation: bool = False,
                  validation_color: int = 0,
                  cropped_image = np.ndarray([]),
-                 masked_image = np.ndarray([]),
+                 masked_image: GrayScaleImage = np.ndarray([]),
                  ):
         self.protein_name: str = protein_name
         self.image: np.ndarray = image
@@ -79,10 +78,7 @@ class IsletImageSet:
         self.hull = self._compute_convex_hull()
         self.hull_mask = self._create_convex_hull_mask()
 
-        # color image of cropped cd4 and cd8 with convex hull superimposed on top
-        # self.combined_cd4_cd8_hull = self._create_color_cd4_cd8_convex_hull()
-
-        # custom hull image with colors
+       # custom hull image with colors
         self.combined_custom_hull = self._create_color_convex_hull()
 
         # a dimmed overlay image with the convex hull superimposed
@@ -169,29 +165,7 @@ class IsletImageSet:
         return boolean_mask
  
 
-    def _create_color_cd4_cd8_convex_hull(self):
-        cd4 = next((image for image in self.images if image.protein_name == 'CD4'), None)
-        cd8 = next((image for image in self.images if image.protein_name == 'CD8'), None)
-        if cd4 is None or cd8 is None:
-            return None
-
-        color_cd4 = np.zeros((cd4.masked_image.shape[0], cd4.masked_image.shape[1], 3), dtype=np.uint8)
-        color_cd4[cd4.masked_image] = self.BLUE
-
-        color_cd8 = np.zeros((cd8.masked_image.shape[0], cd8.masked_image.shape[1], 3), dtype=np.uint8)
-        color_cd8[cd8.masked_image] = self.RED
-
-        combined_cd4_cd8 = color_cd4 + color_cd8
-        dimmed_image = combined_cd4_cd8.copy()
-        dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(combined_cd4_cd8.dtype)
-        points = self.hull.points[self.hull.vertices]
-        int_region = points.astype(np.int32)
-        swapped_int_region = int_region[:, ::-1]
-        cv2.polylines(dimmed_image, [swapped_int_region], True, color=self.WHITE, thickness=5)
-        return dimmed_image
-
-
-    def _int_to_rgb(self, color_int) -> List[int]:
+    def _int_to_rgb(self, color_int: int) -> List[int]:
         """Convert a 32-bit ARGB color integer to an RGB tuple."""
         alpha = (color_int >> 24) & 255
         red = (color_int >> 16) & 255  
@@ -200,20 +174,27 @@ class IsletImageSet:
         return [red, green, blue]
 
 
-    def _create_color_convex_hull(self) -> np.ndarray:
+    def _rgba_to_int(self, red: int, green: int, blue: int, alpha: int = 255) -> int:
+        """Convert an RGBA color tuple to a 32-bit integer."""
+        return (alpha << 24) | (red << 16) | (green << 8) | blue
+
+
+    def _create_color_convex_hull(self) -> ColorImage:
         x_dim = self.images[0].masked_image.shape[0]
         y_dim = self.images[0].masked_image.shape[1]
         
-        combined_image = np.zeros((x_dim, y_dim, 3), dtype=np.uint8)
+        combined_image = np.zeros((x_dim, y_dim, 3))
 
         for image in self.images:
             if image.validation:
-                color = np.zeros((x_dim, y_dim, 3), dtype=np.uint8)
-                # TODO figure out how we want to do this with calculations and stuff
-                #cleaned_image = self._remove_small_objects_and_holes(image.masked_image) 
+                color = np.zeros((x_dim, y_dim, 3))
                 color[image.masked_image] = self._int_to_rgb(image.validation_color)
+                print(self._int_to_rgb(image.validation_color))
                 combined_image = combined_image + color
+                combined_image = np.clip(combined_image, 0, 255).astype(np.uint8)
 
+
+        print(combined_image[950][950])
         dimmed_image = combined_image.copy()
         dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(combined_image.dtype)
         points = self.hull.points[self.hull.vertices]
@@ -279,8 +260,8 @@ class IsletImageSet:
         return data
 
 
-    def _compute_colocalization(self) -> Dict[str, Dict[str, float]]:
-        colocalizations: Dict[str, Dict[str, float]] = {}
+    def _compute_colocalization(self) -> Dict[str, Dict[str, float | None]]:
+        colocalizations: Dict[str, Dict[str, float | None]] = {}
         total_image_area = self.images[0].area
         total_islet_area = (self.hull_mask.sum()/ self.hull_mask.size) * total_image_area
 
@@ -297,14 +278,13 @@ class IsletImageSet:
             key: str = ', '.join(colocalization_proteins)
             subset: List[IsletImageData] = [x for x in self.images if x.protein_name in colocalization_proteins]
 
-            inside_hull = subset[0].masked_image
-            outside_hull = subset[0].masked_image
+            colocalizatoin_image = subset[0].masked_image
 
             for image in subset[1:]:
-                inside_hull = np.logical_and(inside_hull, image.masked_image)
-                outside_hull = np.logical_and(outside_hull, image.masked_image)
+                colocalizatoin_image = np.logical_and(colocalizatoin_image, image.masked_image)
 
-            inside_hull = np.logical_and(inside_hull, self.hull_mask)
+            inside_hull = np.logical_and(colocalizatoin_image, self.hull_mask)
+            outside_hull = colocalizatoin_image & (~inside_hull)
 
             inside_hull = (inside_hull.sum() / inside_hull.size) * total_image_area
             outside_hull = (outside_hull.sum() / outside_hull.size) * total_image_area
@@ -319,7 +299,15 @@ class IsletImageSet:
             percent_of_islet_with_protein = (inside_hull / total_islet_area) * 100
             percent_of_islet_with_protein = 0.0 if np.isnan(percent_of_islet_with_protein) else percent_of_islet_with_protein
 
-            color = sum([image_set.validation_color for image_set in subset if image_set.validation])
+            color: np.ndarray = np.array([0, 0, 0])
+            for image_set in subset:
+                if image_set.validation:
+                    image_set_color_rgb = np.array(self._int_to_rgb(image_set.validation_color))
+                    color = color + image_set_color_rgb
+                    color = np.clip(color, 0, 255).astype(np.uint8)
+
+            color_int: int | None = self._rgba_to_int(color[0], color[1], color[2])
+            color_int = None if color_int == 4278190080 else int(str(color_int))
 
             colocalizations[key] = {
                 'total_area': total_area,
@@ -327,18 +315,16 @@ class IsletImageSet:
                 'islet_area': inside_hull,
                 'percent_islet_area': percent_islet_area,
                 'percent_of_islet_with_protein': percent_of_islet_with_protein,
-                'validation_color': color,
+                'validation_color': color_int,
             }
 
         return colocalizations
 
 
-
-
     @staticmethod
     def subtract_background(image: np.ndarray, region: np.ndarray) -> np.ndarray:
         scaled_region = IsletImageSet._scale_region(image, region)
-        mask = np.zeros(image.shape, dtype=np.uint8)
+        mask = np.zeros(image.shape)
         rounded_region = np.round(scaled_region, 0)
         int_region = rounded_region.astype(np.int32)
         cv2.fillPoly(mask, pts=[int_region], color=IsletImageSet.WHITE)

@@ -156,7 +156,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
               return Container();
             }
 
-            final formatter = NumberFormat("###,###.0#", "en_US");
+            final formatter = NumberFormat("###,##0.0#", "en_US");
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,7 +201,9 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                       ],
                     ),
                     ...{...proteins, ...colocalization}.entries.map((entry) {
+                      logger.i(entry.key);
                       final color = entry.value['validation_color'] != null ? Color(entry.value['validation_color']) : null;
+                      logger.w(color);
                       return TableRow(children: [
                         _TableEntry(
                           text: entry.key,
