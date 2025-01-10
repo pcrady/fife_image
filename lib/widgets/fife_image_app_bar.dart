@@ -3,7 +3,10 @@ import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/lib/fife_image_helpers.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/app_info_provider.dart';
+import 'package:fife_image/providers/heartbeat_provider.dart';
 import 'package:fife_image/providers/images_provider.dart';
+import 'package:fife_image/providers/working_dir_provider.dart';
+import 'package:fife_image/widgets/info_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,40 +29,19 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> with FifeImag
 
   Future<void> _dialogBuilder(BuildContext context) async {
     final value = await ref.read(appInfoProvider.future);
+    final appLogFile = ref.read(workingDirProvider.notifier).appLogFile;
+    final serverLogFile = ref.read(workingDirProvider.notifier).serverLogFile;
 
     if (!context.mounted) return;
 
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Basic Info'),
-          backgroundColor: const Color(0xff1f004a),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'App Version: ${value.appVersion}',
-                style: const TextStyle(color: Colors.white),
-              ),
-              Text(
-                'Server Version: ${value.serverVersion}',
-                style: const TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+        return InfoDialog(
+          appVersion: value.appVersion,
+          serverVersion: value.serverVersion,
+          appLogFile: appLogFile!,
+          serverLogFile: serverLogFile!,
         );
       },
     );

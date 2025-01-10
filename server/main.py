@@ -137,12 +137,12 @@ def upload_files():
 def delete_image():
     logger.debug('function: delete_image()')
     data = request.get_json()
-    logger.debug(data)
     if 'filename' not in data:
         logger.error('no filename provided')
         return jsonify({"error": "No filename provided"}), 400
 
     filename = data['filename']
+    logger.debug(filename)
     tif_filename = os.path.splitext(filename)[0] + '.tif'
     tiff_path = os.path.join(UPLOAD_FOLDER, tif_filename)
 
@@ -261,7 +261,7 @@ def convex_hull_calculation():
     colocalization_config = data['colocalization_config']
     unscaled_crop_region = images['overlay']['relative_selection_coordinates']
 
-    logger.debug(f'{base_image_name}, {pixel_size}, {cell_size}, {colocalization_config}')
+    logger.debug(f'{base_image_name}, {pixel_size}, {cell_size}')
     
     try:
         image_set = IsletImageSet(
@@ -310,9 +310,7 @@ def rename_files_in_directory(old_string, new_string, copy=False):
                 else:
                     os.rename(old_path, new_path)
                 logger.debug(f"Renamed: {filename} -> {new_filename}")
-            else:
-                logger.debug(f"Skipped: {filename}")
-
+                
     except Exception as e:
         logger.error(f"Error: {e}")
 
@@ -331,7 +329,6 @@ def copy_image_set():
         with open(data_file_path, 'r') as json_file:
             json_data = json.load(json_file)
 
-    logger.debug(json_data)
     new_json_data = {}
     for key, value in json_data.items():
         new_json_data[key] = value
