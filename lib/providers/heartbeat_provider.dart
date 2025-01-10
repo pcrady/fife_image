@@ -1,73 +1,56 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 import 'package:dio/dio.dart';
 import 'package:fife_image/constants.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/working_dir_provider.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'heartbeat_provider.g.dart';
 
-// TODO make sure log file locations change when working dir changes
 @riverpod
 class Heartbeat extends _$Heartbeat {
   static const heartBeatDuration = Duration(seconds: 5);
   static const testInterval = Duration(seconds: 1);
-  static late String _appLogPath;
-  static late String _serverLogPath;
 
   @override
   Future<bool> build() async {
-    final workingDirFromDisk = await ref.read(workingDirProvider.future);
-    _appLogPath = '$workingDirFromDisk/app.log';
-    _serverLogPath = '$workingDirFromDisk/server.log';
+    await ref.read(workingDirProvider.future);
     _checkForRunningServer();
     return _testServer();
   }
 
-  String get appLogPath => _appLogPath;
-  String get serverLogPath => _serverLogPath;
-
-  Future<void> _writeToAppLog(String message) async {
-    if (kDebugMode) {
-      print(message);
-    }
-    final File logFile = await File(_appLogPath).create(recursive: true, exclusive: false);
-    logFile.writeAsStringSync('$message\n', mode: FileMode.append);
-  }
-
   Future<void> _checkForRunningServer() async {
     final dio = Dio();
-    await _writeToAppLog('Checking for running server.');
+    final workingDir = ref.read(workingDirProvider.notifier);
+    await workingDir.writeToAppLog('Checking for running server.');
     try {
       await dio.get(server);
-      await _writeToAppLog('Server already running.');
+      await workingDir.writeToAppLog('Server already running.');
     } catch (err) {
-      await _writeToAppLog('No server detected. Starting server.');
+      await workingDir.writeToAppLog('No server detected. Starting server.');
       await _runExecutable();
     }
   }
 
   Future<void> _runExecutable() async {
-    final logFile = await File(_serverLogPath).create(recursive: true, exclusive: false);
     final appExecutable = File(Platform.resolvedExecutable).absolute.path;
     final executableDir = File(appExecutable).parent;
     final mainProgram = File('${executableDir.path}/main');
 
-    final args = _SubprocessArgs(
-      rootIsolateToken: RootIsolateToken.instance!,
-      logFile: logFile,
-      binary: mainProgram,
-    );
-    await Isolate.spawn(_runProcess, args);
+    final args = SubprocessArgs(binary: mainProgram);
+    Worker worker = Worker();
+    await worker.spawn();
+    worker.startServer(args);
   }
 
   Future<void> _heartBeat() async {
     while (true) {
       final dio = Dio();
-      await _writeToAppLog('heartbeat: ${DateTime.now().millisecondsSinceEpoch}');
+      final workingDir = ref.read(workingDirProvider.notifier);
+      await workingDir.writeToAppLog('heartbeat: ${DateTime.now().millisecondsSinceEpoch}');
       await dio.post('${server}heartbeat');
       await Future.delayed(heartBeatDuration);
     }
@@ -77,17 +60,18 @@ class Heartbeat extends _$Heartbeat {
     bool shouldTest = true;
     while (shouldTest) {
       final dio = Dio();
+      final workingDir = ref.read(workingDirProvider.notifier);
+
       try {
         ref.read(appDataProvider.notifier).setLoadingTrue();
         await dio.get(server);
         final workingDirFromDisk = ref.read(workingDirProvider).value;
         await ref.read(workingDirProvider.notifier).setWorkingDir(workingDir: workingDirFromDisk);
-
-        await _writeToAppLog('connected to server');
+        await workingDir.writeToAppLog('connected to server');
         _heartBeat();
         shouldTest = false;
       } catch (err) {
-        await _writeToAppLog('connecting to server');
+        await workingDir.writeToAppLog('connecting to server');
         await Future.delayed(testInterval);
       }
     }
@@ -95,43 +79,53 @@ class Heartbeat extends _$Heartbeat {
   }
 }
 
-
-class _SubprocessArgs {
-  RootIsolateToken rootIsolateToken;
-  File logFile;
+class SubprocessArgs {
   File binary;
 
-  _SubprocessArgs({
-    required this.rootIsolateToken,
-    required this.logFile,
+  SubprocessArgs({
     required this.binary,
   });
 }
 
+class Worker {
+  late SendPort _mainSendPort;
+  final Completer<void> _isolateReady = Completer.sync();
+  bool serverStarted = false;
 
-void _runProcess(_SubprocessArgs args) async {
-  BackgroundIsolateBinaryMessenger.ensureInitialized(args.rootIsolateToken);
+  Future<void> spawn() async {
+    final mainReceivePort = ReceivePort();
+    mainReceivePort.listen(_handleResponsesFromIsolate);
+    await Isolate.spawn(_isolate, mainReceivePort.sendPort);
+  }
 
-  try {
-    final Process process = await Process.start(args.binary.path, []);
+  static void _isolate(SendPort port) {
+    final isolateReceivePort = ReceivePort();
+    port.send(isolateReceivePort.sendPort);
 
-    process.stdout.transform(const SystemEncoding().decoder).listen((output) {
-      args.logFile.writeAsStringSync(output, mode: FileMode.append);
+    isolateReceivePort.listen((dynamic args) async {
+      if (args is SubprocessArgs) {
+        final process = await Process.start(args.binary.path, []);
+        port.send(true);
+        final exitCode = await process.exitCode;
+        port.send(exitCode);
+      }
     });
+  }
 
-    process.stderr.transform(const SystemEncoding().decoder).listen((error) {
-      args.logFile.writeAsStringSync(error, mode: FileMode.append);
-    });
-
-    final exitCode = await process.exitCode;
-    args.logFile.writeAsStringSync(
-      'Process exited with code: $exitCode\n',
-      mode: FileMode.append,
-    );
-  } catch (err, stack) {
-    args.logFile.writeAsStringSync('error: ${err.toString()} \nstack: ${stack.toString()}');
-    if (kDebugMode) {
-      print(err);
+  void _handleResponsesFromIsolate(dynamic message) {
+    if (message is SendPort) {
+      _mainSendPort = message;
+      _isolateReady.complete();
+    } else if (message is bool) {
+      serverStarted = message;
+    } else {
+      logger.i(message);
     }
+  }
+
+  // sends message to isolate
+  Future<void> startServer(SubprocessArgs args) async {
+    await _isolateReady.future;
+    _mainSendPort.send(args);
   }
 }

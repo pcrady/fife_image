@@ -26,6 +26,7 @@ class AbstractImage with _$AbstractImage {
   String get name => basename(imagePath).split('.').first;
 
   // TODO this is sketchy
+  // THIS doesnt work for  the color images. it incorrectly does stuff with _
   String baseName(ConvexHullConfigModel model) {
     var trimmedName = name;
     for (final key in model.searchPatternProteinConfig.keys) {

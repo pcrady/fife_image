@@ -10,6 +10,7 @@ import threading
 import time
 import signal
 import shutil
+import logging
 
 app = Flask(__name__)
 CORS(app)
@@ -20,31 +21,43 @@ DATA_DIR = 'computed_data/'
 DATA_FILE = 'convex_hull_data.json'
 DATA_FILE_CSV = 'convex_hull_data.csv'
 VERSION = '1.1.2'
+LOG_FILE = 'server.log'
 
+
+handler = logging.FileHandler(LOG_FILE)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+logging.getLogger().addHandler(handler)
 
 
 @app.route('/version', methods=['GET'])
 def version():
+    logger.debug('function: version()')
     version = {'server_version': VERSION}
+    logger.debug(VERSION)
     return jsonify(version), 200
 
 
 @app.route('/', methods=['GET'])
 def converted_paths():
+    logger.debug('function: converted_paths()')
     if not os.path.exists(OUTPUT_FOLDER):
         return jsonify({'message': 'no output folder yet'}), 200
 
     converted_files = os.listdir(OUTPUT_FOLDER)
-    converted_paths_with_hashes = []
+    converted_paths = []
     converted_files = [image for image in converted_files if 'thumbnail' not in image]
     for filename in converted_files:
         thumbnail = os.path.join(OUTPUT_FOLDER, 'thumbnail_' + filename)
         file_path = os.path.join(OUTPUT_FOLDER, filename)
-        converted_paths_with_hashes.append({
+        converted_paths.append({
             'file_image': file_path,
             'thumbnail': thumbnail,
         })
-    return jsonify(converted_paths_with_hashes)
+    return jsonify(converted_paths)
 
 
 @app.route('/config', methods=['POST'])
@@ -57,6 +70,11 @@ def set_config():
     global UPLOAD_FOLDER
     global OUTPUT_FOLDER
     global DATA_DIR
+    global LOG_FILE
+    global handler
+    global logger
+    logger.debug('function: set_config()')
+
 
     UPLOAD_FOLDER = os.path.join(working_dir, 'uploads/')
     OUTPUT_FOLDER = os.path.join(working_dir, 'converted/')
@@ -66,13 +84,22 @@ def set_config():
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)
     os.makedirs(DATA_DIR, exist_ok=True)
 
+    logger.removeHandler(handler)
+    log_file = os.path.join(working_dir, LOG_FILE)
+    handler = logging.FileHandler(log_file)
+    handler.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
+    logger.debug(f"set logging to {log_file}")
+
     return jsonify({'message': 'working directory set'}), 200
 
 
 @app.route('/data', methods=['GET'])
 def computed_data():
+    logger.debug('function: computed_data()')
     data = {}
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
+    logger.debug(f"data_file_path: {data_file_path}")
 
     if os.path.exists(data_file_path):
         with open(data_file_path, 'r') as json_file:
@@ -80,29 +107,17 @@ def computed_data():
     return jsonify(data)
 
 
-@app.route('/download', methods=['GET'])
-def download_data():
-    data_file_path = os.path.join(DATA_DIR, DATA_FILE)
- 
-    if os.path.exists(data_file_path):
-        with open(data_file_path, 'r') as json_file:
-            json_data = json.load(json_file)
-            df = pd.DataFrame.from_dict(json_data, orient='index')
-            df.to_csv(DATA_DIR + DATA_FILE_CSV)
-
-    if not os.path.exists(data_file_path):
-        return "File not found", 404
-    with open(data_file_path, "rb") as f:
-        return f.read(), 200, {"Content-Type": "image/png"}
-
-
 @app.route('/', methods=['POST'])
 def upload_files():
+    logger.debug('function: upload_files()')
+
     if 'file' not in request.files:
-        return jsonify({"error": "No file part"}), 400
+       logger.error('no files in request.files')
+       return jsonify({"error": "No file part"}), 400
 
     file = request.files['file']
     if file.filename == '':
+        logger.error('no selected file')
         return jsonify({"error": "No selected file"}), 400
 
     try:
@@ -114,14 +129,17 @@ def upload_files():
         else:
             return jsonify({"error": "Invalid file type"}), 400
     except Exception as error:
+        logger.error('')
         return jsonify({'error': str(error)}), 400
 
 
 @app.route('/delete', methods=['POST'])
 def delete_image():
+    logger.debug('function: delete_image()')
     data = request.get_json()
-    print(data)
+    logger.debug(data)
     if 'filename' not in data:
+        logger.error('no filename provided')
         return jsonify({"error": "No filename provided"}), 400
 
     filename = data['filename']
@@ -165,28 +183,24 @@ def delete_image():
                         "tiff_deleted": tiff_deleted,
                         "png_deleted": png_deleted}), 200
     else:
+        logger.error('File not found')
         return jsonify({"error": "File not found"}), 404
 
-
-@app.route('/converted/<filename>', methods=['GET'])
-def download_file(filename):
-    file_path = os.path.join(OUTPUT_FOLDER, filename)
-    if not os.path.exists(file_path):
-        return "File not found", 404
-    with open(file_path, "rb") as f:
-        return f.read(), 200, {"Content-Type": "image/png"}
 
 
 @app.route('/background_correction', methods=['POST'])
 def background_correction():
+    logger.debug('function: background_correction()')
     try:
         file_path_parameter = 'file_image'
         selected_region_parameter = 'relative_selection_coordinates'
         data = request.get_json()
         if file_path_parameter not in data:
+            logger.error('No filepath provided')
             return jsonify({"error": "No filepath provided"}), 400
 
         if selected_region_parameter not in data:
+            logger.error('No selected region provided')
             return jsonify({"error": "No selection region provided"}), 400
 
         file_path = data[file_path_parameter]
@@ -196,12 +210,14 @@ def background_correction():
         corrected_image_name = (file_path.split('.')[0] + '_bg_correct.png').split('/')[-1]
         ImageUtils.save_bgr_image(corrected_image, OUTPUT_FOLDER, corrected_image_name)
     except Exception as error:
+        logger.error('error in background_correction()')
         return jsonify({'error': str(error)}), 400
  
     return converted_paths()
 
 
 def write_csv(data: dict):
+    logger.debug('function: write_csv()')
     data_file_csv_path = os.path.join(DATA_DIR, DATA_FILE_CSV)
     rows = []
 
@@ -235,6 +251,8 @@ def write_csv(data: dict):
 
 @app.route('/convex_hull_calculation', methods=['POST'])
 def convex_hull_calculation():
+    logger.debug('function: convex_hull_calculation()')
+ 
     data = request.get_json()
     base_image_name = data['base_image_name']
     pixel_size = data['pixel_size']
@@ -242,6 +260,8 @@ def convex_hull_calculation():
     images = data['images']
     colocalization_config = data['colocalization_config']
     unscaled_crop_region = images['overlay']['relative_selection_coordinates']
+
+    logger.debug(f'{base_image_name}, {pixel_size}, {cell_size}, {colocalization_config}')
     
     try:
         image_set = IsletImageSet(
@@ -252,6 +272,7 @@ def convex_hull_calculation():
             colocalization_config=colocalization_config,
             )
     except Exception as error:
+        logger.error(str(error))
         return jsonify({'error': str(error)}), 400
    
     if image_set.combined_custom_hull is not None:
@@ -276,6 +297,7 @@ def convex_hull_calculation():
 
 
 def rename_files_in_directory(old_string, new_string, copy=False):
+    logger.debug('function: rename_files_in_directory()')
     try:
         files = os.listdir(OUTPUT_FOLDER)
         for filename in files:
@@ -287,16 +309,17 @@ def rename_files_in_directory(old_string, new_string, copy=False):
                     shutil.copy(old_path, new_path)
                 else:
                     os.rename(old_path, new_path)
-                print(f"Renamed: {filename} -> {new_filename}")
+                logger.debug(f"Renamed: {filename} -> {new_filename}")
             else:
-                print(f"Skipped: {filename}")
+                logger.debug(f"Skipped: {filename}")
 
     except Exception as e:
-        print(f"Error: {e}")
+        logger.error(f"Error: {e}")
 
 
 @app.route('/copy', methods=['POST'])
 def copy_image_set():
+    logger.debug('function: copy_image_set()')
     data = request.get_json()
     new_base_image_name = data['new_name']
     old_base_image_name = data['old_name']
@@ -308,7 +331,7 @@ def copy_image_set():
         with open(data_file_path, 'r') as json_file:
             json_data = json.load(json_file)
 
-    print(json_data)
+    logger.debug(json_data)
     new_json_data = {}
     for key, value in json_data.items():
         new_json_data[key] = value
@@ -320,12 +343,12 @@ def copy_image_set():
         json.dump(new_json_data, json_file, indent=4)
 
     write_csv(new_json_data)
-
     return jsonify({"status": "image set copied"}), 200
 
    
 @app.route('/rename', methods=['POST'])
 def rename_image_set():
+    logger.debug('function: rename_image_set()')
     data = request.get_json()
     new_base_image_name = data['new_name']
     old_base_image_name = data['old_name']
@@ -349,16 +372,13 @@ def rename_image_set():
         json.dump(new_json_data, json_file, indent=4)
 
     write_csv(new_json_data)
-
-
-
     return jsonify({"status": "image set renamed"}), 200
 
 
 @app.route('/heartbeat', methods=['POST'])
 def heartbeat():
+    logger.debug('function: heartbeat()')
     global last_heartbeat_time
-    # print('heartbeat received')
     with heartbeat_lock:
         last_heartbeat_time = time.time()
     return jsonify({"status": "Heartbeat received"}), 200
@@ -370,9 +390,8 @@ def monitor_heartbeat():
         time.sleep(5)
         with heartbeat_lock:
             elapsed_time = time.time() - last_heartbeat_time
-            # print('elapsed_time: ' + str(elapsed_time))
         if elapsed_time > 20: 
-            print("No heartbeat detected! Shutting down server.")
+            logger.debug("No heartbeat detected! Shutting down server.")
             os.kill(os.getpid(), signal.SIGINT)
             break
 

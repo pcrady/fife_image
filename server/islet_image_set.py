@@ -189,12 +189,9 @@ class IsletImageSet:
             if image.validation:
                 color = np.zeros((x_dim, y_dim, 3))
                 color[image.masked_image] = self._int_to_rgb(image.validation_color)
-                print(self._int_to_rgb(image.validation_color))
                 combined_image = combined_image + color
                 combined_image = np.clip(combined_image, 0, 255).astype(np.uint8)
 
-
-        print(combined_image[950][950])
         dimmed_image = combined_image.copy()
         dimmed_image[~self.hull_mask] = (dimmed_image[~self.hull_mask] * 0.5).astype(combined_image.dtype)
         points = self.hull.points[self.hull.vertices]

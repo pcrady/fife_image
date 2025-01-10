@@ -201,9 +201,7 @@ class _ConvexHullResultsDisplay extends ConsumerWidget {
                       ],
                     ),
                     ...{...proteins, ...colocalization}.entries.map((entry) {
-                      logger.i(entry.key);
                       final color = entry.value['validation_color'] != null ? Color(entry.value['validation_color']) : null;
-                      logger.w(color);
                       return TableRow(children: [
                         _TableEntry(
                           text: entry.key,
