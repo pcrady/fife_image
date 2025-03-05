@@ -39,6 +39,7 @@ class Heartbeat extends _$Heartbeat {
     final appExecutable = File(Platform.resolvedExecutable).absolute.path;
     final executableDir = File(appExecutable).parent;
     final mainProgram = File('${executableDir.path}/main');
+    logger.i(mainProgram.path);
 
     final args = SubprocessArgs(binary: mainProgram);
     Worker worker = Worker();

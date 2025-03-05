@@ -2,7 +2,6 @@ name: fife_image_server
 channels:
   - defaults
   - conda-forge
-  - anaconda
 dependencies:
   - aom=3.6.0=h313beb8_0
   - blas=1.0=openblas
@@ -13,13 +12,14 @@ dependencies:
   - brunsli=0.1=hc377ac9_1
   - bzip2=1.0.8=h80987f9_6
   - c-ares=1.19.1=h80987f9_0
-  - ca-certificates=2024.3.11=hca03da5_0
+  - ca-certificates=2025.2.25=hca03da5_0
   - cfitsio=3.470=h7f6438f_7
   - charls=2.2.0=hc377ac9_0
   - click=8.1.7=py312hca03da5_0
   - contourpy=1.2.0=py312h48ca7d4_0
   - cycler=0.11.0=pyhd3eb1b0_0
   - dav1d=1.2.1=h80987f9_0
+  - et_xmlfile=1.1.0=py312hca03da5_1
   - expat=2.6.2=h313beb8_0
   - flask=3.0.3=py312hca03da5_0
   - flask-cors=3.0.10=pyhd3eb1b0_0
@@ -67,7 +67,8 @@ dependencies:
   - numpy=1.26.4=py312h7f4fdc5_0
   - numpy-base=1.26.4=py312he047099_0
   - openjpeg=2.3.0=h7a6adac_2
-  - openssl=3.0.14=h80987f9_0
+  - openpyxl=3.1.5=py312h80987f9_0
+  - openssl=3.0.16=h02f6b3c_0
   - packaging=23.2=py312hca03da5_0
   - pillow=10.3.0=py312h80987f9_0
   - pip=24.0=py312hca03da5_0

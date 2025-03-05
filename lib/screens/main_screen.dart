@@ -1,4 +1,5 @@
 
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/lib/fife_image_functions.dart';
 import 'package:fife_image/providers/app_data_provider.dart';
 import 'package:fife_image/providers/heartbeat_provider.dart';
@@ -41,15 +42,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   @override
   void dispose() {
     rightController.dispose();
+    logger.i('fuck');
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final functionEnum = ref.watch(functionProvider);
-    final function = imageFunctions.singleWhere(
-      (function) => function.imageFunction == functionEnum,
-    );
 
     return Opacity(
       opacity: loading ? 0.5 : 1.0,
@@ -63,7 +62,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: function.leftSide,
+                  child: functionEnum.leftSide,
                 ),
               ),
               Expanded(
@@ -75,7 +74,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     controller: rightController,
                     child: SingleChildScrollView(
                       controller: rightController,
-                      child: function.rightSide,
+                      child: functionEnum.rightSide,
                     ),
                   ),
                 ),

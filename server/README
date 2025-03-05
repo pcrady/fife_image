@@ -3,4 +3,4 @@ python main.py
 
 
 to build:
-pyinstaller --onefile main.py
+pyinstaller main.py --onefile --hidden-import openpyxl.cell._writer

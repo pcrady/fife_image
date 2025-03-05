@@ -11,6 +11,11 @@ import time
 import signal
 import shutil
 import logging
+import threading
+from filelock import Timeout, FileLock
+
+json_lock_file = "high_ground.txt.lock"
+json_lock = FileLock(json_lock_file, timeout=10)
 
 app = Flask(__name__)
 CORS(app)
@@ -20,30 +25,27 @@ OUTPUT_FOLDER = 'converted/'
 DATA_DIR = 'computed_data/'
 DATA_FILE = 'convex_hull_data.json'
 DATA_FILE_CSV = 'convex_hull_data.csv'
+DATA_FILE_XLSX = 'convex_hull_data.xlsx'
 VERSION = '1.1.2'
 LOG_FILE = 'server.log'
 
-
-handler = logging.FileHandler(LOG_FILE)
-handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-logging.getLogger().addHandler(handler)
+@app.errorhandler(Exception)
+def handle_error(error):
+    app.logger.exception(error)
+    return "An internal error occurred", 500
 
 
 @app.route('/version', methods=['GET'])
 def version():
-    logger.debug('function: version()')
+    app.logger.debug('function: version()')
     version = {'server_version': VERSION}
-    logger.debug(VERSION)
+    app.logger.debug(VERSION)
     return jsonify(version), 200
 
 
 @app.route('/', methods=['GET'])
 def converted_paths():
-    logger.debug('function: converted_paths()')
+    app.logger.debug('function: converted_paths()')
     if not os.path.exists(OUTPUT_FOLDER):
         return jsonify({'message': 'no output folder yet'}), 200
 
@@ -71,9 +73,7 @@ def set_config():
     global OUTPUT_FOLDER
     global DATA_DIR
     global LOG_FILE
-    global handler
-    global logger
-    logger.debug('function: set_config()')
+    app.logger.debug('function: set_config()')
 
 
     UPLOAD_FOLDER = os.path.join(working_dir, 'uploads/')
@@ -84,40 +84,43 @@ def set_config():
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)
     os.makedirs(DATA_DIR, exist_ok=True)
 
-    logger.removeHandler(handler)
-    log_file = os.path.join(working_dir, LOG_FILE)
-    handler = logging.FileHandler(log_file)
-    handler.setLevel(logging.DEBUG)
-    logger.addHandler(handler)
-    logger.debug(f"set logging to {log_file}")
+    log_filename = os.path.join(working_dir, LOG_FILE)
+    logging.basicConfig(
+        filename=log_filename,
+        level=logging.DEBUG,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
 
     return jsonify({'message': 'working directory set'}), 200
 
 
 @app.route('/data', methods=['GET'])
 def computed_data():
-    logger.debug('function: computed_data()')
+    app.logger.debug('function: computed_data()')
     data = {}
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
-    logger.debug(f"data_file_path: {data_file_path}")
+    app.logger.debug(f"data_file_path: {data_file_path}")
 
     if os.path.exists(data_file_path):
-        with open(data_file_path, 'r') as json_file:
-            data = json.load(json_file)
-    return jsonify(data)
+        with json_lock:
+            with open(data_file_path, 'r') as json_file:
+                data = json.load(json_file)
+                return jsonify(data)
+    else: 
+        return jsonify(data)
 
 
 @app.route('/', methods=['POST'])
 def upload_files():
-    logger.debug('function: upload_files()')
+    app.logger.debug('function: upload_files()')
 
     if 'file' not in request.files:
-       logger.error('no files in request.files')
+       app.logger.error('no files in request.files')
        return jsonify({"error": "No file part"}), 400
 
     file = request.files['file']
     if file.filename == '':
-        logger.error('no selected file')
+        app.logger.error('no selected file')
         return jsonify({"error": "No selected file"}), 400
 
     try:
@@ -129,20 +132,20 @@ def upload_files():
         else:
             return jsonify({"error": "Invalid file type"}), 400
     except Exception as error:
-        logger.error('')
+        app.logger.error('')
         return jsonify({'error': str(error)}), 400
 
 
 @app.route('/delete', methods=['POST'])
 def delete_image():
-    logger.debug('function: delete_image()')
+    app.logger.debug('function: delete_image()')
     data = request.get_json()
     if 'filename' not in data:
-        logger.error('no filename provided')
+        app.logger.error('no filename provided')
         return jsonify({"error": "No filename provided"}), 400
 
     filename = data['filename']
-    logger.debug(filename)
+    app.logger.debug(filename)
     tif_filename = os.path.splitext(filename)[0] + '.tif'
     tiff_path = os.path.join(UPLOAD_FOLDER, tif_filename)
 
@@ -169,38 +172,39 @@ def delete_image():
 
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
     if os.path.exists(data_file_path):
-        json_data = {}
-        with open(data_file_path, 'r') as json_file:
-            json_data = json.load(json_file)
-            if base_image_name in json_data and (('convex_hull' in filename) or ('custom_infiltration' in filename)):
-                del json_data[base_image_name]
-                with open(data_file_path, 'w') as json_file:
+        with json_lock:
+            with open(data_file_path, 'r+') as json_file:
+                json_data = json.load(json_file)
+                if base_image_name in json_data and (('convex_hull' in filename) or ('custom_infiltration' in filename)):
+                    del json_data[base_image_name]
+                    json_file.seek(0)
+                    json_file.truncate()
                     json.dump(json_data, json_file, indent=4)
-                write_csv(json_data)
+                    write_csv(json_data)
 
     if tiff_deleted or png_deleted:
         return jsonify({"message": "Files deleted successfully",
                         "tiff_deleted": tiff_deleted,
                         "png_deleted": png_deleted}), 200
     else:
-        logger.error('File not found')
+        app.logger.error('File not found')
         return jsonify({"error": "File not found"}), 404
 
 
 
 @app.route('/background_correction', methods=['POST'])
 def background_correction():
-    logger.debug('function: background_correction()')
+    app.logger.debug('function: background_correction()')
     try:
         file_path_parameter = 'file_image'
         selected_region_parameter = 'relative_selection_coordinates'
         data = request.get_json()
         if file_path_parameter not in data:
-            logger.error('No filepath provided')
+            app.logger.error('No filepath provided')
             return jsonify({"error": "No filepath provided"}), 400
 
         if selected_region_parameter not in data:
-            logger.error('No selected region provided')
+            app.logger.error('No selected region provided')
             return jsonify({"error": "No selection region provided"}), 400
 
         file_path = data[file_path_parameter]
@@ -210,15 +214,40 @@ def background_correction():
         corrected_image_name = (file_path.split('.')[0] + '_bg_correct.png').split('/')[-1]
         ImageUtils.save_bgr_image(corrected_image, OUTPUT_FOLDER, corrected_image_name)
     except Exception as error:
-        logger.error('error in background_correction()')
+        app.logger.error('error in background_correction()')
         return jsonify({'error': str(error)}), 400
  
     return converted_paths()
 
 
+def convert_to_multi_index_dataframe(data: dict):
+    df = pd.DataFrame(data).T
+    if not data:
+        return df
+    
+    df['proteins_and_colocalizations'] = df.apply(lambda r: {**r['proteins'], **r['colocalization']}, axis=1)
+    protein_df = pd.DataFrame(df['proteins_and_colocalizations'].to_list(), index=df.index)
+   
+    multi_index_proteins = []
+    for protein in protein_df.columns:
+        non_empty_proteins = protein_df[protein_df[protein].notna()]
+        col_df = pd.DataFrame(non_empty_proteins[protein].to_list(), index=non_empty_proteins.index)
+        col_df.columns = pd.MultiIndex.from_tuples([(protein, col) for col in col_df])
+        multi_index_proteins.append(col_df)
+   
+    multi_index_proteins = pd.concat(multi_index_proteins, axis=1)
+    top_level_info = df[['total_image_area', 'total_islet_area']]
+    top_level_info.columns = pd.MultiIndex.from_tuples([("", col) for col in top_level_info.columns])
+   
+    return pd.concat([top_level_info, multi_index_proteins], axis=1)
+
+
 def write_csv(data: dict):
-    logger.debug('function: write_csv()')
+    app.logger.debug('function: write_csv()')
     data_file_csv_path = os.path.join(DATA_DIR, DATA_FILE_CSV)
+    data_file_xlsx_path = os.path.join(DATA_DIR, DATA_FILE_XLSX)
+    excel_dataframe = convert_to_multi_index_dataframe(data)
+    excel_dataframe.to_excel(data_file_xlsx_path)
     rows = []
 
     for image_id, image_data in data.items():
@@ -251,7 +280,7 @@ def write_csv(data: dict):
 
 @app.route('/convex_hull_calculation', methods=['POST'])
 def convex_hull_calculation():
-    logger.debug('function: convex_hull_calculation()')
+    app.logger.debug('function: convex_hull_calculation()')
  
     data = request.get_json()
     base_image_name = data['base_image_name']
@@ -261,7 +290,7 @@ def convex_hull_calculation():
     colocalization_config = data['colocalization_config']
     unscaled_crop_region = images['overlay']['relative_selection_coordinates']
 
-    logger.debug(f'{base_image_name}, {pixel_size}, {cell_size}')
+    app.logger.debug(f'{base_image_name}, {pixel_size}, {cell_size}')
     
     try:
         image_set = IsletImageSet(
@@ -272,7 +301,7 @@ def convex_hull_calculation():
             colocalization_config=colocalization_config,
             )
     except Exception as error:
-        logger.error(str(error))
+        app.logger.error(str(error))
         return jsonify({'error': str(error)}), 400
    
     if image_set.combined_custom_hull is not None:
@@ -284,8 +313,9 @@ def convex_hull_calculation():
     data = {}
 
     if os.path.exists(data_file_path):
-        with open(data_file_path, 'r') as json_file:
-            data = json.load(json_file)
+        with json_lock:
+            with open(data_file_path, 'r') as json_file:
+                data = json.load(json_file)
 
     data[base_image_name] = area_data
     with open(data_file_path, 'w') as json_file:
@@ -297,7 +327,7 @@ def convex_hull_calculation():
 
 
 def rename_files_in_directory(old_string, new_string, copy=False):
-    logger.debug('function: rename_files_in_directory()')
+    app.logger.debug('function: rename_files_in_directory()')
     try:
         files = os.listdir(OUTPUT_FOLDER)
         for filename in files:
@@ -309,15 +339,15 @@ def rename_files_in_directory(old_string, new_string, copy=False):
                     shutil.copy(old_path, new_path)
                 else:
                     os.rename(old_path, new_path)
-                logger.debug(f"Renamed: {filename} -> {new_filename}")
+                app.logger.debug(f"Renamed: {filename} -> {new_filename}")
                 
     except Exception as e:
-        logger.error(f"Error: {e}")
+        app.logger.error(f"Error: {e}")
 
 
 @app.route('/copy', methods=['POST'])
 def copy_image_set():
-    logger.debug('function: copy_image_set()')
+    app.logger.debug('function: copy_image_set()')
     data = request.get_json()
     new_base_image_name = data['new_name']
     old_base_image_name = data['old_name']
@@ -326,8 +356,9 @@ def copy_image_set():
     json_data = {}
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
     if os.path.exists(data_file_path):
-        with open(data_file_path, 'r') as json_file:
-            json_data = json.load(json_file)
+        with json_lock:
+            with open(data_file_path, 'r') as json_file:
+                json_data = json.load(json_file)
 
     new_json_data = {}
     for key, value in json_data.items():
@@ -345,7 +376,7 @@ def copy_image_set():
    
 @app.route('/rename', methods=['POST'])
 def rename_image_set():
-    logger.debug('function: rename_image_set()')
+    app.logger.debug('function: rename_image_set()')
     data = request.get_json()
     new_base_image_name = data['new_name']
     old_base_image_name = data['old_name']
@@ -354,8 +385,9 @@ def rename_image_set():
     json_data = {}
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
     if os.path.exists(data_file_path):
-        with open(data_file_path, 'r') as json_file:
-            json_data = json.load(json_file)
+        with json_lock:
+            with open(data_file_path, 'r') as json_file:
+                json_data = json.load(json_file)
 
     new_json_data = {}
     for key, value in json_data.items():
@@ -374,7 +406,7 @@ def rename_image_set():
 
 @app.route('/heartbeat', methods=['POST'])
 def heartbeat():
-    logger.debug('function: heartbeat()')
+    app.logger.debug('function: heartbeat()')
     global last_heartbeat_time
     with heartbeat_lock:
         last_heartbeat_time = time.time()
@@ -388,7 +420,7 @@ def monitor_heartbeat():
         with heartbeat_lock:
             elapsed_time = time.time() - last_heartbeat_time
         if elapsed_time > 20: 
-            logger.debug("No heartbeat detected! Shutting down server.")
+            app.logger.debug("No heartbeat detected! Shutting down server.")
             os.kill(os.getpid(), signal.SIGINT)
             break
 

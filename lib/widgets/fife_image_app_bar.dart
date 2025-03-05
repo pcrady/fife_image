@@ -128,13 +128,12 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> with FifeImag
             ref.read(appDataProvider.notifier).setFunction(function: value!);
           },
           items: dropdownValues.map<DropdownMenuItem<FunctionsEnum>>((FunctionsEnum function) {
-            final value = function.toName();
             return DropdownMenuItem<FunctionsEnum>(
               value: function,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  value,
+                  function.name,
                   style: const TextStyle(
                     fontSize: 24,
                     color: Colors.white,
