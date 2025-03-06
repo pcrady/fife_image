@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:cross_file/cross_file.dart';
 import 'package:fife_image/constants.dart';
 import 'package:fife_image/functions/convex_hull/models/convex_hull_config_model.dart';
+import 'package:fife_image/lib/app_logger.dart';
 import 'package:fife_image/models/json_converters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -27,7 +28,7 @@ class AbstractImage with _$AbstractImage {
 
   // TODO this is sketchy
   // THIS doesnt work for  the color images. it incorrectly does stuff with _
-  String baseName(ConvexHullConfigModel model) {
+  String? baseName(ConvexHullConfigModel model) {
     var trimmedName = name;
     for (final key in model.searchPatternProteinConfig.keys) {
       trimmedName = trimmedName.replaceAll(key, '').trim();
@@ -39,6 +40,9 @@ class AbstractImage with _$AbstractImage {
     // Remove all trailing underscores
     while (trimmedName.endsWith('_')) {
       trimmedName = trimmedName.substring(0, trimmedName.length - 1);
+    }
+    if (trimmedName == name) {
+      return null;
     }
     return trimmedName;
   }

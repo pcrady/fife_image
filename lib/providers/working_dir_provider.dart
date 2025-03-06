@@ -39,7 +39,9 @@ class WorkingDir extends _$WorkingDir {
     return null;
   }
 
-  Future<void> writeToAppLog(String message) async {
+  Future<void> writeToAppLog(
+    String message,
+  ) async {
     if (kDebugMode) {
       print(message);
     }
@@ -48,6 +50,17 @@ class WorkingDir extends _$WorkingDir {
     logFile.writeAsStringSync('$message\n', mode: FileMode.append);
   }
 
+  Future<void> writeErrorToAppLog(
+    String error,
+    StackTrace stack,
+  ) async {
+    if (kDebugMode) {
+      print(error);
+    }
+    if (appLogFile == null) return;
+    final File logFile = await File(appLogFile!).create(recursive: true, exclusive: false);
+    logFile.writeAsStringSync('$error\n$stack', mode: FileMode.append);
+  }
 
   Future<void> setWorkingDir({required String? workingDir}) async {
     if (workingDir == null) return;

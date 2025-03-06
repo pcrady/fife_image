@@ -50,8 +50,6 @@ class Heartbeat extends _$Heartbeat {
   Future<void> _heartBeat() async {
     while (true) {
       final dio = Dio();
-      final workingDir = ref.read(workingDirProvider.notifier);
-      await workingDir.writeToAppLog('heartbeat: ${DateTime.now().millisecondsSinceEpoch}');
       await dio.post('${server}heartbeat');
       await Future.delayed(heartBeatDuration);
     }

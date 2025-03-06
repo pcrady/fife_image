@@ -14,10 +14,15 @@ import time
 import signal
 import shutil
 import logging
+import tempfile
 
-json_lock_file: str = "json.lock"
-csv_lock_file: str = "csv.lock"
-xlsx_lock_file: str = "xlsx.lock"
+json_fd, json_lock_file = tempfile.mkstemp()
+csv_fd, csv_lock_file = tempfile.mkstemp()
+xlsx_fd, xlsx_lock_file = tempfile.mkstemp()
+
+os.close(json_fd)
+os.close(csv_fd)
+os.close(xlsx_fd)
 
 json_lock: SoftFileLock = FileLock(json_lock_file, timeout=10)
 csv_lock: SoftFileLock = FileLock(csv_lock_file, timeout=10)
@@ -421,7 +426,6 @@ def rename_image_set():
 
 @app.route('/heartbeat', methods=['POST'])
 def heartbeat():
-    app.logger.debug('function: heartbeat()')
     global last_heartbeat_time
     with heartbeat_lock:
         last_heartbeat_time = time.time()

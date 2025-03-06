@@ -7,3 +7,13 @@ pyinstaller main.py --onefile --hidden-import openpyxl.cell._writer
 
 
 conda env export --no-builds -n fife_image_server > environment.yaml
+
+
+nuitka \
+  --onefile \
+  --follow-imports \
+  --standalone \
+  --assume-yes-for-downloads \
+  --enable-plugin=anti-bloat \
+  --plugin=anti-bloat \
+  main.py

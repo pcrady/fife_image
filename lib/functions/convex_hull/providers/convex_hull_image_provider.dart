@@ -24,7 +24,8 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
 
     return imagesAsyncValue.when(
       data: (images) {
-        final groupedImages = groupBy<AbstractImage, String>(images, (image) => image.baseName(convexHullConfigModel));
+        final filteredImages = images.where((image) => image.baseName(convexHullConfigModel) != null).toList();
+        final groupedImages = groupBy<AbstractImage, String>(filteredImages, (image) => image.baseName(convexHullConfigModel)!);
         return groupedImages.values.map((imageList) => ConvexHullImageSet(images: imageList)).toList();
       },
       error: (err, stack) {

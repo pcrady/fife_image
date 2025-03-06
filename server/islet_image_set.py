@@ -1,5 +1,5 @@
 import numpy as np
-import cv2
+from cv2 import fillPoly, polylines
 from scipy.spatial import ConvexHull
 from skimage import color, morphology
 from skimage import io
@@ -103,7 +103,7 @@ class IsletImageSet:
         mask = np.zeros(image.shape, dtype=np.uint8)
         rounded_region = np.round(self.scaled_crop_region, 0)
         int_region = rounded_region.astype(np.int32)
-        cv2.fillPoly(mask, pts=[int_region], color=self.WHITE)
+        fillPoly(mask, pts=[int_region], color=self.WHITE)
         image_copy = image.copy()
         boolean_mask = np.all(mask == self.BLACK, axis=-1)
         image_copy[boolean_mask] = self.BLACK
@@ -160,7 +160,7 @@ class IsletImageSet:
         rounded_region = np.round(points, 0)
         int_region = rounded_region.astype(np.int32)
         swapped_int_region = int_region[:, ::-1]
-        cv2.fillPoly(mask, pts=[swapped_int_region], color=self.WHITE)
+        fillPoly(mask, pts=[swapped_int_region], color=self.WHITE)
         boolean_mask = np.all(mask == self.WHITE, axis=-1)
         return boolean_mask
  
@@ -197,7 +197,7 @@ class IsletImageSet:
         points = self.hull.points[self.hull.vertices]
         int_region = points.astype(np.int32)
         swapped_int_region = int_region[:, ::-1]
-        cv2.polylines(dimmed_image, [swapped_int_region], True, color=self.WHITE, thickness=5)
+        polylines(dimmed_image, [swapped_int_region], True, color=self.WHITE, thickness=5)
         return dimmed_image
 
 
@@ -208,7 +208,7 @@ class IsletImageSet:
         points = self.hull.points[self.hull.vertices]
         int_region = points.astype(np.int32)
         swapped_int_region = int_region[:, ::-1]
-        cv2.polylines(dimmed_image, [swapped_int_region], True, color=self.WHITE, thickness=5)
+        polylines(dimmed_image, [swapped_int_region], True, color=self.WHITE, thickness=5)
         return dimmed_image
 
 
@@ -324,7 +324,7 @@ class IsletImageSet:
         mask = np.zeros(image.shape)
         rounded_region = np.round(scaled_region, 0)
         int_region = rounded_region.astype(np.int32)
-        cv2.fillPoly(mask, pts=[int_region], color=IsletImageSet.WHITE)
+        fillPoly(mask, pts=[int_region], color=IsletImageSet.WHITE)
         boolean_mask = np.all(mask == IsletImageSet.WHITE, axis=-1)
         gray_image = np.mean(image, axis=2)
         subtraction_value = np.mean(gray_image[boolean_mask]) + 3 * np.std(gray_image[boolean_mask]) 
