@@ -4,3 +4,6 @@ python main.py
 
 to build:
 pyinstaller main.py --onefile --hidden-import openpyxl.cell._writer
+
+
+conda env export --no-builds -n fife_image_server > environment.yaml

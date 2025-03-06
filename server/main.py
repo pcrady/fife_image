@@ -3,7 +3,7 @@ from flask_cors import CORS
 from islet_image_set import IsletImageSet
 from skimage import io
 from image_utils import ImageUtils
-from filelock import Timeout, FileLock
+from filelock import FileLock
 
 import os
 import json
