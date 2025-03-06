@@ -1,21 +1,26 @@
 from flask import Flask, request, redirect, jsonify
 from flask_cors import CORS
-import os
 from islet_image_set import IsletImageSet
 from skimage import io
+from image_utils import ImageUtils
+from filelock import Timeout, FileLock
+
+import os
 import json
 import pandas as pd
-from image_utils import ImageUtils
 import threading
 import time
 import signal
 import shutil
 import logging
-import threading
-from filelock import Timeout, FileLock
 
-json_lock_file = "high_ground.txt.lock"
+json_lock_file = "json.lock"
+csv_lock_file = "csv.lock"
+xlsx_lock_file = "xlsx.lock"
+
 json_lock = FileLock(json_lock_file, timeout=10)
+csv_lock = FileLock(csv_lock_file, timeout=10)
+xlsx_lock = FileLock(xlsx_lock_file, timeout=10)
 
 app = Flask(__name__)
 CORS(app)
@@ -247,7 +252,10 @@ def write_csv(data: dict):
     data_file_csv_path = os.path.join(DATA_DIR, DATA_FILE_CSV)
     data_file_xlsx_path = os.path.join(DATA_DIR, DATA_FILE_XLSX)
     excel_dataframe = convert_to_multi_index_dataframe(data)
-    excel_dataframe.to_excel(data_file_xlsx_path)
+
+    with xlsx_lock:
+        excel_dataframe.to_excel(data_file_xlsx_path)
+
     rows = []
 
     for image_id, image_data in data.items():
@@ -275,7 +283,8 @@ def write_csv(data: dict):
                 rows.append(row)
 
     df = pd.DataFrame(rows)
-    df.to_csv(data_file_csv_path, encoding='utf-8', index=False)
+    with csv_lock:
+        df.to_csv(data_file_csv_path, encoding='utf-8', index=False)
  
 
 @app.route('/convex_hull_calculation', methods=['POST'])
@@ -318,8 +327,9 @@ def convex_hull_calculation():
                 data = json.load(json_file)
 
     data[base_image_name] = area_data
-    with open(data_file_path, 'w') as json_file:
-        json.dump(data, json_file, indent=4)
+    with json_lock:
+        with open(data_file_path, 'w') as json_file:
+            json.dump(data, json_file, indent=4)
 
     write_csv(data)
 
@@ -367,8 +377,9 @@ def copy_image_set():
             new_key = key.replace(old_base_image_name, new_base_image_name)
             new_json_data[new_key] = value
 
-    with open(data_file_path, 'w') as json_file:
-        json.dump(new_json_data, json_file, indent=4)
+    with json_lock:
+        with open(data_file_path, 'w') as json_file:
+            json.dump(new_json_data, json_file, indent=4)
 
     write_csv(new_json_data)
     return jsonify({"status": "image set copied"}), 200
@@ -397,8 +408,9 @@ def rename_image_set():
         else:
             new_json_data[key] = value
 
-    with open(data_file_path, 'w') as json_file:
-        json.dump(new_json_data, json_file, indent=4)
+    with json_lock:
+        with open(data_file_path, 'w') as json_file:
+            json.dump(new_json_data, json_file, indent=4)
 
     write_csv(new_json_data)
     return jsonify({"status": "image set renamed"}), 200
