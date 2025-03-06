@@ -25,7 +25,7 @@ class ImageUtils:
 
     @staticmethod
     def save_bgr_image(
-            image: np.ndarray,
+            image: ColorImage,
             location: str,
             image_name: str):
         image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
@@ -35,10 +35,10 @@ class ImageUtils:
 
 
     @staticmethod
-    def save_rgb_image(image: np.ndarray,
+    def save_rgb_image(image: ColorImage,
                        location: str,
                        image_name: str):
-        file_path = os.path.join(location, image_name)
+        file_path: str = os.path.join(location, image_name)
         cv2.imwrite(file_path, image)
         ImageUtils.save_scaled_image(image, location, 'thumbnail_' + image_name)
 

@@ -1,9 +1,10 @@
-from flask import Flask, request, redirect, jsonify
+from io import TextIOWrapper
+from flask import Flask, request, redirect, jsonify, Response
 from flask_cors import CORS
 from islet_image_set import IsletImageSet
 from skimage import io
 from image_utils import ImageUtils
-from filelock import FileLock
+from filelock import FileLock, SoftFileLock
 
 import os
 import json
@@ -14,13 +15,13 @@ import signal
 import shutil
 import logging
 
-json_lock_file = "json.lock"
-csv_lock_file = "csv.lock"
-xlsx_lock_file = "xlsx.lock"
+json_lock_file: str = "json.lock"
+csv_lock_file: str = "csv.lock"
+xlsx_lock_file: str = "xlsx.lock"
 
-json_lock = FileLock(json_lock_file, timeout=10)
-csv_lock = FileLock(csv_lock_file, timeout=10)
-xlsx_lock = FileLock(xlsx_lock_file, timeout=10)
+json_lock: SoftFileLock = FileLock(json_lock_file, timeout=10)
+csv_lock: SoftFileLock = FileLock(csv_lock_file, timeout=10)
+xlsx_lock: SoftFileLock = FileLock(xlsx_lock_file, timeout=10)
 
 app = Flask(__name__)
 CORS(app)
@@ -41,38 +42,38 @@ def handle_error(error):
 
 
 @app.route('/version', methods=['GET'])
-def version():
+def version() -> tuple[Response, int]:
     app.logger.debug('function: version()')
-    version = {'server_version': VERSION}
+    version: dict[str, str] = {'server_version': VERSION}
     app.logger.debug(VERSION)
     return jsonify(version), 200
 
 
 @app.route('/', methods=['GET'])
-def converted_paths():
+def converted_paths() -> tuple[Response, int]:
     app.logger.debug('function: converted_paths()')
     if not os.path.exists(OUTPUT_FOLDER):
         return jsonify({'message': 'no output folder yet'}), 200
 
-    converted_files = os.listdir(OUTPUT_FOLDER)
-    converted_paths = []
-    converted_files = [image for image in converted_files if 'thumbnail' not in image]
+    converted_files: list[str] = os.listdir(OUTPUT_FOLDER)
+    converted_paths: list[dict[str, str]] = []
+    converted_files: list[str] = [image for image in converted_files if 'thumbnail' not in image]
     for filename in converted_files:
-        thumbnail = os.path.join(OUTPUT_FOLDER, 'thumbnail_' + filename)
-        file_path = os.path.join(OUTPUT_FOLDER, filename)
+        thumbnail: str = os.path.join(OUTPUT_FOLDER, 'thumbnail_' + filename)
+        file_path: str = os.path.join(OUTPUT_FOLDER, filename)
         converted_paths.append({
             'file_image': file_path,
             'thumbnail': thumbnail,
         })
-    return jsonify(converted_paths)
+    return jsonify(converted_paths), 200
 
 
 @app.route('/config', methods=['POST'])
-def set_config():
+def set_config() -> tuple[Response, int]:
     data  = request.get_json()
     if 'working_dir' not in data:
         return jsonify({"error": "No path provided"}), 400
-    working_dir = data['working_dir']
+    working_dir: str = data['working_dir']
 
     global UPLOAD_FOLDER
     global OUTPUT_FOLDER
@@ -89,7 +90,7 @@ def set_config():
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)
     os.makedirs(DATA_DIR, exist_ok=True)
 
-    log_filename = os.path.join(working_dir, LOG_FILE)
+    log_filename: str = os.path.join(working_dir, LOG_FILE)
     logging.basicConfig(
         filename=log_filename,
         level=logging.DEBUG,
@@ -100,19 +101,20 @@ def set_config():
 
 
 @app.route('/data', methods=['GET'])
-def computed_data():
+def computed_data() -> tuple[Response, int]:
     app.logger.debug('function: computed_data()')
-    data = {}
+    data: dict = {}
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
     app.logger.debug(f"data_file_path: {data_file_path}")
 
     if os.path.exists(data_file_path):
         with json_lock:
+            json_file: TextIOWrapper
             with open(data_file_path, 'r') as json_file:
-                data = json.load(json_file)
-                return jsonify(data)
+                data: dict = json.load(json_file)
+                return jsonify(data), 200
     else: 
-        return jsonify(data)
+        return jsonify(data), 200
 
 
 @app.route('/', methods=['POST'])
@@ -130,7 +132,7 @@ def upload_files():
 
     try:
         if file and file.filename != None:
-            filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+            filepath: str = os.path.join(UPLOAD_FOLDER, file.filename)
             file.save(filepath)
             ImageUtils.convert_to_png(filepath, OUTPUT_FOLDER)
             return redirect('/')
@@ -149,20 +151,20 @@ def delete_image():
         app.logger.error('no filename provided')
         return jsonify({"error": "No filename provided"}), 400
 
-    filename = data['filename']
+    filename: str = data['filename']
     app.logger.debug(filename)
-    tif_filename = os.path.splitext(filename)[0] + '.tif'
-    tiff_path = os.path.join(UPLOAD_FOLDER, tif_filename)
+    tif_filename: str = os.path.splitext(filename)[0] + '.tif'
+    tiff_path: str = os.path.join(UPLOAD_FOLDER, tif_filename)
 
-    png_filename = os.path.splitext(filename)[0] + '.png'
-    png_path = os.path.join(OUTPUT_FOLDER, png_filename)
-    base_image_name = data['basename']
+    png_filename: str = os.path.splitext(filename)[0] + '.png'
+    png_path: str = os.path.join(OUTPUT_FOLDER, png_filename)
+    base_image_name: str = data['basename']
 
-    thumb_filename = 'thumbnail_' + png_filename
-    thumb_path = os.path.join(OUTPUT_FOLDER, thumb_filename)
+    thumb_filename: str = 'thumbnail_' + png_filename
+    thumb_path: str = os.path.join(OUTPUT_FOLDER, thumb_filename)
     
-    tiff_deleted = False
-    png_deleted = False
+    tiff_deleted: bool = False
+    png_deleted: bool = False
 
     if os.path.exists(tiff_path):
         os.remove(tiff_path)
@@ -178,8 +180,9 @@ def delete_image():
     data_file_path = os.path.join(DATA_DIR, DATA_FILE)
     if os.path.exists(data_file_path):
         with json_lock:
+            json_file: TextIOWrapper
             with open(data_file_path, 'r+') as json_file:
-                json_data = json.load(json_file)
+                json_data: dict = json.load(json_file)
                 if base_image_name in json_data and (('convex_hull' in filename) or ('custom_infiltration' in filename)):
                     del json_data[base_image_name]
                     json_file.seek(0)
@@ -292,9 +295,9 @@ def convex_hull_calculation():
     app.logger.debug('function: convex_hull_calculation()')
  
     data = request.get_json()
-    base_image_name = data['base_image_name']
-    pixel_size = data['pixel_size']
-    cell_size = data['cell_size']
+    base_image_name: str = data['base_image_name']
+    pixel_size: float = data['pixel_size']
+    cell_size: float = data['cell_size']
     images = data['images']
     colocalization_config = data['colocalization_config']
     unscaled_crop_region = images['overlay']['relative_selection_coordinates']

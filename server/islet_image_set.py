@@ -4,7 +4,7 @@ from scipy.spatial import ConvexHull
 from skimage import color, morphology
 from skimage import io
 from typing import Dict, Any, List
-from image_utils import ColorImage, GrayScaleImage, BooleanMask
+from image_utils import ColorImage, GrayScaleImage
 
 
 class IsletImageData:
