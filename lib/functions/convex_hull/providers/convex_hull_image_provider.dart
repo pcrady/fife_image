@@ -54,7 +54,6 @@ class ConvexHullImageSets extends _$ConvexHullImageSets {
     ref.invalidate(convexHullDataProvider);
   }
 
-
   Future<void> renameImageSet({
     required ConvexHullImageSet imageSet,
     required String newName,

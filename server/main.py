@@ -135,6 +135,8 @@ def upload_files():
         app.logger.error('no selected file')
         return jsonify({"error": "No selected file"}), 400
 
+    app.logger.debug(file.filename)
+
     try:
         if file and file.filename != None:
             filepath: str = os.path.join(UPLOAD_FOLDER, file.filename)
@@ -149,7 +151,7 @@ def upload_files():
 
 
 @app.route('/delete', methods=['POST'])
-def delete_image():
+def delete_image() -> tuple[Response, int]:
     app.logger.debug('function: delete_image()')
     data = request.get_json()
     if 'filename' not in data:
@@ -209,9 +211,9 @@ def delete_image():
 def background_correction():
     app.logger.debug('function: background_correction()')
     try:
-        file_path_parameter = 'file_image'
-        selected_region_parameter = 'relative_selection_coordinates'
-        data = request.get_json()
+        file_path_parameter: str = 'file_image'
+        selected_region_parameter: str = 'relative_selection_coordinates'
+        data: dict = request.get_json()
         if file_path_parameter not in data:
             app.logger.error('No filepath provided')
             return jsonify({"error": "No filepath provided"}), 400
@@ -220,7 +222,7 @@ def background_correction():
             app.logger.error('No selected region provided')
             return jsonify({"error": "No selection region provided"}), 400
 
-        file_path = data[file_path_parameter]
+        file_path: str = data[file_path_parameter]
         image = io.imread(file_path)
         selected_region = data[selected_region_parameter]
         corrected_image = IsletImageSet.subtract_background(image, selected_region)

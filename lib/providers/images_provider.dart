@@ -9,6 +9,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../lib/app_logger.dart';
+
 // flutter pub run build_runner build
 part 'images_provider.g.dart';
 

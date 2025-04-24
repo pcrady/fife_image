@@ -24,7 +24,7 @@ class AbstractImage with _$AbstractImage {
 
   String get imagePath => fileImage.file.path;
   String get url => server + imagePath;
-  String get name => basename(imagePath).split('.').first;
+  String get name => basenameWithoutExtension(imagePath);
 
   // TODO this is sketchy
   // THIS doesnt work for  the color images. it incorrectly does stuff with _

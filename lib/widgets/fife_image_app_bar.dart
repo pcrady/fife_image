@@ -85,7 +85,7 @@ class _FifeImageAppBarState extends ConsumerState<FifeImageAppBar> with FifeImag
             ref.read(appDataProvider.notifier).setLoadingTrue();
             FilePickerResult? result = await FilePicker.platform.pickFiles(
               allowMultiple: true,
-              withData: true,
+              withData: false,
             );
             if (result == null) return;
             await ref.read(imagesProvider.notifier).uploadImages(filePickerResult: result);
