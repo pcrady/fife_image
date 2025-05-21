@@ -105,14 +105,8 @@ class Worker {
     isolateReceivePort.listen((dynamic args) async {
       if (args is SubprocessArgs) {
         final process = await Process.start(args.binary.path, []);
-        
-process.stdout
-  .transform(utf8.decoder)
-  .listen((line) => print('FLASK │ $line'));
-
-process.stderr
-  .transform(utf8.decoder)
-  .listen((err)  => print('FLASK ERR │ $err'));
+        process.stdout.transform(utf8.decoder).listen((line) => print('FLASK │ $line'));
+        process.stderr.transform(utf8.decoder).listen((err) => print('FLASK ERR │ $err'));
         port.send(true);
 
         final exitCode = await process.exitCode;
